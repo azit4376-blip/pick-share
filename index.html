@@ -6,7 +6,7 @@
     <title>Pick & Share | 추천 리스트</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* (디자인 CSS 부분은 동일합니다) */
+        /* 기존 디자인 유지 */
         @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-33.33%); } }
         .animate-marquee { display: flex; width: max-content; animation: marquee 35s linear infinite; }
         .animate-marquee:hover { animation-play-state: paused; }
@@ -16,7 +16,7 @@
         .platform-badge { position: absolute; top: 12px; right: 12px; z-index: 20; padding: 4px 10px; border-radius: 8px; font-weight: 800; font-size: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.15); }
         .bg-coupang { background-color: #ef4444; color: white; } 
         .bg-naver { background-color: #22c55e; color: white; }   
-        .bg-etc { background-color: #64748b; color: white; }     
+        .bg-etc { background-color: #64748b; color: white; }      
         .no-scrollbar::-webkit-scrollbar { display: none; }
     </style>
 </head>
@@ -38,11 +38,8 @@
     <main class="container mx-auto px-4 py-12 max-w-6xl">
         <div class="flex flex-col lg:flex-row gap-6 mb-16">
             <input type="text" id="searchInput" onkeyup="handleSearch()" placeholder="상품 검색..." class="flex-1 px-6 py-4.5 rounded-2xl border-2 border-slate-100 focus:border-slate-900 outline-none shadow-sm text-base">
-            <div class="flex bg-slate-200 p-1 rounded-2xl shadow-inner overflow-x-auto no-scrollbar">
-                <button onclick="filterItems('전체')" class="filter-btn active-filter whitespace-nowrap px-10 py-3.5 rounded-xl text-sm font-black transition-all">전체</button>
-                <button onclick="filterItems('공통')" class="filter-btn whitespace-nowrap px-10 py-3.5 rounded-xl text-sm font-bold text-slate-600 transition-all">공통</button>
-                <button onclick="filterItems('여름')" class="filter-btn whitespace-nowrap px-10 py-3.5 rounded-xl text-sm font-bold text-slate-600 transition-all">여름</button>
-                <button onclick="filterItems('겨울')" class="filter-btn whitespace-nowrap px-10 py-3.5 rounded-xl text-sm font-bold text-slate-600 transition-all">겨울</button>
+            <div id="category-filters" class="flex bg-slate-200 p-1 rounded-2xl shadow-inner overflow-x-auto no-scrollbar">
+                <button onclick="filterItems('전체', this)" class="filter-btn active-filter whitespace-nowrap px-10 py-3.5 rounded-xl text-sm font-black transition-all">전체</button>
             </div>
         </div>
         <div id="product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-10 text-center"></div>
@@ -56,11 +53,10 @@
     </footer>
 
     <script>
-        // 난독화된 시트 ID 부분 적용
+        // 난독화된 시트 ID 유지
         function _0x2c0d(){const _0xf3d8ac=['352809eEqxfl','3717350Djoyuz','597TiifWw','2726ulDhfx','4404150bUVgvd','10YCgTlv','21681531ABBgdM','1lLggHBBBSncQ6aY2X1NVCgRVEvTM9xidhR1Cni8MPew','16EbLmoB','1328943VumOoF','2539632GWaYMi'];_0x2c0d=function(){return _0xf3d8ac;};return _0x2c0d();}const _0x33718e=_0x4d7b;function _0x4d7b(_0x4019fd,_0x25b4e7){_0x4019fd=_0x4019fd-0x165;const _0x2c0d2b=_0x2c0d();let _0x4d7be7=_0x2c0d2b[_0x4019fd];return _0x4d7be7;}(function(_0x4b7caf,_0x45a940){const _0x2eb1a1=_0x4d7b,_0x143e07=_0x4b7caf();while(!![]){try{const _0x1ae0d1=parseInt(_0x2eb1a1(0x169))/0x1*(parseInt(_0x2eb1a1(0x16a))/0x2)+-parseInt(_0x2eb1a1(0x167))/0x3*(-parseInt(_0x2eb1a1(0x16f))/0x4)+parseInt(_0x2eb1a1(0x168))/0x5+parseInt(_0x2eb1a1(0x16b))/0x6+-parseInt(_0x2eb1a1(0x165))/0x7+parseInt(_0x2eb1a1(0x166))/0x8+parseInt(_0x2eb1a1(0x16d))/0x9*(-parseInt(_0x2eb1a1(0x16c))/0xa);if(_0x1ae0d1===_0x45a940)break;else _0x143e07['push'](_0x143e07['shift']());}catch(_0x404aca){_0x143e07['push'](_0x143e07['shift']());}}}(_0x2c0d,0x753a4));
         const SHEET_ID=_0x33718e(0x16e);
 
-        // 보안 기능 및 핵심 로직
         document.addEventListener('contextmenu', e => e.preventDefault());
         document.onkeydown = e => { if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && e.keyCode == 73) || (e.ctrlKey && e.keyCode == 85)) return false; };
 
@@ -69,17 +65,20 @@
 
         let allProducts = [];
         let currentCategory = '전체';
+
         function getPlatform(link) {
             const l = link.toLowerCase();
             if (l.includes('coupang.com')) return { name: 'COUPANG', class: 'bg-coupang' };
             if (l.includes('naver.com') || l.includes('smartstore') || l.includes('naver.me')) return { name: 'NAVER', class: 'bg-naver' };
             return { name: 'ITEM', class: 'bg-etc' };
         }
+
         async function fetchSheetData() {
             try {
                 const response = await fetch(url);
                 const data = await response.text();
                 const rows = data.split('\n').slice(1);
+                
                 allProducts = rows.map(row => {
                     const cols = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
                     return {
@@ -89,11 +88,33 @@
                         img: cols[3]?.replace(/"/g, '').trim()
                     };
                 }).filter(p => p.name);
+
+                // --- 카테고리 자동 생성 추가 ---
+                generateCategoryButtons();
+                // --------------------------
+
                 displayProducts(allProducts);
             } catch (e) {
                 document.getElementById('product-grid').innerHTML = '<p class="col-span-full py-20 text-slate-400 font-bold tracking-tight">리스트를 업데이트 중입니다...</p>';
             }
         }
+
+        // 카테고리를 A열 데이터에서 추출하여 버튼으로 만드는 함수
+        function generateCategoryButtons() {
+            const filterContainer = document.getElementById('category-filters');
+            
+            // "전체" 버튼은 유지하고 나머지 중복 제거된 카테고리 추출
+            const categories = [...new Set(allProducts.map(p => p.category))].filter(c => c && c !== "");
+            
+            categories.forEach(cat => {
+                const btn = document.createElement('button');
+                btn.innerText = cat;
+                btn.className = "filter-btn whitespace-nowrap px-10 py-3.5 rounded-xl text-sm font-bold text-slate-600 transition-all";
+                btn.onclick = function() { filterItems(cat, this); };
+                filterContainer.appendChild(btn);
+            });
+        }
+
         function displayProducts(data) {
             const grid = document.getElementById('product-grid');
             grid.innerHTML = data.map(p => {
@@ -113,16 +134,33 @@
                 `;
             }).join('');
         }
+
         function handleSearch() {
             const query = document.getElementById('searchInput').value.toLowerCase();
             const filtered = allProducts.filter(p => p.name.toLowerCase().includes(query) && (currentCategory === '전체' || p.category === currentCategory));
             displayProducts(filtered);
         }
-        function filterItems(cat) {
+
+        // 카테고리 클릭 처리 (버튼 활성화 스타일 포함)
+        function filterItems(cat, btnElement) {
             currentCategory = cat;
-            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.toggle('active-filter', btn.innerText === cat));
+            
+            // 기존 active 스타일 제거 및 새로운 active 스타일 추가
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active-filter', 'text-sm', 'font-black');
+                btn.classList.add('text-slate-600', 'font-bold');
+            });
+            
+            // 클릭된 버튼 스타일 변경 (전체 버튼 클릭 대응 포함)
+            const targetBtn = btnElement || Array.from(document.querySelectorAll('.filter-btn')).find(b => b.innerText === cat);
+            if (targetBtn) {
+                targetBtn.classList.add('active-filter', 'font-black');
+                targetBtn.classList.remove('text-slate-600', 'font-bold');
+            }
+            
             handleSearch();
         }
+
         fetchSheetData();
     </script>
 </body>
