@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pick & Share | 추천 리스트</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-33.33%); } }
+        .animate-marquee { display: flex; width: max-content; animation: marquee 35s linear infinite; }
+        .animate-marquee:hover { animation-play-state: paused; }
+        .product-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 1.5rem; overflow: hidden; background: white; }
+        .product-card:hover { transform: translateY(-8px); box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.15); }
+        .active-filter { background-color: #000 !important; color: #fff !important; }
+        .platform-badge { position: absolute; top: 12px; right: 12px; z-index: 20; padding: 4px 10px; border-radius: 8px; font-weight: 800; font-size: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.15); }
+        .bg-coupang { background-color: #ef4444; color: white; } 
+        .bg-naver { background-color: #22c55e; color: white; }   
+        .bg-etc { background-color: #64748b; color: white; }     
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body class="bg-[#f8fafc] text-slate-900 overflow-x-hidden font-sans">
+    <div class="fixed top-0 left-0 w-full z-[100] bg-zinc-900 border-b border-zinc-800 py-3.5 overflow-hidden shadow-2xl">
+        <div class="animate-marquee flex items-center">
+            <span class="text-[11px] md:text-xs text-zinc-100 font-bold px-10">
+                📢 이 포스팅은 쿠팡 파트너스 및 네이버 쇼핑 커넥트 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다. &nbsp;&nbsp;&nbsp;&nbsp;
+            </span>
+            <span class="text-[11px] md:text-xs text-zinc-100 font-bold px-10">
+                📢 하단 링크를 통해 구매하시면 쿠팡, 네이버로부터 일정액의 수수료를 제공받습니다. &nbsp;&nbsp;&nbsp;&nbsp;
+            </span>
+            <span class="text-[11px] md:text-xs text-zinc-100 font-bold px-10">
+                📢 이 포스팅은 쿠팡 파트너스 및 네이버 쇼핑 커넥트 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다. &nbsp;&nbsp;&nbsp;&nbsp;
+            </span>
+        </div>
+    </div>
+    <div class="h-[46px]"></div>
+    <header class="bg-white py-16 border-b border-slate-100 shadow-sm">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-5xl font-black text-slate-900 tracking-tighter mb-4 uppercase">Pick & Share</h1>
+            <p class="text-slate-500 text-sm md:text-base font-medium max-w-lg mx-auto leading-relaxed px-4">선별하여 공유하는 추천 리스트입니다.</p>
+        </div>
+    </header>
+    <main class="container mx-auto px-4 py-12 max-w-6xl">
+        <div class="flex flex-col lg:flex-row gap-6 mb-16">
+            <input type="text" id="searchInput" onkeyup="handleSearch()" placeholder="상품 검색..." class="flex-1 px-6 py-4.5 rounded-2xl border-2 border-slate-100 focus:border-slate-900 outline-none shadow-sm text-base">
+            <div class="flex bg-slate-200 p-1 rounded-2xl shadow-inner overflow-x-auto no-scrollbar">
+                <button onclick="filterItems('전체')" class="filter-btn active-filter whitespace-nowrap px-10 py-3.5 rounded-xl text-sm font-black transition-all">전체</button>
+                <button onclick="filterItems('공통')" class="filter-btn whitespace-nowrap px-10 py-3.5 rounded-xl text-sm font-bold text-slate-600 transition-all">공통</button>
+                <button onclick="filterItems('여름')" class="filter-btn whitespace-nowrap px-10 py-3.5 rounded-xl text-sm font-bold text-slate-600 transition-all">여름</button>
+                <button onclick="filterItems('겨울')" class="filter-btn whitespace-nowrap px-10 py-3.5 rounded-xl text-sm font-bold text-slate-600 transition-all">겨울</button>
+            </div>
+        </div>
+        <div id="product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-10 text-center"></div>
+    </main>
+    <footer class="bg-white py-14 border-t border-slate-100 mt-20 text-center">
+        <div class="max-w-2xl mx-auto px-6 mb-6">
+            <p class="text-slate-500 text-[11px] md:text-xs leading-relaxed font-medium">
+                ※ 이 포스팅은 쿠팡 파트너스 및 네이버 쇼핑 커넥트 활동의 일환으로 일정액의 수수료를 제공받습니다.<br>
+                하단 링크로 구매 시 쿠팡, 네이버로부터 수수료를 제공받습니다.
+            </p>
+        </div>
+        <p class="text-slate-300 text-[10px] font-black tracking-widest uppercase">© 2026 Pick & Share. All rights reserved.</p>
+    </footer>
+    <script>
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.onkeydown = e => { if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && e.keyCode == 73) || (e.ctrlKey && e.keyCode == 85)) return false; };
+
+        // 사용자 시트 ID 적용 완료
+        const SHEET_ID = '1lLggHBBBSncQ6aY2X1NVCgRVEvTM9xidhR1Cni8MPew'; 
+        const SHEET_NAME = '시트1'; 
+        const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${SHEET_NAME}`;
+
+        let allProducts = [];
+        let currentCategory = '전체';
+        function getPlatform(link) {
+            const l = link.toLowerCase();
+            if (l.includes('coupang.com')) return { name: 'COUPANG', class: 'bg-coupang' };
+            if (l.includes('naver.com') || l.includes('smartstore')) return { name: 'NAVER', class: 'bg-naver' };
+            return { name: 'ITEM', class: 'bg-etc' };
+        }
+        async function fetchSheetData() {
+            try {
+                const response = await fetch(url);
+                const data = await response.text();
+                const rows = data.split('\n').slice(1);
+                allProducts = rows.map(row => {
+                    const cols = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+                    return {
+                        category: cols[0]?.replace(/"/g, '').trim(),
+                        name: cols[1]?.replace(/"/g, '').trim(),
+                        link: cols[2]?.replace(/"/g, '').trim(),
+                        img: cols[3]?.replace(/"/g, '').trim()
+                    };
+                }).filter(p => p.name);
+                displayProducts(allProducts);
+            } catch (e) {
+                document.getElementById('product-grid').innerHTML = '<p class="col-span-full py-20 text-slate-400">시트 "웹에 게시" 및 "공유 권한"을 확인해주세요.</p>';
+            }
+        }
+        function displayProducts(data) {
+            const grid = document.getElementById('product-grid');
+            grid.innerHTML = data.map(p => {
+                const platform = getPlatform(p.link);
+                return `
+                    <div class="product-card border border-slate-50 flex flex-col relative group">
+                        <span class="platform-badge ${platform.class}">${platform.name}</span>
+                        <div class="overflow-hidden aspect-square">
+                            <img src="${p.img}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" onerror="this.src='https://via.placeholder.com/400?text=Pick+&Share'">
+                        </div>
+                        <div class="p-6 flex-1 flex flex-col items-center">
+                            <span class="text-[10px] font-black text-slate-300 mb-2 tracking-widest uppercase">${p.category}</span>
+                            <h2 class="text-[14px] md:text-base font-bold text-slate-800 mb-6 line-clamp-2 leading-snug">${p.name}</h2>
+                            <a href="${p.link}" target="_blank" class="mt-auto block w-full bg-slate-900 text-white text-center py-3.5 rounded-2xl text-xs font-black tracking-widest hover:bg-blue-600 transition-all uppercase">Check Item</a>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        function handleSearch() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = allProducts.filter(p => p.name.toLowerCase().includes(query) && (currentCategory === '전체' || p.category === currentCategory));
+            displayProducts(filtered);
+        }
+        function filterItems(cat) {
+            currentCategory = cat;
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.toggle('active-filter', btn.innerText === cat);
+            });
+            handleSearch();
+        }
+        fetchSheetData();
+    </script>
+</body>
+</html>
