@@ -6,12 +6,10 @@
     <title>Pick & Share | 추천 리스트</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* 1. 기본 애니메이션 */
         @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-33.33%); } }
         .animate-marquee { display: flex; width: max-content; animation: marquee 35s linear infinite; }
         .animate-marquee:hover { animation-play-state: paused; }
 
-        /* 2. 카드 디자인 업그레이드 */
         .product-card { 
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
             border-radius: 1.5rem; 
@@ -25,7 +23,15 @@
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15); 
         }
 
-        /* 3. 플랫폼 배지 스타일 */
+        /* 썸네일 영역 공통 애니메이션 설정 */
+        .thumbnail-container img, .no-image-box {
+            transition: transform 1s cubic-bezier(0, 0, 0.2, 1);
+        }
+        /* 카드가 호버될 때 이미지와 텍스트 박스 모두 확대 */
+        .product-card:hover img, .product-card:hover .no-image-box {
+            transform: scale(1.1);
+        }
+
         .platform-badge { 
             position: absolute; top: 12px; right: 12px; z-index: 20; 
             padding: 4px 12px; border-radius: 10px; font-weight: 800; font-size: 10px; 
@@ -36,7 +42,6 @@
         .bg-naver { background: linear-gradient(135deg, #00b09b, #96c93d); color: white; }   
         .bg-etc { background: linear-gradient(135deg, #30e8bf, #ff8235); color: white; }
 
-        /* 4. 이미지 대체 박스 디자인 */
         .no-image-box {
             display: none; width: 100%; height: 100%;
             background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
@@ -49,7 +54,6 @@
             overflow: hidden; word-break: break-all;
         }
 
-        /* 5. 드롭다운 세련되게 수정 */
         #dropdown-menu { 
             display: none; max-height: 350px; overflow-y: auto; z-index: 200; 
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
@@ -61,7 +65,6 @@
         .dropdown-item { transition: all 0.2s; }
         .dropdown-item:hover { background-color: #f8fafc; padding-left: 1.75rem; color: #000; }
 
-        /* 6. 버튼 광택 효과 (Buy Button) */
         .check-btn {
             position: relative; overflow: hidden;
             transition: all 0.3s;
@@ -80,7 +83,6 @@
     <div class="fixed top-0 left-0 w-full z-[100] bg-zinc-900 border-b border-zinc-800 py-3.5 overflow-hidden shadow-2xl">
         <div class="animate-marquee flex items-center">
             <span class="text-[11px] md:text-xs text-zinc-100 font-bold px-10">📢 이 포스팅은 쿠팡 파트너스 및 네이버 쇼핑 커넥트 활동의 일환으로 수수료를 제공받습니다. &nbsp;&nbsp;&nbsp;&nbsp;</span>
-            <span class="text-[11px] md:text-xs text-zinc-100 font-bold px-10">📢 하단 링크를 통해 구매하시면 일정액의 수수료를 제공받습니다. &nbsp;&nbsp;&nbsp;&nbsp;</span>
         </div>
     </div>
     
@@ -125,7 +127,6 @@
     </footer>
 
     <script>
-        // 시트 ID 로직
         function _0x2c0d(){const _0xf3d8ac=['352809eEqxfl','3717350Djoyuz','597TiifWw','2726ulDhfx','4404150bUVgvd','10YCgTlv','21681531ABBgdM','1lLggHBBBSncQ6aY2X1NVCgRVEvTM9xidhR1Cni8MPew','16EbLmoB','1328943VumOoF','2539632GWaYMi'];_0x2c0d=function(){return _0xf3d8ac;};return _0x2c0d();}const _0x33718e=_0x4d7b;function _0x4d7b(_0x4019fd,_0x25b4e7){_0x4019fd=_0x4019fd-0x165;const _0x2c0d2b=_0x2c0d();let _0x4d7be7=_0x2c0d2b[_0x4019fd];return _0x4d7be7;}(function(_0x4b7caf,_0x45a940){const _0x2eb1a1=_0x4d7b,_0x143e07=_0x4b7caf();while(!![]){try{const _0x1ae0d1=parseInt(_0x2eb1a1(0x169))/0x1*(parseInt(_0x2eb1a1(0x16a))/0x2)+-parseInt(_0x2eb1a1(0x167))/0x3*(-parseInt(_0x2eb1a1(0x16f))/0x4)+parseInt(_0x2eb1a1(0x168))/0x5+parseInt(_0x2eb1a1(0x16b))/0x6+-parseInt(_0x2eb1a1(0x165))/0x7+parseInt(_0x2eb1a1(0x166))/0x8+parseInt(_0x2eb1a1(0x16d))/0x9*(-parseInt(_0x2eb1a1(0x16c))/0xa);if(_0x1ae0d1===_0x45a940)break;else _0x143e07['push'](_0x143e07['shift']());}catch(_0x404aca){_0x143e07['push'](_0x143e07['shift']());}}}(_0x2c0d,0x753a4));
         const SHEET_ID=_0x33718e(0x16e);
         const SHEET_NAME = '시트1'; 
@@ -204,13 +205,13 @@
             const grid = document.getElementById('product-grid');
             grid.innerHTML = data.map(p => {
                 const platform = getPlatform(p.link);
-                const imgTag = p.img ? `<img src="${p.img}" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" onerror="handleImageError(this)">` : '';
+                const imgTag = p.img ? `<img src="${p.img}" class="w-full h-full object-cover transition-all" onerror="handleImageError(this)">` : '';
                 const displayNoImage = !p.img ? 'flex' : 'none';
 
                 return `
                     <div class="product-card flex flex-col relative group">
                         <span class="platform-badge ${platform.class}">${platform.name}</span>
-                        <div class="overflow-hidden aspect-square flex items-center justify-center bg-slate-50 relative">
+                        <div class="thumbnail-container overflow-hidden aspect-square flex items-center justify-center bg-slate-50 relative">
                             ${imgTag}
                             <div class="no-image-box" style="display: ${displayNoImage}">
                                 <span class="text-[9px] mb-2 font-black opacity-30 uppercase tracking-[0.2em]">Pick & Share</span>
