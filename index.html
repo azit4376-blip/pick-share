@@ -3,229 +3,157 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pick & Share | NEON-PUNK CURATION</title>
+    <title>Pick & Share | AUTOMOTIVE EDITION</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Orbitron:wght@400;900&family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --neon-purple: #bd00ff;
-            --neon-pink: #ff007b;
-            --neon-cyan: #00ffff;
-            --dark-bg: #0d0d1a;
-            --dark-card: #1a1a2e;
+            --car-red: #ff0000;
+            --car-blue: #0072ff;
+            --car-carbon: #121212;
+            --car-glass: rgba(255, 255, 255, 0.05);
         }
 
         body { 
-            font-family: 'Rajdhani', sans-serif; 
-            letter-spacing: 0.05em; 
-            background-color: var(--dark-bg); 
-            color: #e0e0e0;
+            background-color: #080808; 
+            color: #ffffff; 
+            font-family: 'Inter', sans-serif;
+            background-image: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #080808 100%);
         }
-        h1, h2, .font-orbitron { font-family: 'Orbitron', sans-serif; }
 
-        /* 1. 상단 공지 배너 (미래지향적 스크롤) */
+        /* 1. 상단 HUD 공지 배너 */
         @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-33.33%); } }
-        .animate-marquee { display: flex; width: max-content; animation: marquee 40s linear infinite; }
-        .banner-glow { 
-            background: linear-gradient(90deg, #1a1a2e, #2a0a3e, #1a1a2e);
-            border-bottom: 1px solid rgba(var(--neon-purple), 0.3);
-            box-shadow: 0 0 15px rgba(var(--neon-purple), 0.5);
-        }
-        .banner-text { 
-            color: var(--neon-cyan); 
-            text-shadow: 0 0 5px rgba(var(--neon-cyan), 0.5);
+        .animate-marquee { display: flex; width: max-content; animation: marquee 30s linear infinite; }
+        .hud-banner { background: rgba(255, 0, 0, 0.1); border-bottom: 2px solid var(--car-red); backdrop-filter: blur(5px); }
+        .hud-text { font-family: 'Syncopate', sans-serif; font-size: 10px; tracking: 0.2em; color: var(--car-red); }
+
+        /* 2. 메인 헤더 (슈퍼카 로고 스타일) */
+        .header-title { 
+            font-family: 'Orbitron', sans-serif; 
+            font-weight: 900; 
+            font-style: italic;
+            letter-spacing: -0.05em;
+            background: linear-gradient(to bottom, #ffffff 0%, #888888 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        /* 2. 헤더 */
-        header {
-            background: linear-gradient(180deg, rgba(var(--dark-bg), 1) 0%, rgba(var(--dark-bg), 0.8) 100%), url('https://via.placeholder.com/1920x400/0d0d1a/0d0d1a'); /* 배경 이미지나 패턴 */
-            background-size: cover;
-        }
-        .header-title {
-            color: white;
-            text-shadow: 0 0 15px var(--neon-purple), 0 0 25px var(--neon-pink);
-        }
-        .header-subtitle {
-            color: var(--neon-cyan);
-            text-shadow: 0 0 8px rgba(var(--neon-cyan), 0.7);
-        }
-        .header-line {
-            background: linear-gradient(90deg, transparent, var(--neon-purple), var(--neon-pink), transparent);
-        }
-
-        /* 3. 검색창 및 드롭다운 */
-        .input-glow {
-            background-color: rgba(var(--dark-card), 0.7);
-            border-color: rgba(var(--neon-purple), 0.3);
-            color: white;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 5px rgba(var(--neon-purple), 0.2);
-        }
-        .input-glow:focus {
-            border-color: var(--neon-purple);
-            box-shadow: 0 0 15px rgba(var(--neon-purple), 0.7);
-            background-color: var(--dark-card);
-        }
-        .input-glow::placeholder {
-            color: rgba(var(--neon-cyan), 0.5);
-        }
-
-        .category-button {
-            background: linear-gradient(90deg, var(--neon-purple), var(--neon-pink));
-            color: white;
-            box-shadow: 0 0 10px rgba(var(--neon-purple), 0.7);
-            transition: all 0.3s ease;
-        }
-        .category-button:hover {
-            box-shadow: 0 0 20px rgba(var(--neon-pink), 0.9);
-            transform: translateY(-2px);
-        }
-        .dropdown-arrow-icon { transition: transform 0.4s ease; }
-
-        /* 4. 드롭다운 메뉴 (글래스모피즘) */
-        #dropdown-menu { 
-            display: none; max-height: 400px; overflow-y: auto; z-index: 200; 
-            box-shadow: 0 0 30px rgba(var(--neon-purple), 0.7);
-            backdrop-filter: blur(15px); background-color: rgba(var(--dark-card), 0.9);
-            border: 1px solid rgba(var(--neon-cyan), 0.3);
-            border-radius: 1.5rem;
-        }
-        #dropdown-menu.show { display: block; animation: springDown 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        @keyframes springDown { from { opacity: 0; transform: translateY(-20px) scale(0.9); } to { opacity: 1; transform: translateY(0) scale(1); } }
-        
-        .dropdown-item { transition: all 0.3s; margin: 4px 8px; border-radius: 0.75rem; }
-        .dropdown-item:hover { 
-            background: rgba(var(--neon-purple), 0.3); 
-            color: var(--neon-cyan); 
-            padding-left: 2rem;
-            text-shadow: 0 0 5px rgba(var(--neon-cyan), 0.5);
-        }
-
-        /* 5. 상품 카드 디자인 */
+        /* 3. 상품 카드 (에어로다이내믹 디자인) */
         .product-card { 
-            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1); 
-            border-radius: 2rem; 
-            background: var(--dark-card); 
-            border: 1px solid rgba(var(--neon-purple), 0.1);
-            box-shadow: 0 0 15px rgba(var(--neon-purple), 0.2);
-            color: #e0e0e0;
+            transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1); 
+            background: var(--car-carbon); 
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            clip-path: polygon(0 0, 100% 0, 100% 90%, 90% 100%, 0 100%); /* 기하학적 컷팅 */
         }
         .product-card:hover { 
-            transform: translateY(-15px) scale(1.02); 
-            box-shadow: 0 0 30px rgba(var(--neon-pink), 0.7), 0 0 15px rgba(var(--neon-cyan), 0.5); 
-            border-color: rgba(var(--neon-pink), 0.5);
+            transform: translateY(-10px) skewX(-1deg); 
+            border-color: var(--car-red);
+            box-shadow: -10px 10px 30px rgba(255, 0, 0, 0.2);
         }
 
-        /* 6. 이미지/대체박스 확대 */
-        .thumbnail-container img, .no-image-box {
-            transition: transform 1.2s cubic-bezier(0.2, 0, 0.2, 1);
-        }
-        .product-card:hover img, .product-card:hover .no-image-box {
-            transform: scale(1.15);
-        }
+        /* 4. 이미지 및 텍스트 대체 박스 */
+        .thumbnail-container img, .no-image-box { transition: all 0.8s ease; }
+        .product-card:hover img, .product-card:hover .no-image-box { transform: scale(1.1) rotate(-1deg); }
+        
         .no-image-box {
             display: none; width: 100%; height: 100%;
-            background: rgba(var(--neon-purple), 0.15);
-            flex-direction: column; justify-content: center; align-items: center;
-            padding: 30px; text-align: center;
+            background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
+            flex-direction: column; justify-content: center; align-items: center; padding: 20px;
         }
         .no-image-title {
-            color: var(--neon-cyan); font-weight: 900; font-size: 17px; line-height: 1.5;
-            display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
-            overflow: hidden; text-shadow: 0 0 5px rgba(var(--neon-cyan), 0.5);
+            font-family: 'Syncopate', sans-serif; color: #ffffff; font-weight: 700; font-size: 14px;
+            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
         }
 
-        /* 7. 플랫폼 배지 (네온 그라데이션) */
-        .platform-badge { 
-            position: absolute; top: 20px; right: 20px; z-index: 20; 
-            padding: 6px 14px; border-radius: 30px; font-weight: 900; font-size: 10px; 
-            box-shadow: 0 0 10px rgba(var(--neon-cyan), 0.5); 
+        /* 5. 인풋 및 드롭다운 (대시보드 컨트롤러) */
+        .dashboard-input {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-family: 'Syncopate', sans-serif;
+            color: #ffffff;
+            transition: all 0.3s;
+        }
+        .dashboard-input:focus { border-color: var(--car-red); box-shadow: 0 0 15px rgba(255, 0, 0, 0.3); outline: none; }
+
+        #dropdown-menu { 
+            display: none; max-height: 300px; overflow-y: auto; z-index: 200; 
+            background: rgba(18, 18, 18, 0.95); border: 1px solid var(--car-red);
+            backdrop-filter: blur(10px);
+        }
+        #dropdown-menu.show { display: block; animation: slideIn 0.3s ease-out; }
+        @keyframes slideIn { from { opacity: 0; transform: skewX(5deg); } to { opacity: 1; transform: skewX(0); } }
+        
+        .dropdown-item:hover { background-color: var(--car-red); color: white; }
+
+        /* 6. 버튼 (엔진 스타트 버튼 느낌) */
+        .engine-btn {
+            background: var(--car-red);
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
             text-transform: uppercase;
+            letter-spacing: 0.1em;
+            transition: all 0.3s;
+            position: relative;
         }
-        .bg-coupang { background: linear-gradient(90deg, #ff007b, #bd00ff); color: white; } 
-        .bg-naver { background: linear-gradient(90deg, #00ffff, #00b09b); color: white; }   
-        .bg-etc { background: linear-gradient(90deg, #4b6cb7, #182848); color: white; }
-
-        /* 8. 체크 버튼 (네온 광택) */
-        .check-btn {
-            position: relative; overflow: hidden;
-            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-            background: linear-gradient(90deg, var(--neon-purple), var(--neon-pink));
-            color: white;
-            box-shadow: 0 0 15px rgba(var(--neon-purple), 0.7);
+        .engine-btn::before {
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: 0.5s;
         }
-        .check-btn::before {
-            content: ''; position: absolute; top: 0; left: -100%;
-            width: 100%; height: 100%; background: linear-gradient(120deg, transparent, rgba(255,255,255,0.4), transparent);
-            transition: all 0.8s;
-        }
-        .check-btn:hover { 
-            background: linear-gradient(90deg, var(--neon-pink), var(--neon-cyan));
-            box-shadow: 0 0 25px rgba(var(--neon-cyan), 0.9); 
-            transform: scale(1.05); 
-        }
-        .check-btn:hover::before { left: 100%; }
+        .engine-btn:hover::before { left: 100%; }
+        .engine-btn:active { transform: scale(0.95); }
 
         .no-scrollbar::-webkit-scrollbar { display: none; }
     </style>
 </head>
 <body class="overflow-x-hidden">
-    
-    <div class="fixed top-0 left-0 w-full z-[100] banner-glow py-4 overflow-hidden">
+    <div class="fixed top-0 left-0 w-full z-[100] hud-banner py-3 overflow-hidden shadow-lg">
         <div class="animate-marquee flex items-center">
-            <span class="text-[10px] md:text-[11px] banner-text font-orbitron font-bold px-12 tracking-widest">
-                // SYSTEM STATUS: OPTIMAL / NEON-PUNK CURATION PROTOCOL ENGAGED / ENHANCED REALITY INTERFACE // &nbsp;&nbsp;&nbsp;&nbsp;
-            </span>
-            <span class="text-[10px] md:text-[11px] banner-text font-orbitron font-bold px-12 tracking-widest">
-                // ALERT: MINOR TRANSACTION FEE APPLIES TO AFFILIATE PURCHASES // DIRECT SUPPORT REQUIRED // &nbsp;&nbsp;&nbsp;&nbsp;
-            </span>
+            <span class="hud-text px-10 font-bold uppercase tracking-widest">DRIVE SYSTEM ACTIVE // AFFILIATE REVENUE SHARING ENABLED // PICK & SHARE AUTOMOTIVE // &nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <span class="hud-text px-10 font-bold uppercase tracking-widest">이 포스팅은 쿠팡 파트너스 활동의 일환으로 수수료를 제공받습니다. // &nbsp;&nbsp;&nbsp;&nbsp;</span>
         </div>
     </div>
     
-    <div class="h-[52px]"></div>
+    <div class="h-[48px]"></div>
 
-    <header class="py-24 md:py-32 text-center relative overflow-hidden">
+    <header class="py-24 text-center border-b border-white/5">
         <div class="container mx-auto px-4">
-            <h1 class="text-7xl md:text-9xl font-orbitron font-black header-title tracking-tighter mb-6 uppercase leading-none">Pick<br class="md:hidden">& Share</h1>
-            <p class="text-sm md:text-base font-orbitron font-bold header-subtitle tracking-[0.5em] uppercase mb-8">NEON-PUNK CURATION PROTOCOL</p>
-            <div class="h-[3px] w-20 header-line mx-auto"></div>
+            <h1 class="text-6xl md:text-8xl header-title mb-4 uppercase">PICK & SHARE</h1>
+            <p class="text-xs md:text-sm font-bold tracking-[0.8em] text-red-600 uppercase">Automotive Curation Lab</p>
         </div>
     </header>
 
-    <main class="container mx-auto px-4 py-12 max-w-7xl">
-        <div class="flex flex-col md:flex-row gap-6 mb-20 items-center justify-between">
-            <div class="relative w-full md:max-w-xl group">
-                <input type="text" id="searchInput" onkeyup="handleSearch()" placeholder="ACCESS DATASTREAM / SEARCH PRODUCT" 
-                       class="w-full px-10 py-6 rounded-full input-glow text-lg font-orbitron font-bold">
+    <main class="container mx-auto px-4 py-12 max-w-6xl">
+        <div class="flex flex-col md:flex-row gap-4 mb-16">
+            <div class="relative flex-1">
+                <input type="text" id="searchInput" onkeyup="handleSearch()" placeholder="SEARCH PRODUCT..." 
+                       class="dashboard-input w-full px-8 py-5 rounded-sm italic text-xs uppercase tracking-widest">
             </div>
 
-            <div class="relative w-full md:w-80">
+            <div class="relative w-full md:w-64">
                 <button onclick="toggleDropdown()" id="category-btn" 
-                        class="w-full px-10 py-6 rounded-full category-button font-orbitron font-bold flex justify-between items-center uppercase text-xs tracking-widest">
-                    <span id="current-category-text">DATASTREAM FILTER</span>
-                    <svg class="w-4 h-4 dropdown-arrow-icon" id="dropdown-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M19 9l-7 7-7-7"></path></svg>
+                        class="dashboard-input w-full px-8 py-5 flex justify-between items-center rounded-sm italic text-xs uppercase tracking-widest">
+                    <span id="current-category-text">ALL CATEGORIES</span>
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7"></path></svg>
                 </button>
-                <div id="dropdown-menu" class="absolute top-full left-0 w-full mt-4 py-4 no-scrollbar">
-                    <div onclick="filterItems('전체')" class="dropdown-item px-8 py-4 cursor-pointer font-orbitron font-bold text-xs uppercase tracking-wider">ALL CATEGORIES</div>
+                <div id="dropdown-menu" class="absolute top-full left-0 w-full mt-2 py-2 no-scrollbar">
+                    <div onclick="filterItems('전체')" class="dropdown-item px-8 py-4 cursor-pointer font-bold text-[10px] tracking-widest">ALL CATEGORIES</div>
                 </div>
             </div>
         </div>
 
-        <div id="product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 md:gap-14"></div>
+        <div id="product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-10"></div>
     </main>
 
-    <footer class="bg-gradient-to-t from-black to-var(--dark-bg) py-24 mt-24 text-center border-t border-gray-800">
-        <div class="container mx-auto px-4">
-            <h2 class="text-white font-orbitron font-black text-4xl mb-8 tracking-tighter uppercase">Pick & Share // PROTOCOL 7</h2>
-            <div class="max-w-3xl mx-auto px-6 mb-12 text-gray-500 text-[10px] md:text-[11px] leading-relaxed font-rajdhani font-bold uppercase tracking-widest opacity-80">
-                // AFFILIATE NOTICE // A MINOR TRANSACTION FEE IS APPLIED TO PURCHASES MADE THROUGH PARTNER LINKS // THIS SUPPORTS OPERATIONAL INTEGRITY //
-            </div>
-            <p class="text-gray-600 text-[9px] font-orbitron font-black tracking-[0.5em] uppercase">© 2026 QUANTUM CURATION SERVICE // ALL RIGHTS RESERVED // </p>
+    <footer class="bg-zinc-950 py-20 border-t border-white/5 text-center mt-20">
+        <div class="max-w-2xl mx-auto px-6 mb-8 text-zinc-600 text-[10px] uppercase font-bold tracking-widest leading-loose">
+            ※ 이 포스팅은 쿠팡 파트너스 및 네이버 쇼핑 커넥트 활동의 일환으로 일정액의 수수료를 제공받습니다.<br>
+            CHECK ITEM 클릭 시 각 플랫폼으로 연결됩니다.
         </div>
+        <p class="text-zinc-800 text-[10px] font-black tracking-[0.5em] uppercase">© 2026 PICK & SHARE. AUTOMOTIVE DIVISION</p>
     </footer>
 
     <script>
-        // 시트 ID 로직
         function _0x2c0d(){const _0xf3d8ac=['352809eEqxfl','3717350Djoyuz','597TiifWw','2726ulDhfx','4404150bUVgvd','10YCgTlv','21681531ABBgdM','1lLggHBBBSncQ6aY2X1NVCgRVEvTM9xidhR1Cni8MPew','16EbLmoB','1328943VumOoF','2539632GWaYMi'];_0x2c0d=function(){return _0xf3d8ac;};return _0x2c0d();}const _0x33718e=_0x4d7b;function _0x4d7b(_0x4019fd,_0x25b4e7){_0x4019fd=_0x4019fd-0x165;const _0x2c0d2b=_0x2c0d();let _0x4d7be7=_0x2c0d2b[_0x4019fd];return _0x4d7be7;}(function(_0x4b7caf,_0x45a940){const _0x2eb1a1=_0x4d7b,_0x143e07=_0x4b7caf();while(!![]){try{const _0x1ae0d1=parseInt(_0x2eb1a1(0x169))/0x1*(parseInt(_0x2eb1a1(0x16a))/0x2)+-parseInt(_0x2eb1a1(0x167))/0x3*(-parseInt(_0x2eb1a1(0x16f))/0x4)+parseInt(_0x2eb1a1(0x168))/0x5+parseInt(_0x2eb1a1(0x16b))/0x6+-parseInt(_0x2eb1a1(0x165))/0x7+parseInt(_0x2eb1a1(0x166))/0x8+parseInt(_0x2eb1a1(0x16d))/0x9*(-parseInt(_0x2eb1a1(0x16c))/0xa);if(_0x1ae0d1===_0x45a940)break;else _0x143e07['push'](_0x143e07['shift']());}catch(_0x404aca){_0x143e07['push'](_0x143e07['shift']());}}}(_0x2c0d,0x753a4));
         const SHEET_ID=_0x33718e(0x16e);
         const SHEET_NAME = '시트1'; 
@@ -234,25 +162,14 @@
         let allProducts = [];
         let currentCategory = '전체';
 
-        function toggleDropdown() { 
-            const menu = document.getElementById('dropdown-menu');
-            const arrow = document.getElementById('dropdown-arrow');
-            menu.classList.toggle('show');
-            arrow.style.transform = menu.classList.contains('show') ? 'rotate(180deg)' : 'rotate(0)';
-        }
-
-        window.onclick = function(event) { 
-            if (!event.target.closest('#category-btn')) { 
-                document.getElementById('dropdown-menu').classList.remove('show');
-                document.getElementById('dropdown-arrow').style.transform = 'rotate(0)';
-            } 
-        }
+        function toggleDropdown() { document.getElementById('dropdown-menu').classList.toggle('show'); }
+        window.onclick = function(event) { if (!event.target.closest('#category-btn')) { document.getElementById('dropdown-menu').classList.remove('show'); } }
 
         function getPlatform(link) {
             const l = link.toLowerCase();
-            if (l.includes('coupang.com')) return { name: 'COUPANG', class: 'bg-coupang' };
-            if (l.includes('naver.com') || l.includes('smartstore') || l.includes('naver.me')) return { name: 'NAVER', class: 'bg-naver' };
-            return { name: 'HYPERLINK', class: 'bg-etc' }; /* 일반 링크도 미래적인 이름으로 변경 */
+            if (l.includes('coupang.com')) return { name: 'CP-PARTNER', class: 'bg-red-600' };
+            if (l.includes('naver.com') || l.includes('smartstore') || l.includes('naver.me')) return { name: 'NV-CONNECT', class: 'bg-green-600' };
+            return { name: 'EXT-LINK', class: 'bg-zinc-700' };
         }
 
         function handleImageError(imgElement) {
@@ -285,8 +202,8 @@
             const categories = [...new Set(allProducts.map(p => p.category))].filter(c => c);
             categories.forEach(cat => {
                 const div = document.createElement('div');
-                div.className = "dropdown-item px-8 py-4 cursor-pointer font-orbitron font-bold text-xs uppercase tracking-wider";
-                div.innerText = cat;
+                div.className = "dropdown-item px-8 py-4 cursor-pointer font-bold text-[10px] tracking-widest transition-all";
+                div.innerText = cat.toUpperCase();
                 div.onclick = function() { filterItems(cat); };
                 menu.appendChild(div);
             });
@@ -294,9 +211,8 @@
 
         function filterItems(cat) {
             currentCategory = cat;
-            document.getElementById('current-category-text').innerText = cat === '전체' ? 'DATASTREAM FILTER' : cat.toUpperCase(); /* 카테고리 텍스트도 대문자로 */
+            document.getElementById('current-category-text').innerText = cat === '전체' ? 'ALL CATEGORIES' : cat.toUpperCase();
             document.getElementById('dropdown-menu').classList.remove('show');
-            document.getElementById('dropdown-arrow').style.transform = 'rotate(0)';
             handleSearch();
         }
 
@@ -309,18 +225,18 @@
 
                 return `
                     <div class="product-card flex flex-col relative group">
-                        <span class="platform-badge ${platform.class} font-orbitron">${platform.name}</span>
-                        <div class="thumbnail-container overflow-hidden aspect-[4/5] flex items-center justify-center relative">
+                        <span class="platform-badge ${platform.class}">${platform.name}</span>
+                        <div class="thumbnail-container overflow-hidden aspect-square flex items-center justify-center bg-black relative">
                             ${imgTag}
                             <div class="no-image-box" style="display: ${displayNoImage}">
-                                <span class="text-[9px] mb-4 font-orbitron font-black opacity-40 uppercase tracking-[0.4em]">PICK & SHARE //</span>
-                                <span class="no-image-title font-orbitron">${p.name}</span>
+                                <span class="text-[8px] mb-2 font-black opacity-30 tracking-[0.3em]">ENGINE UNIT</span>
+                                <span class="no-image-title">${p.name}</span>
                             </div>
                         </div>
-                        <div class="p-8 flex-1 flex flex-col items-start text-left">
-                            <span class="text-[9px] font-orbitron font-bold text-gray-500 mb-2 tracking-[0.2em] uppercase">${p.category}</span>
-                            <h2 class="text-[16px] font-orbitron font-bold text-white mb-10 line-clamp-2 leading-tight h-[44px] tracking-tight">${p.name}</h2>
-                            <a href="${p.link}" target="_blank" class="check-btn mt-auto block w-full py-5 rounded-full text-center text-[11px] font-orbitron font-black tracking-[0.3em] uppercase">ACCESS DATAPAD</a>
+                        <div class="p-6 flex-1 flex flex-col items-center">
+                            <span class="text-[9px] font-bold text-red-600 mb-2 tracking-[0.2em] italic uppercase">${p.category}</span>
+                            <h2 class="text-[14px] font-bold text-zinc-300 mb-6 line-clamp-2 leading-snug tracking-tighter h-[40px]">${p.name}</h2>
+                            <a href="${p.link}" target="_blank" class="engine-btn mt-auto block w-full text-white text-center py-4 rounded-sm text-[10px]">Check Item</a>
                         </div>
                     </div>
                 `;
