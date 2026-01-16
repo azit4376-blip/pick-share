@@ -6,19 +6,30 @@
     <title>Pick & Share | 추천 리스트</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* 기존 디자인 유지 */
         @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-33.33%); } }
         .animate-marquee { display: flex; width: max-content; animation: marquee 35s linear infinite; }
-        .animate-marquee:hover { animation-play-state: paused; }
         .product-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 1.5rem; overflow: hidden; background: white; }
         .product-card:hover { transform: translateY(-8px); box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.15); }
         .platform-badge { position: absolute; top: 12px; right: 12px; z-index: 20; padding: 4px 10px; border-radius: 8px; font-weight: 800; font-size: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.15); }
         .bg-coupang { background-color: #ef4444; color: white; } 
         .bg-naver { background-color: #22c55e; color: white; }   
         .bg-etc { background-color: #64748b; color: white; }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        
-        /* 드롭다운 스타일 */
+
+        /* 이미지가 없을 때 보여줄 텍스트 로고 스타일 */
+        .no-image-box {
+            display: none; /* 기본은 숨김 */
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #94a3b8;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
         #dropdown-menu { display: none; max-height: 300px; overflow-y: auto; z-index: 200; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
         #dropdown-menu.show { display: block; animation: fadeIn 0.2s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
@@ -36,8 +47,8 @@
     
     <div class="h-[46px]"></div>
 
-    <header class="bg-white py-16 border-b border-slate-100 shadow-sm">
-        <div class="container mx-auto px-4 text-center">
+    <header class="bg-white py-16 border-b border-slate-100 shadow-sm text-center">
+        <div class="container mx-auto px-4">
             <h1 class="text-4xl md:text-5xl font-black text-slate-900 tracking-tighter mb-4 uppercase">Pick & Share</h1>
             <p class="text-slate-500 text-sm md:text-base font-medium max-w-lg mx-auto leading-relaxed px-4">선별하여 공유하는 추천 리스트입니다.</p>
         </div>
@@ -56,7 +67,6 @@
                     <span id="current-category-text">전체보기</span>
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7"></path></svg>
                 </button>
-                
                 <div id="dropdown-menu" class="absolute top-full left-0 w-full mt-2 bg-white rounded-2xl border border-slate-100 py-2 origin-top no-scrollbar">
                     <div onclick="filterItems('전체')" class="dropdown-item px-6 py-3 cursor-pointer font-bold text-sm text-slate-600">전체보기</div>
                 </div>
@@ -68,37 +78,37 @@
 
     <footer class="bg-white py-14 border-t border-slate-100 mt-20 text-center">
         <div class="max-w-2xl mx-auto px-6 mb-6 text-slate-500 text-[11px] md:text-xs leading-relaxed font-medium">
-            ※ 이 포스팅은 쿠팡 파트너스 및 네이버 쇼핑 커넥트 활동의 일환으로 일정액의 수수료를 제공받습니다.
+            ※ 이 포스팅은 쿠팡 파트너스 및 네이버 쇼핑 커넥트 활동의 일환으로 일정액의 수수료를 제공받습니다.<br>
+            하단 링크로 구매 시 쿠팡, 네이버로부터 수수료를 제공받습니다.
         </div>
         <p class="text-slate-300 text-[10px] font-black tracking-widest uppercase">© 2026 Pick & Share. All rights reserved.</p>
     </footer>
 
     <script>
-        // 난독화된 시트 ID 원래대로 복구
+        // 시트 연동 ID (기존 유지)
         function _0x2c0d(){const _0xf3d8ac=['352809eEqxfl','3717350Djoyuz','597TiifWw','2726ulDhfx','4404150bUVgvd','10YCgTlv','21681531ABBgdM','1lLggHBBBSncQ6aY2X1NVCgRVEvTM9xidhR1Cni8MPew','16EbLmoB','1328943VumOoF','2539632GWaYMi'];_0x2c0d=function(){return _0xf3d8ac;};return _0x2c0d();}const _0x33718e=_0x4d7b;function _0x4d7b(_0x4019fd,_0x25b4e7){_0x4019fd=_0x4019fd-0x165;const _0x2c0d2b=_0x2c0d();let _0x4d7be7=_0x2c0d2b[_0x4019fd];return _0x4d7be7;}(function(_0x4b7caf,_0x45a940){const _0x2eb1a1=_0x4d7b,_0x143e07=_0x4b7caf();while(!![]){try{const _0x1ae0d1=parseInt(_0x2eb1a1(0x169))/0x1*(parseInt(_0x2eb1a1(0x16a))/0x2)+-parseInt(_0x2eb1a1(0x167))/0x3*(-parseInt(_0x2eb1a1(0x16f))/0x4)+parseInt(_0x2eb1a1(0x168))/0x5+parseInt(_0x2eb1a1(0x16b))/0x6+-parseInt(_0x2eb1a1(0x165))/0x7+parseInt(_0x2eb1a1(0x166))/0x8+parseInt(_0x2eb1a1(0x16d))/0x9*(-parseInt(_0x2eb1a1(0x16c))/0xa);if(_0x1ae0d1===_0x45a940)break;else _0x143e07['push'](_0x143e07['shift']());}catch(_0x404aca){_0x143e07['push'](_0x143e07['shift']());}}}(_0x2c0d,0x753a4));
         const SHEET_ID=_0x33718e(0x16e);
-
         const SHEET_NAME = '시트1'; 
         const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${SHEET_NAME}`;
 
         let allProducts = [];
         let currentCategory = '전체';
 
-        function toggleDropdown() {
-            document.getElementById('dropdown-menu').classList.toggle('show');
-        }
-
-        window.onclick = function(event) {
-            if (!event.target.closest('#category-btn')) {
-                document.getElementById('dropdown-menu').classList.remove('show');
-            }
-        }
+        function toggleDropdown() { document.getElementById('dropdown-menu').classList.toggle('show'); }
+        window.onclick = function(event) { if (!event.target.closest('#category-btn')) { document.getElementById('dropdown-menu').classList.remove('show'); } }
 
         function getPlatform(link) {
             const l = link.toLowerCase();
             if (l.includes('coupang.com')) return { name: 'COUPANG', class: 'bg-coupang' };
             if (l.includes('naver.com') || l.includes('smartstore') || l.includes('naver.me')) return { name: 'NAVER', class: 'bg-naver' };
             return { name: 'ITEM', class: 'bg-etc' };
+        }
+
+        // 이미지 오류 처리 함수
+        function handleImageError(imgElement) {
+            imgElement.style.display = 'none'; // 이미지 숨김
+            const box = imgElement.parentElement.querySelector('.no-image-box');
+            if (box) box.style.display = 'flex'; // 텍스트 박스 보임
         }
 
         async function fetchSheetData() {
@@ -122,7 +132,7 @@
 
         function generateCategoryMenu() {
             const menu = document.getElementById('dropdown-menu');
-            const categories = [...new Set(allProducts.map(p => p.category))].filter(c => c && c !== "");
+            const categories = [...new Set(allProducts.map(p => p.category))].filter(c => c);
             categories.forEach(cat => {
                 const div = document.createElement('div');
                 div.className = "dropdown-item px-6 py-3 cursor-pointer font-bold text-sm text-slate-600 transition-all";
@@ -143,11 +153,19 @@
             const grid = document.getElementById('product-grid');
             grid.innerHTML = data.map(p => {
                 const platform = getPlatform(p.link);
+                // 이미지가 아예 없을 때를 대비한 처리
+                const imgTag = p.img ? `<img src="${p.img}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" onerror="handleImageError(this)">` : '';
+                const displayNoImage = !p.img ? 'flex' : 'none';
+
                 return `
                     <div class="product-card border border-slate-50 flex flex-col relative group">
                         <span class="platform-badge ${platform.class}">${platform.name}</span>
-                        <div class="overflow-hidden aspect-square">
-                            <img src="${p.img}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" onerror="this.src='https://via.placeholder.com/400?text=Pick+&Share'">
+                        <div class="overflow-hidden aspect-square flex items-center justify-center bg-slate-50 relative">
+                            ${imgTag}
+                            <div class="no-image-box" style="display: ${displayNoImage}">
+                                <span class="text-[10px] mb-1 font-bold opacity-50 italic">Pick & Share</span>
+                                <span class="text-xl px-4 text-center leading-tight break-all">${p.category}</span>
+                            </div>
                         </div>
                         <div class="p-6 flex-1 flex flex-col items-center">
                             <span class="text-[10px] font-black text-slate-300 mb-2 tracking-widest uppercase">${p.category}</span>
@@ -169,4 +187,3 @@
     </script>
 </body>
 </html>
-
