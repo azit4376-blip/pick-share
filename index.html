@@ -20,6 +20,7 @@
     </style>
 </head>
 <body class="bg-[#f8fafc] text-slate-900 overflow-x-hidden font-sans">
+
     <div class="fixed top-0 left-0 w-full z-[100] bg-zinc-900 border-b border-zinc-800 py-3.5 overflow-hidden shadow-2xl">
         <div class="animate-marquee flex items-center">
             <span class="text-[11px] md:text-xs text-zinc-100 font-bold px-10">
@@ -33,13 +34,16 @@
             </span>
         </div>
     </div>
+
     <div class="h-[46px]"></div>
+
     <header class="bg-white py-16 border-b border-slate-100 shadow-sm">
         <div class="container mx-auto px-4 text-center">
             <h1 class="text-4xl md:text-5xl font-black text-slate-900 tracking-tighter mb-4 uppercase">Pick & Share</h1>
             <p class="text-slate-500 text-sm md:text-base font-medium max-w-lg mx-auto leading-relaxed px-4">선별하여 공유하는 추천 리스트입니다.</p>
         </div>
     </header>
+
     <main class="container mx-auto px-4 py-12 max-w-6xl">
         <div class="flex flex-col lg:flex-row gap-6 mb-16">
             <input type="text" id="searchInput" onkeyup="handleSearch()" placeholder="상품 검색..." class="flex-1 px-6 py-4.5 rounded-2xl border-2 border-slate-100 focus:border-slate-900 outline-none shadow-sm text-base">
@@ -52,6 +56,7 @@
         </div>
         <div id="product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-10 text-center"></div>
     </main>
+
     <footer class="bg-white py-14 border-t border-slate-100 mt-20 text-center">
         <div class="max-w-2xl mx-auto px-6 mb-6">
             <p class="text-slate-500 text-[11px] md:text-xs leading-relaxed font-medium">
@@ -61,23 +66,25 @@
         </div>
         <p class="text-slate-300 text-[10px] font-black tracking-widest uppercase">© 2026 Pick & Share. All rights reserved.</p>
     </footer>
+
     <script>
         document.addEventListener('contextmenu', e => e.preventDefault());
         document.onkeydown = e => { if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && e.keyCode == 73) || (e.ctrlKey && e.keyCode == 85)) return false; };
 
-        // 사용자 시트 ID 적용 완료
         const SHEET_ID = '1lLggHBBBSncQ6aY2X1NVCgRVEvTM9xidhR1Cni8MPew'; 
         const SHEET_NAME = '시트1'; 
         const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${SHEET_NAME}`;
 
         let allProducts = [];
         let currentCategory = '전체';
+
         function getPlatform(link) {
             const l = link.toLowerCase();
             if (l.includes('coupang.com')) return { name: 'COUPANG', class: 'bg-coupang' };
-            if (l.includes('naver.com') || l.includes('smartstore')) return { name: 'NAVER', class: 'bg-naver' };
+            if (l.includes('naver.com') || l.includes('smartstore') || l.includes('naver.me')) return { name: 'NAVER', class: 'bg-naver' };
             return { name: 'ITEM', class: 'bg-etc' };
         }
+
         async function fetchSheetData() {
             try {
                 const response = await fetch(url);
@@ -94,9 +101,10 @@
                 }).filter(p => p.name);
                 displayProducts(allProducts);
             } catch (e) {
-                document.getElementById('product-grid').innerHTML = '<p class="col-span-full py-20 text-slate-400">시트 "웹에 게시" 및 "공유 권한"을 확인해주세요.</p>';
+                document.getElementById('product-grid').innerHTML = '<p class="col-span-full py-20 text-slate-400 font-bold">리스트를 업데이트 중입니다...</p>';
             }
         }
+
         function displayProducts(data) {
             const grid = document.getElementById('product-grid');
             grid.innerHTML = data.map(p => {
@@ -105,29 +113,37 @@
                     <div class="product-card border border-slate-50 flex flex-col relative group">
                         <span class="platform-badge ${platform.class}">${platform.name}</span>
                         <div class="overflow-hidden aspect-square">
-                            <img src="${p.img}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" onerror="this.src='https://via.placeholder.com/400?text=Pick+&Share'">
+                            <img src="${p.img}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                                 onerror="this.src='https://via.placeholder.com/400?text=Pick+&Share'">
                         </div>
                         <div class="p-6 flex-1 flex flex-col items-center">
                             <span class="text-[10px] font-black text-slate-300 mb-2 tracking-widest uppercase">${p.category}</span>
                             <h2 class="text-[14px] md:text-base font-bold text-slate-800 mb-6 line-clamp-2 leading-snug">${p.name}</h2>
-                            <a href="${p.link}" target="_blank" class="mt-auto block w-full bg-slate-900 text-white text-center py-3.5 rounded-2xl text-xs font-black tracking-widest hover:bg-blue-600 transition-all uppercase">Check Item</a>
+                            <a href="${p.link}" target="_blank" 
+                               class="mt-auto block w-full bg-slate-900 text-white text-center py-3.5 rounded-2xl text-xs font-black tracking-widest hover:bg-blue-600 transition-all uppercase">
+                               Check Item
+                            </a>
                         </div>
                     </div>
                 `;
             }).join('');
         }
+
         function handleSearch() {
             const query = document.getElementById('searchInput').value.toLowerCase();
             const filtered = allProducts.filter(p => p.name.toLowerCase().includes(query) && (currentCategory === '전체' || p.category === currentCategory));
             displayProducts(filtered);
         }
+
         function filterItems(cat) {
             currentCategory = cat;
             document.querySelectorAll('.filter-btn').forEach(btn => {
                 btn.classList.toggle('active-filter', btn.innerText === cat);
+                btn.classList.toggle('text-slate-600', btn.innerText !== cat);
             });
             handleSearch();
         }
+
         fetchSheetData();
     </script>
 </body>
