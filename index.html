@@ -3,159 +3,154 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pick & Share | AUTOMOTIVE EDITION</title>
+    <title>Pick & Share | MOTO GARAGE EDITION</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Orbitron:wght@400;900&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Oswald:wght@400;700&family=Roboto+Condensed:wght@700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --car-red: #ff0000;
-            --car-carbon: #121212;
+            --garage-yellow: #ffcc00; /* 정비소 경고색 */
+            --garage-dark: #1a1a1a;
+            --garage-iron: #2d2d2d;
         }
 
         body { 
-            background-color: #080808; 
-            color: #ffffff; 
-            font-family: 'Inter', sans-serif;
-            background-image: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #080808 100%);
+            background-color: #111; 
+            color: #eee; 
+            font-family: 'Oswald', sans-serif;
+            /* 다이아몬드 플레이트 철판 느낌의 미세한 패턴 배경 */
+            background-image: radial-gradient(#222 10%, transparent 10%);
+            background-size: 20px 20px;
         }
 
-        /* 1. 상단 HUD 공지 배너 (공정위 문구 복구) */
+        /* 1. 상단 안전 경고 배너 스타일 */
         @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-33.33%); } }
         .animate-marquee { display: flex; width: max-content; animation: marquee 35s linear infinite; }
-        .hud-banner { background: rgba(10, 10, 10, 0.95); border-bottom: 2px solid var(--car-red); backdrop-filter: blur(10px); }
-        .hud-text { font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 700; color: #ffffff; }
+        .garage-banner { background: var(--garage-yellow); border-bottom: 4px dashed #000; }
+        .garage-text { font-family: 'Roboto Condensed', sans-serif; font-size: 12px; color: #000; font-weight: 900; }
 
+        /* 2. 메인 헤더 (바이크 로고/정비소 간판 스타일) */
         .header-title { 
-            font-family: 'Orbitron', sans-serif; 
-            font-weight: 900; 
-            font-style: italic;
-            letter-spacing: -0.05em;
-            background: linear-gradient(to bottom, #ffffff 0%, #888888 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-family: 'Black Han Sans', sans-serif; 
+            letter-spacing: -0.02em;
+            color: var(--garage-yellow);
+            text-shadow: 4px 4px 0px #000;
         }
 
+        /* 3. 상품 카드 (정비박스/공구함 디자인) */
         .product-card { 
-            transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1); 
-            background: var(--car-carbon); 
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            clip-path: polygon(0 0, 100% 0, 100% 90%, 90% 100%, 0 100%);
+            transition: all 0.3s ease; 
+            background: var(--garage-iron); 
+            border: 2px solid #333;
+            position: relative;
+        }
+        /* 카드 하단에 노란색/검은색 경고 스트라이프 */
+        .product-card::after {
+            content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 6px;
+            background: repeating-linear-gradient(45deg, var(--garage-yellow), var(--garage-yellow) 10px, #000 10px, #000 20px);
         }
         .product-card:hover { 
-            transform: translateY(-10px) skewX(-1deg); 
-            border-color: var(--car-red);
-            box-shadow: -10px 10px 30px rgba(255, 0, 0, 0.2);
+            border-color: var(--garage-yellow);
+            transform: scale(1.03);
+            z-index: 10;
         }
 
-        .thumbnail-container img, .no-image-box { transition: all 0.8s ease; }
-        .product-card:hover img, .product-card:hover .no-image-box { transform: scale(1.1) rotate(-1deg); }
-        
+        /* 4. 이미지 박스 */
+        .thumbnail-container { background: #000; border-bottom: 2px solid #333; }
         .no-image-box {
             display: none; width: 100%; height: 100%;
-            background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
-            flex-direction: column; justify-content: center; align-items: center; padding: 20px;
+            background: #222; flex-direction: column; justify-content: center; align-items: center; padding: 20px;
         }
         .no-image-title {
-            font-family: 'Syncopate', sans-serif; color: #ffffff; font-weight: 700; font-size: 14px;
-            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
-            text-align: center;
+            font-family: 'Roboto Condensed', sans-serif; color: var(--garage-yellow); font-weight: 700; font-size: 15px;
+            text-align: center; line-clamp: 2; display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden;
         }
 
-        .dashboard-input {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            font-family: 'Syncopate', sans-serif;
-            color: #ffffff;
-            transition: all 0.3s;
+        /* 5. 컨트롤러 (정비 기기 인터페이스) */
+        .garage-input {
+            background: #000;
+            border: 2px solid #444;
+            color: var(--garage-yellow);
+            font-family: 'Roboto Condensed', sans-serif;
+            text-transform: uppercase;
         }
-        .dashboard-input:focus { border-color: var(--car-red); box-shadow: 0 0 15px rgba(255, 0, 0, 0.3); outline: none; }
+        .garage-input:focus { border-color: var(--garage-yellow); outline: none; }
 
         #dropdown-menu { 
             display: none; max-height: 300px; overflow-y: auto; z-index: 200; 
-            background: rgba(18, 18, 18, 0.95); border: 1px solid var(--car-red);
-            backdrop-filter: blur(10px);
+            background: #000; border: 2px solid var(--garage-yellow);
         }
-        #dropdown-menu.show { display: block; animation: slideIn 0.3s ease-out; }
-        @keyframes slideIn { from { opacity: 0; transform: skewX(5deg); } to { opacity: 1; transform: skewX(0); } }
-        
-        .dropdown-item:hover { background-color: var(--car-red); color: white; }
+        #dropdown-menu.show { display: block; }
+        .dropdown-item { border-bottom: 1px solid #222; }
+        .dropdown-item:hover { background-color: var(--garage-yellow); color: #000; }
 
-        .engine-btn {
-            background: var(--car-red);
-            font-family: 'Orbitron', sans-serif;
+        /* 6. 버튼 (강력한 정비소 액션 버튼) */
+        .service-btn {
+            background: var(--garage-yellow);
+            color: #000;
             font-weight: 900;
             text-transform: uppercase;
-            letter-spacing: 0.1em;
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
+            transition: 0.2s;
+            border-bottom: 4px solid #cca300;
         }
-        .engine-btn::before {
-            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            transition: 0.5s;
-        }
-        .engine-btn:hover::before { left: 100%; }
+        .service-btn:hover { background: #ffdb4d; transform: translateY(-2px); }
+        .service-btn:active { border-bottom-width: 0px; transform: translateY(2px); }
 
         .platform-badge { 
-            position: absolute; top: 12px; right: 12px; z-index: 20; 
-            padding: 4px 10px; border-radius: 4px; font-weight: 800; font-size: 10px; 
-            font-family: 'Orbitron', sans-serif;
+            position: absolute; top: 10px; left: 10px; z-index: 20; 
+            padding: 3px 8px; font-weight: 900; font-size: 10px; color: #000;
         }
 
         .no-scrollbar::-webkit-scrollbar { display: none; }
     </style>
 </head>
 <body class="overflow-x-hidden">
-    <div class="fixed top-0 left-0 w-full z-[100] hud-banner py-3.5 overflow-hidden shadow-2xl">
+    <div class="fixed top-0 left-0 w-full z-[100] garage-banner py-2.5 overflow-hidden shadow-xl">
         <div class="animate-marquee flex items-center">
-            <span class="hud-text px-10">📢 이 포스팅은 쿠팡 파트너스 및 네이버 쇼핑 커넥트 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다. &nbsp;&nbsp;&nbsp;&nbsp;</span>
-            <span class="hud-text px-10">📢 하단 링크를 통해 구매하시면 쿠팡, 네이버로부터 일정액의 수수료를 제공받습니다. &nbsp;&nbsp;&nbsp;&nbsp;</span>
-            <span class="hud-text px-10">📢 이 포스팅은 쿠팡 파트너스 및 네이버 쇼핑 커넥트 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다. &nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <span class="garage-text px-10 tracking-tighter">⚠️ CAUTION: MOTO GARAGE ACCESS GRANTED // GENUINE PARTS ONLY // ADVERTISING REVENUE PROTOCOL ACTIVE // &nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <span class="garage-text px-10 tracking-tighter text-red-700">📢 이 포스팅은 쿠팡 파트너스 및 네이버 쇼핑 커넥트 활동의 일환으로 일정액의 수수료를 제공받습니다. &nbsp;&nbsp;&nbsp;&nbsp;</span>
         </div>
     </div>
     
-    <div class="h-[48px]"></div>
+    <div class="h-[40px]"></div>
 
-    <header class="py-24 text-center border-b border-white/5">
+    <header class="py-20 text-center">
         <div class="container mx-auto px-4">
-            <h1 class="text-6xl md:text-8xl header-title mb-4 uppercase italic">PICK & SHARE</h1>
-            <p class="text-xs md:text-sm font-bold tracking-[0.8em] text-red-600 uppercase">Automotive Curation Lab</p>
+            <h1 class="text-7xl md:text-9xl header-title mb-2">PICK & SHARE</h1>
+            <p class="text-sm md:text-base font-bold tracking-[0.4em] text-white opacity-50 uppercase italic">Custom Motorcycle Parts & Gear</p>
         </div>
     </header>
 
-    <main class="container mx-auto px-4 py-12 max-w-6xl">
+    <main class="container mx-auto px-4 py-8 max-w-6xl">
         <div class="flex flex-col md:flex-row gap-4 mb-16">
             <div class="relative flex-1">
-                <input type="text" id="searchInput" onkeyup="handleSearch()" placeholder="SEARCH DATA..." 
-                       class="dashboard-input w-full px-8 py-5 rounded-sm italic text-xs uppercase tracking-widest">
+                <input type="text" id="searchInput" onkeyup="handleSearch()" placeholder="FIND PARTS..." 
+                       class="garage-input w-full px-6 py-4 rounded-none italic tracking-widest">
             </div>
 
             <div class="relative w-full md:w-64">
                 <button onclick="toggleDropdown()" id="category-btn" 
-                        class="dashboard-input w-full px-8 py-5 flex justify-between items-center rounded-sm italic text-xs uppercase tracking-widest">
-                    <span id="current-category-text">ALL CATEGORIES</span>
+                        class="garage-input w-full px-6 py-4 flex justify-between items-center rounded-none italic tracking-widest">
+                    <span id="current-category-text">SERVICE ALL</span>
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7"></path></svg>
                 </button>
-                <div id="dropdown-menu" class="absolute top-full left-0 w-full mt-2 py-2 no-scrollbar">
-                    <div onclick="filterItems('전체')" class="dropdown-item px-8 py-4 cursor-pointer font-bold text-[10px] tracking-widest">ALL CATEGORIES</div>
+                <div id="dropdown-menu" class="absolute top-full left-0 w-full mt-1 py-1 no-scrollbar">
+                    <div onclick="filterItems('전체')" class="dropdown-item px-6 py-3 cursor-pointer font-bold text-xs tracking-widest">SERVICE ALL</div>
                 </div>
             </div>
         </div>
 
-        <div id="product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-10"></div>
+        <div id="product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8"></div>
     </main>
 
-    <footer class="bg-zinc-950 py-20 border-t border-white/5 text-center mt-20">
-        <div class="max-w-2xl mx-auto px-6 mb-8 text-zinc-600 text-[10px] uppercase font-bold tracking-widest leading-loose">
+    <footer class="bg-black py-16 border-t-8 border-yellow-500 text-center mt-20">
+        <div class="max-w-2xl mx-auto px-6 mb-6 text-zinc-500 text-[11px] uppercase font-bold tracking-widest leading-loose">
             ※ 이 포스팅은 쿠팡 파트너스 및 네이버 쇼핑 커넥트 활동의 일환으로 일정액의 수수료를 제공받습니다.<br>
-            하단 링크로 구매 시 쿠팡, 네이버로부터 수수료를 제공받습니다.
+            고성능 바이크 유지를 위한 최상의 선택.
         </div>
-        <p class="text-zinc-800 text-[10px] font-black tracking-[0.5em] uppercase">© 2026 PICK & SHARE. AUTOMOTIVE DIVISION</p>
+        <p class="text-zinc-700 text-[10px] font-black tracking-[0.3em] uppercase">© 2026 MOTO GARAGE. ALL SYSTEMS GO.</p>
     </footer>
 
     <script>
-        // 난독화된 시트 ID 유지
         function _0x2c0d(){const _0xf3d8ac=['352809eEqxfl','3717350Djoyuz','597TiifWw','2726ulDhfx','4404150bUVgvd','10YCgTlv','21681531ABBgdM','1lLggHBBBSncQ6aY2X1NVCgRVEvTM9xidhR1Cni8MPew','16EbLmoB','1328943VumOoF','2539632GWaYMi'];_0x2c0d=function(){return _0xf3d8ac;};return _0x2c0d();}const _0x33718e=_0x4d7b;function _0x4d7b(_0x4019fd,_0x25b4e7){_0x4019fd=_0x4019fd-0x165;const _0x2c0d2b=_0x2c0d();let _0x4d7be7=_0x2c0d2b[_0x4019fd];return _0x4d7be7;}(function(_0x4b7caf,_0x45a940){const _0x2eb1a1=_0x4d7b,_0x143e07=_0x4b7caf();while(!![]){try{const _0x1ae0d1=parseInt(_0x2eb1a1(0x169))/0x1*(parseInt(_0x2eb1a1(0x16a))/0x2)+-parseInt(_0x2eb1a1(0x167))/0x3*(-parseInt(_0x2eb1a1(0x16f))/0x4)+parseInt(_0x2eb1a1(0x168))/0x5+parseInt(_0x2eb1a1(0x16b))/0x6+-parseInt(_0x2eb1a1(0x165))/0x7+parseInt(_0x2eb1a1(0x166))/0x8+parseInt(_0x2eb1a1(0x16d))/0x9*(-parseInt(_0x2eb1a1(0x16c))/0xa);if(_0x1ae0d1===_0x45a940)break;else _0x143e07['push'](_0x143e07['shift']());}catch(_0x404aca){_0x143e07['push'](_0x143e07['shift']());}}}(_0x2c0d,0x753a4));
         const SHEET_ID=_0x33718e(0x16e);
         const SHEET_NAME = '시트1'; 
@@ -169,9 +164,9 @@
 
         function getPlatform(link) {
             const l = link.toLowerCase();
-            if (l.includes('coupang.com')) return { name: 'COUPANG', class: 'bg-red-600' };
-            if (l.includes('naver.com') || l.includes('smartstore') || l.includes('naver.me')) return { name: 'NAVER', class: 'bg-green-600' };
-            return { name: 'ITEM', class: 'bg-zinc-700' };
+            if (l.includes('coupang.com')) return { name: 'COUPANG', class: 'bg-yellow-400' };
+            if (l.includes('naver.com') || l.includes('smartstore') || l.includes('naver.me')) return { name: 'NAVER', class: 'bg-green-500' };
+            return { name: 'GARAGE-ITEM', class: 'bg-zinc-500' };
         }
 
         function handleImageError(imgElement) {
@@ -204,7 +199,7 @@
             const categories = [...new Set(allProducts.map(p => p.category))].filter(c => c);
             categories.forEach(cat => {
                 const div = document.createElement('div');
-                div.className = "dropdown-item px-8 py-4 cursor-pointer font-bold text-[10px] tracking-widest transition-all";
+                div.className = "dropdown-item px-6 py-3 cursor-pointer font-bold text-xs tracking-widest transition-all";
                 div.innerText = cat.toUpperCase();
                 div.onclick = function() { filterItems(cat); };
                 menu.appendChild(div);
@@ -213,7 +208,7 @@
 
         function filterItems(cat) {
             currentCategory = cat;
-            document.getElementById('current-category-text').innerText = cat === '전체' ? 'ALL CATEGORIES' : cat.toUpperCase();
+            document.getElementById('current-category-text').innerText = cat === '전체' ? 'SERVICE ALL' : cat.toUpperCase();
             document.getElementById('dropdown-menu').classList.remove('show');
             handleSearch();
         }
@@ -222,23 +217,23 @@
             const grid = document.getElementById('product-grid');
             grid.innerHTML = data.map(p => {
                 const platform = getPlatform(p.link);
-                const imgTag = p.img ? `<img src="${p.img}" class="w-full h-full object-cover" onerror="handleImageError(this)">` : '';
+                const imgTag = p.img ? `<img src="${p.img}" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" onerror="handleImageError(this)">` : '';
                 const displayNoImage = !p.img ? 'flex' : 'none';
 
                 return `
                     <div class="product-card flex flex-col relative group">
                         <span class="platform-badge ${platform.class}">${platform.name}</span>
-                        <div class="thumbnail-container overflow-hidden aspect-square flex items-center justify-center bg-black relative">
+                        <div class="thumbnail-container overflow-hidden aspect-square flex items-center justify-center relative">
                             ${imgTag}
                             <div class="no-image-box" style="display: ${displayNoImage}">
-                                <span class="text-[8px] mb-2 font-black opacity-30 tracking-[0.3em]">ENGINE UNIT</span>
+                                <span class="text-[9px] mb-2 font-black opacity-30 italic">STOCK #01</span>
                                 <span class="no-image-title">${p.name}</span>
                             </div>
                         </div>
-                        <div class="p-6 flex-1 flex flex-col items-center">
-                            <span class="text-[9px] font-bold text-red-600 mb-2 tracking-[0.2em] italic uppercase">${p.category}</span>
-                            <h2 class="text-[14px] font-bold text-zinc-300 mb-6 line-clamp-2 leading-snug tracking-tighter h-[40px]">${p.name}</h2>
-                            <a href="${p.link}" target="_blank" class="engine-btn mt-auto block w-full text-white text-center py-4 rounded-sm text-[10px]">Check Item</a>
+                        <div class="p-5 flex-1 flex flex-col items-center">
+                            <span class="text-[10px] font-bold text-yellow-500 mb-2 tracking-[0.2em] uppercase italic">${p.category}</span>
+                            <h2 class="text-[14px] font-bold text-zinc-300 mb-6 line-clamp-2 leading-tight tracking-tight h-[34px] text-center">${p.name}</h2>
+                            <a href="${p.link}" target="_blank" class="service-btn mt-auto block w-full text-center py-3.5 text-xs">GET PARTS</a>
                         </div>
                     </div>
                 `;
