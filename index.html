@@ -3,137 +3,149 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pick & Share | MOTO GARAGE</title>
+    <title>Pick & Share | RIDER DELIVERY</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Oswald:wght@400;700&family=Roboto+Condensed:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Do+Hyeon&family=Noto+Sans+KR:wght@900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --garage-yellow: #ffcc00;
-            --garage-dark: #111111;
+            --rider-mint: #2ac1bc; /* 배달의민족 스타일 민트 */
+            --rider-orange: #ff5e00; /* 빠른 배송 강조색 */
+            --road-black: #1a1c1d;
         }
 
         body { 
-            background-color: #111; 
-            color: #eee; 
-            font-family: 'Oswald', sans-serif;
-            background-image: radial-gradient(#222 10%, transparent 10%);
-            background-size: 20px 20px;
+            background-color: #f3f6f7; 
+            color: #1a1c1d; 
+            font-family: 'Do Hyeon', sans-serif;
         }
 
-        /* 1. 상단 공정위 문구 고정 (Fixed) */
+        /* 1. 상단 공정위 문구 고정 (배달 바이크 후미등/경고등 느낌) */
         @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-33.33%); } }
         .animate-marquee { display: flex; width: max-content; animation: marquee 35s linear infinite; }
-        .garage-banner { 
-            position: fixed; top: 0; left: 0; w-full; z-index: 1000;
-            background: var(--garage-yellow); 
-            border-bottom: 4px dashed #000; 
-            width: 100%;
+        .rider-banner { 
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+            background: var(--road-black); 
+            border-bottom: 3px solid var(--rider-mint);
         }
-        .garage-text { font-family: 'Roboto Condensed', sans-serif; font-size: 12px; color: #000; font-weight: 900; }
+        .rider-text { font-family: 'Noto Sans KR', sans-serif; font-size: 11px; color: #fff; font-weight: 700; }
 
-        /* 2. 헤더 및 레이아웃 설정 */
+        /* 2. 헤더 (배달 앱 로고 스타일) */
         .header-title { 
             font-family: 'Black Han Sans', sans-serif; 
-            color: var(--garage-yellow);
-            text-shadow: 4px 4px 0px #000;
+            color: var(--rider-mint);
+            -webkit-text-stroke: 1.5px #fff;
+            filter: drop-shadow(4px 4px 0px rgba(42, 193, 188, 0.2));
+        }
+        .delivery-badge {
+            background: var(--rider-orange);
+            color: white;
+            padding: 2px 10px;
+            border-radius: 4px;
+            font-size: 14px;
+            transform: rotate(-5deg);
         }
 
-        /* 3. 상품 카드 디자인 */
+        /* 3. 상품 카드 (배달 박스/스마트폰 앱 UI 스타일) */
         .product-card { 
-            transition: all 0.3s ease; 
-            background: #222; 
-            border: 2px solid #333;
-            position: relative;
-        }
-        .product-card::after {
-            content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 6px;
-            background: repeating-linear-gradient(45deg, var(--garage-yellow), var(--garage-yellow) 10px, #000 10px, #000 20px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+            background: #fff; 
+            border-radius: 1.5rem;
+            border: 2px solid #e2e8f0;
+            overflow: hidden;
         }
         .product-card:hover { 
-            border-color: var(--garage-yellow);
-            transform: scale(1.03);
-            z-index: 10;
+            border-color: var(--rider-mint);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(42, 193, 188, 0.15);
         }
 
-        /* 4. 이미지 및 텍스트 대체 박스 애니메이션 */
-        .thumbnail-container { background: #000; border-bottom: 2px solid #333; overflow: hidden; }
-        .thumbnail-container img, .no-image-box { transition: transform 0.8s ease; }
+        /* 4. 이미지 박스 애니메이션 (확대 효과 고정) */
+        .thumbnail-container { position: relative; overflow: hidden; background: #f8fafc; }
+        .thumbnail-container img, .no-image-box { transition: transform 0.6s ease; }
         .product-card:hover img, .product-card:hover .no-image-box { transform: scale(1.1); }
 
         .no-image-box {
             display: none; width: 100%; height: 100%;
-            background: #1a1a1a; flex-direction: column; justify-content: center; align-items: center; padding: 20px;
+            background: #eef2f3; flex-direction: column; justify-content: center; align-items: center; padding: 20px;
         }
         .no-image-title {
-            font-family: 'Roboto Condensed', sans-serif; color: var(--garage-yellow); font-weight: 700; font-size: 15px;
+            color: var(--rider-mint); font-weight: 700; font-size: 16px;
             text-align: center; line-clamp: 2; display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden;
         }
 
-        /* 5. 컨트롤 인터페이스 */
-        .garage-input {
-            background: #000;
-            border: 2px solid #444;
-            color: var(--garage-yellow);
-            font-family: 'Roboto Condensed', sans-serif;
-            text-transform: uppercase;
+        /* 5. 컨트롤 인터페이스 (주문하기 버튼/검색바) */
+        .rider-input {
+            background: #fff;
+            border: 2px solid var(--rider-mint);
+            border-radius: 12px;
+            color: var(--road-black);
+            padding: 12px 20px;
         }
-        .garage-input:focus { border-color: var(--garage-yellow); outline: none; }
 
         #dropdown-menu { 
             display: none; max-height: 300px; overflow-y: auto; z-index: 200; 
-            background: #000; border: 2px solid var(--garage-yellow);
+            background: #fff; border: 2px solid var(--rider-mint);
+            border-radius: 12px;
+            margin-top: 5px;
         }
-        #dropdown-menu.show { display: block; }
-        .dropdown-item:hover { background-color: var(--garage-yellow); color: #000; }
+        #dropdown-menu.show { display: block; animation: slideDown 0.2s ease; }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .dropdown-item:hover { background-color: #f0fdfa; color: var(--rider-mint); }
 
-        /* 6. 액션 버튼 */
-        .service-btn {
-            background: var(--garage-yellow);
-            color: #000;
+        /* 6. 액션 버튼 (신속 배달/주문 완료 느낌) */
+        .order-btn {
+            background: var(--rider-mint);
+            color: #fff;
             font-weight: 900;
-            text-transform: uppercase;
+            letter-spacing: 0.05em;
             transition: 0.2s;
-            border-bottom: 4px solid #cca300;
+            border-radius: 12px;
         }
+        .order-btn:hover { background: #24a7a3; }
+        .order-btn:active { transform: scale(0.95); }
 
         .platform-badge { 
-            position: absolute; top: 10px; left: 10px; z-index: 20; 
-            padding: 3px 8px; font-weight: 900; font-size: 10px; color: #000;
+            position: absolute; top: 12px; left: 12px; z-index: 20; 
+            padding: 4px 10px; border-radius: 8px; font-weight: 900; font-size: 11px;
+            color: #fff;
         }
 
         .no-scrollbar::-webkit-scrollbar { display: none; }
     </style>
 </head>
-<body class="overflow-x-hidden pt-[48px]"> <div class="garage-banner py-2.5 overflow-hidden shadow-xl">
+<body class="pt-[48px]">
+
+    <div class="rider-banner py-3 shadow-lg overflow-hidden">
         <div class="animate-marquee flex items-center">
-            <span class="garage-text px-10">📢 이 포스팅은 쿠팡 파트너스 및 네이버 쇼핑 커넥트 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다. &nbsp;&nbsp;&nbsp;&nbsp;</span>
-            <span class="garage-text px-10">📢 하단 링크를 통해 구매하시면 쿠팡, 네이버로부터 일정액의 수수료를 제공받습니다. &nbsp;&nbsp;&nbsp;&nbsp;</span>
-            <span class="garage-text px-10">📢 이 포스팅은 쿠팡 파트너스 및 네이버 쇼핑 커넥트 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다. &nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <span class="rider-text px-10">📢 이 포스팅은 쿠팡 파트너스 및 네이버 쇼핑 커넥트 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다. &nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <span class="rider-text px-10">📢 하단 링크를 통해 구매하시면 일정액의 수수료를 제공받습니다. 신속하게 연결해 드립니다! &nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <span class="rider-text px-10">📢 이 포스팅은 쿠팡 파트너스 및 네이버 쇼핑 커넥트 활동의 일환으로 수수료를 제공받습니다. &nbsp;&nbsp;&nbsp;&nbsp;</span>
         </div>
     </div>
 
-    <header class="py-24 text-center">
+    <header class="py-20 text-center">
         <div class="container mx-auto px-4">
-            <h1 class="text-7xl md:text-9xl header-title mb-2 uppercase italic">PICK & SHARE</h1>
-            <p class="text-sm md:text-base font-bold tracking-[0.4em] text-white opacity-50 uppercase italic">MOTORCYCLE GARAGE EDITION</p>
+            <div class="inline-block delivery-badge mb-4 font-bold uppercase tracking-wider">Fast Delivery</div>
+            <h1 class="text-7xl md:text-9xl header-title mb-2 uppercase">PICK & SHARE</h1>
+            <p class="text-sm md:text-base font-medium text-slate-400 tracking-widest uppercase italic">Right now, Right place, Best price</p>
         </div>
     </header>
 
     <main class="container mx-auto px-4 py-8 max-w-6xl">
-        <div class="flex flex-col md:flex-row gap-4 mb-16">
-            <div class="relative flex-1">
-                <input type="text" id="searchInput" onkeyup="handleSearch()" placeholder="FIND PARTS DATA..." 
-                       class="garage-input w-full px-6 py-4 rounded-none italic tracking-widest">
+        <div class="flex flex-col md:flex-row gap-4 mb-16 items-center">
+            <div class="relative flex-1 w-full">
+                <input type="text" id="searchInput" onkeyup="handleSearch()" placeholder="어떤 상품을 찾으시나요?" 
+                       class="rider-input w-full shadow-sm focus:ring-4 focus:ring-teal-100 outline-none transition-all">
             </div>
 
             <div class="relative w-full md:w-64">
                 <button onclick="toggleDropdown()" id="category-btn" 
-                        class="garage-input w-full px-6 py-4 flex justify-between items-center rounded-none italic tracking-widest">
-                    <span id="current-category-text">GARAGE ALL</span>
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7"></path></svg>
+                        class="rider-input w-full flex justify-between items-center shadow-sm">
+                    <span id="current-category-text">전체 상품 카테고리</span>
+                    <svg class="w-5 h-5 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7"></path></svg>
                 </button>
-                <div id="dropdown-menu" class="absolute top-full left-0 w-full mt-1 py-1 no-scrollbar">
-                    <div onclick="filterItems('전체')" class="dropdown-item px-6 py-3 cursor-pointer font-bold text-xs tracking-widest">GARAGE ALL</div>
+                <div id="dropdown-menu" class="absolute top-full left-0 w-full no-scrollbar shadow-2xl">
+                    <div onclick="filterItems('전체')" class="dropdown-item px-6 py-4 cursor-pointer font-bold text-sm">전체 상품 카테고리</div>
                 </div>
             </div>
         </div>
@@ -141,12 +153,12 @@
         <div id="product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-10"></div>
     </main>
 
-    <footer class="bg-black py-20 border-t-8 border-yellow-500 text-center mt-20">
-        <div class="max-w-2xl mx-auto px-6 mb-8 text-zinc-500 text-[11px] uppercase font-bold tracking-widest leading-loose">
+    <footer class="bg-white py-16 border-t-4 border-teal-500 text-center mt-20">
+        <div class="max-w-2xl mx-auto px-6 mb-8 text-slate-400 text-[11px] font-bold tracking-widest leading-loose">
             ※ 이 포스팅은 쿠팡 파트너스 및 네이버 쇼핑 커넥트 활동의 일환으로 일정액의 수수료를 제공받습니다.<br>
-            고성능 하드웨어를 위한 마스터의 선택.
+            가장 빠른 추천, 가장 신뢰받는 리뷰.
         </div>
-        <p class="text-zinc-700 text-[10px] font-black tracking-[0.5em] uppercase">© 2026 PICK & SHARE. ALL RIGHTS RESERVED.</p>
+        <p class="text-slate-300 text-[10px] font-black tracking-[0.5em] uppercase italic">© 2026 PICK & SHARE. DELIVERY PROTOCOL ACTIVE.</p>
     </footer>
 
     <script>
@@ -163,9 +175,9 @@
 
         function getPlatform(link) {
             const l = link.toLowerCase();
-            if (l.includes('coupang.com')) return { name: 'COUPANG', class: 'bg-yellow-400' };
+            if (l.includes('coupang.com')) return { name: 'COUPANG', class: 'bg-red-500' };
             if (l.includes('naver.com') || l.includes('smartstore') || l.includes('naver.me')) return { name: 'NAVER', class: 'bg-green-500' };
-            return { name: 'GENUINE', class: 'bg-zinc-600' };
+            return { name: 'PICK-ITEM', class: 'bg-teal-500' };
         }
 
         function handleImageError(imgElement) {
@@ -198,8 +210,8 @@
             const categories = [...new Set(allProducts.map(p => p.category))].filter(c => c);
             categories.forEach(cat => {
                 const div = document.createElement('div');
-                div.className = "dropdown-item px-8 py-4 cursor-pointer font-bold text-[10px] tracking-widest transition-all";
-                div.innerText = cat.toUpperCase();
+                div.className = "dropdown-item px-8 py-4 cursor-pointer font-bold text-sm transition-all";
+                div.innerText = cat;
                 div.onclick = function() { filterItems(cat); };
                 menu.appendChild(div);
             });
@@ -207,7 +219,7 @@
 
         function filterItems(cat) {
             currentCategory = cat;
-            document.getElementById('current-category-text').innerText = cat === '전체' ? 'GARAGE ALL' : cat.toUpperCase();
+            document.getElementById('current-category-text').innerText = cat === '전체' ? '전체 상품 카테고리' : cat;
             document.getElementById('dropdown-menu').classList.remove('show');
             handleSearch();
         }
@@ -222,17 +234,17 @@
                 return `
                     <div class="product-card flex flex-col relative group">
                         <span class="platform-badge ${platform.class}">${platform.name}</span>
-                        <div class="thumbnail-container overflow-hidden aspect-square flex items-center justify-center bg-black relative">
+                        <div class="thumbnail-container overflow-hidden aspect-square flex items-center justify-center bg-slate-50 relative">
                             ${imgTag}
                             <div class="no-image-box" style="display: ${displayNoImage}">
-                                <span class="text-[8px] mb-2 font-black opacity-30 italic">UNIT ID: 01</span>
+                                <span class="text-[10px] mb-2 font-black opacity-30 italic">DELIVERY UNIT #01</span>
                                 <span class="no-image-title">${p.name}</span>
                             </div>
                         </div>
                         <div class="p-6 flex-1 flex flex-col items-center">
-                            <span class="text-[9px] font-bold text-yellow-500 mb-2 tracking-[0.2em] italic uppercase">${p.category}</span>
-                            <h2 class="text-[14px] font-bold text-zinc-300 mb-6 line-clamp-2 leading-tight tracking-tighter h-[34px] text-center">${p.name}</h2>
-                            <a href="${p.link}" target="_blank" class="service-btn mt-auto block w-full text-center py-4 rounded-sm text-[10px]">CHECK ITEM</a>
+                            <span class="text-[11px] font-bold text-teal-600 mb-2 tracking-widest uppercase italic">${p.category}</span>
+                            <h2 class="text-[15px] font-bold text-slate-800 mb-6 line-clamp-2 leading-tight h-[34px] text-center">${p.name}</h2>
+                            <a href="${p.link}" target="_blank" class="order-btn mt-auto block w-full text-center py-4 text-xs">주문하러 가기</a>
                         </div>
                     </div>
                 `;
