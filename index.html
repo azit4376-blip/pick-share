@@ -3,127 +3,145 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pick & Share | 추천 리스트</title>
+    <title>Pick & Share | PREMIUM CURATION</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@100;400;700;900&display=swap" rel="stylesheet">
     <style>
+        body { font-family: 'Pretendard', sans-serif; letter-spacing: -0.02em; }
+        
+        /* 1. 상단 공지 배너 (매거진 스타일) */
         @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-33.33%); } }
-        .animate-marquee { display: flex; width: max-content; animation: marquee 35s linear infinite; }
-        .animate-marquee:hover { animation-play-state: paused; }
+        .animate-marquee { display: flex; width: max-content; animation: marquee 40s linear infinite; }
+        .banner-blur { backdrop-filter: blur(10px); background: rgba(10, 10, 10, 0.9); }
 
+        /* 2. 카드 디자인 (깊이감 있는 입체 스타일) */
         .product-card { 
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-            border-radius: 1.5rem; 
-            overflow: hidden; 
-            background: white; 
-            border: 1px solid rgba(0,0,0,0.05);
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1); 
+            border-radius: 2rem; 
+            background: #ffffff; 
+            border: 1px solid rgba(241, 245, 249, 1);
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.04);
         }
         .product-card:hover { 
-            transform: translateY(-12px); 
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15); 
+            transform: translateY(-15px) scale(1.02); 
+            box-shadow: 0 40px 60px -15px rgba(0, 0, 0, 0.12); 
+            border-color: rgba(0,0,0,0.05);
         }
 
-        /* 썸네일 영역 공통 애니메이션 설정 */
+        /* 3. 이미지 영역 확대 효과 */
         .thumbnail-container img, .no-image-box {
-            transition: transform 1s cubic-bezier(0, 0, 0.2, 1);
+            transition: transform 1.2s cubic-bezier(0.2, 0, 0.2, 1);
         }
-        /* 카드가 호버될 때 이미지와 텍스트 박스 모두 확대 */
         .product-card:hover img, .product-card:hover .no-image-box {
-            transform: scale(1.1);
+            transform: scale(1.15);
         }
 
+        /* 4. 세련된 플랫폼 배지 */
         .platform-badge { 
-            position: absolute; top: 12px; right: 12px; z-index: 20; 
-            padding: 4px 12px; border-radius: 10px; font-weight: 800; font-size: 10px; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2); 
-            letter-spacing: 0.05em;
+            position: absolute; top: 20px; right: 20px; z-index: 20; 
+            padding: 6px 14px; border-radius: 30px; font-weight: 900; font-size: 10px; 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15); 
+            text-transform: uppercase;
         }
-        .bg-coupang { background: linear-gradient(135deg, #ff4b2b, #ff416c); color: white; } 
-        .bg-naver { background: linear-gradient(135deg, #00b09b, #96c93d); color: white; }   
-        .bg-etc { background: linear-gradient(135deg, #30e8bf, #ff8235); color: white; }
+        .bg-coupang { background: linear-gradient(90deg, #FF0000, #FF5F6D); color: white; } 
+        .bg-naver { background: linear-gradient(90deg, #03C75A, #27ae60); color: white; }   
+        .bg-etc { background: linear-gradient(90deg, #4b6cb7, #182848); color: white; }
 
+        /* 5. 이미지가 없을 때의 텍스트 박스 */
         .no-image-box {
             display: none; width: 100%; height: 100%;
-            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            background: #f8fafc;
             flex-direction: column; justify-content: center; align-items: center;
-            padding: 24px; text-align: center;
+            padding: 30px; text-align: center;
         }
         .no-image-title {
-            color: #475569; font-weight: 800; font-size: 15px; line-height: 1.5;
-            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
-            overflow: hidden; word-break: break-all;
+            color: #1e293b; font-weight: 900; font-size: 17px; line-height: 1.5;
+            display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
+            overflow: hidden;
         }
 
+        /* 6. 드롭다운 (글래스모피즘 적용) */
         #dropdown-menu { 
-            display: none; max-height: 350px; overflow-y: auto; z-index: 200; 
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            backdrop-filter: blur(8px); background-color: rgba(255, 255, 255, 0.95);
+            display: none; max-height: 400px; overflow-y: auto; z-index: 200; 
+            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(15px); background-color: rgba(255, 255, 255, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 1.5rem;
         }
-        #dropdown-menu.show { display: block; animation: slideDown 0.3s ease-out; }
-        @keyframes slideDown { from { opacity: 0; transform: translateY(-15px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        #dropdown-menu.show { display: block; animation: springDown 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        @keyframes springDown { from { opacity: 0; transform: translateY(-20px) scale(0.9); } to { opacity: 1; transform: translateY(0) scale(1); } }
         
-        .dropdown-item { transition: all 0.2s; }
-        .dropdown-item:hover { background-color: #f8fafc; padding-left: 1.75rem; color: #000; }
+        .dropdown-item { transition: all 0.3s; margin: 4px 8px; border-radius: 0.75rem; }
+        .dropdown-item:hover { background-color: #000; color: #fff; padding-left: 2rem; }
 
+        /* 7. 체크 버튼 (광택 및 액션 효과) */
         .check-btn {
             position: relative; overflow: hidden;
-            transition: all 0.3s;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            background: #000; color: #fff;
         }
-        .check-btn::after {
-            content: ''; position: absolute; top: -50%; left: -150%;
-            width: 50%; height: 200%; background: rgba(255,255,255,0.2);
-            transform: rotate(45deg); transition: 0.6s;
+        .check-btn::before {
+            content: ''; position: absolute; top: 0; left: -100%;
+            width: 100%; height: 100%; background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: all 0.6s;
         }
-        .check-btn:hover::after { left: 150%; }
+        .check-btn:hover { background: #333; transform: scale(1.05); }
+        .check-btn:hover::before { left: 100%; }
 
         .no-scrollbar::-webkit-scrollbar { display: none; }
     </style>
 </head>
-<body class="bg-[#f8fafc] text-slate-900 overflow-x-hidden font-sans">
-    <div class="fixed top-0 left-0 w-full z-[100] bg-zinc-900 border-b border-zinc-800 py-3.5 overflow-hidden shadow-2xl">
+<body class="bg-[#ffffff] text-slate-900 overflow-x-hidden">
+    
+    <div class="fixed top-0 left-0 w-full z-[100] banner-blur border-b border-white/10 py-4 overflow-hidden shadow-2xl">
         <div class="animate-marquee flex items-center">
-            <span class="text-[11px] md:text-xs text-zinc-100 font-bold px-10">📢 이 포스팅은 쿠팡 파트너스 및 네이버 쇼핑 커넥트 활동의 일환으로 수수료를 제공받습니다. &nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <span class="text-[10px] md:text-[11px] text-white font-black px-12 tracking-widest">STAY INSPIRED / PICK & SHARE PREMIUM CURATION / LIMITED OFFER / &nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <span class="text-[10px] md:text-[11px] text-white font-black px-12 tracking-widest">이 포스팅은 쿠팡 파트너스 및 네이버 활동의 일환으로 수수료를 제공받습니다. &nbsp;&nbsp;&nbsp;&nbsp;</span>
         </div>
     </div>
     
-    <div class="h-[46px]"></div>
+    <div class="h-[52px]"></div>
 
-    <header class="bg-white py-20 border-b border-slate-100 shadow-sm text-center">
+    <header class="py-24 md:py-32 text-center relative overflow-hidden">
+        <div class="absolute inset-0 bg-slate-50/50 -z-10"></div>
         <div class="container mx-auto px-4">
-            <h1 class="text-5xl md:text-6xl font-black text-slate-900 tracking-tighter mb-4 uppercase italic">Pick & Share</h1>
-            <div class="h-1 w-20 bg-slate-900 mx-auto mb-6"></div>
-            <p class="text-slate-500 text-sm md:text-base font-medium max-w-lg mx-auto">엄선된 상품을 공유하는 프리미엄 추천 리스트</p>
+            <h1 class="text-6xl md:text-8xl font-[900] text-black tracking-tighter mb-6 uppercase italic leading-none">Pick<br class="md:hidden">& Share</h1>
+            <p class="text-slate-400 text-xs md:text-sm font-bold tracking-[0.5em] uppercase mb-8">Selected Excellence for You</p>
+            <div class="h-[2px] w-12 bg-black mx-auto"></div>
         </div>
     </header>
 
-    <main class="container mx-auto px-4 py-16 max-w-6xl">
-        <div class="flex flex-col md:flex-row gap-4 mb-16">
-            <div class="relative flex-1 group">
-                <input type="text" id="searchInput" onkeyup="handleSearch()" placeholder="찾으시는 상품이 있나요?" 
-                       class="w-full px-8 py-5 rounded-3xl border-2 border-slate-100 focus:border-slate-900 outline-none shadow-sm text-base transition-all group-hover:border-slate-300">
+    <main class="container mx-auto px-4 py-12 max-w-7xl">
+        <div class="flex flex-col md:flex-row gap-6 mb-20 items-center justify-between">
+            <div class="relative w-full md:max-w-xl group">
+                <input type="text" id="searchInput" onkeyup="handleSearch()" placeholder="무엇을 찾고 계신가요?" 
+                       class="w-full px-10 py-6 rounded-full border-2 border-slate-100 focus:border-black outline-none shadow-sm text-lg transition-all group-hover:border-slate-300">
             </div>
 
-            <div class="relative w-full md:w-72">
+            <div class="relative w-full md:w-80">
                 <button onclick="toggleDropdown()" id="category-btn" 
-                        class="w-full bg-white px-8 py-5 rounded-3xl border-2 border-slate-100 font-black text-slate-800 flex justify-between items-center shadow-sm hover:border-slate-900 transition-all">
-                    <span id="current-category-text">카테고리 전체</span>
-                    <svg class="w-5 h-5 transition-transform duration-300" id="dropdown-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7"></path></svg>
+                        class="w-full bg-black px-10 py-6 rounded-full font-black text-white flex justify-between items-center shadow-2xl hover:bg-slate-800 transition-all">
+                    <span id="current-category-text" class="uppercase tracking-widest text-xs">Category All</span>
+                    <svg class="w-4 h-4 transition-transform duration-500" id="dropdown-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M19 9l-7 7-7-7"></path></svg>
                 </button>
-                <div id="dropdown-menu" class="absolute top-full left-0 w-full mt-3 bg-white rounded-3xl border border-slate-100 py-3 origin-top no-scrollbar">
-                    <div onclick="filterItems('전체')" class="dropdown-item px-8 py-4 cursor-pointer font-bold text-sm text-slate-600">전체보기</div>
+                <div id="dropdown-menu" class="absolute top-full left-0 w-full mt-4 py-4 no-scrollbar">
+                    <div onclick="filterItems('전체')" class="dropdown-item px-8 py-4 cursor-pointer font-black text-xs uppercase tracking-tighter text-slate-500">전체보기</div>
                 </div>
             </div>
         </div>
 
-        <div id="product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-12 text-center"></div>
+        <div id="product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 md:gap-14"></div>
     </main>
 
-    <footer class="bg-white py-16 border-t border-slate-100 mt-20 text-center">
-        <div class="max-w-2xl mx-auto px-6 mb-8 text-slate-400 text-[11px] md:text-xs leading-relaxed font-medium">
-            ※ 이 포스팅은 쿠팡 파트너스 및 네이버 쇼핑 커넥트 활동의 일환으로 일정액의 수수료를 제공받습니다.<br>
-            추천 드리는 상품 링크로 구매 시 운영에 큰 도움이 됩니다.
+    <footer class="bg-black py-24 mt-24 text-center">
+        <div class="container mx-auto px-4">
+            <h2 class="text-white font-[900] text-3xl mb-8 tracking-tighter uppercase italic">Pick & Share</h2>
+            <div class="max-w-3xl mx-auto px-6 mb-12 text-slate-500 text-[10px] md:text-[11px] leading-relaxed font-bold uppercase tracking-widest opacity-60">
+                ※ 이 포스팅은 쿠팡 파트너스 및 네이버 쇼핑 커넥트 활동의 일환으로 일정액의 수수료를 제공받습니다.
+                구매 금액에는 영향을 주지 않으며 채널 운영에 큰 힘이 됩니다.
+            </div>
+            <p class="text-slate-600 text-[9px] font-black tracking-[0.5em] uppercase">© 2026 PREMIUM CURATION SERVICE. ALL RIGHTS RESERVED.</p>
         </div>
-        <p class="text-slate-300 text-[10px] font-black tracking-[0.3em] uppercase">© 2026 Pick & Share. PREMIUM CURATION</p>
     </footer>
 
     <script>
@@ -151,9 +169,9 @@
 
         function getPlatform(link) {
             const l = link.toLowerCase();
-            if (l.includes('coupang.com')) return { name: 'COUPANG', class: 'bg-coupang' };
-            if (l.includes('naver.com') || l.includes('smartstore') || l.includes('naver.me')) return { name: 'NAVER', class: 'bg-naver' };
-            return { name: 'ITEM', class: 'bg-etc' };
+            if (l.includes('coupang.com')) return { name: 'Coupang', class: 'bg-coupang' };
+            if (l.includes('naver.com') || l.includes('smartstore') || l.includes('naver.me')) return { name: 'Naver', class: 'bg-naver' };
+            return { name: 'Item', class: 'bg-etc' };
         }
 
         function handleImageError(imgElement) {
@@ -186,7 +204,7 @@
             const categories = [...new Set(allProducts.map(p => p.category))].filter(c => c);
             categories.forEach(cat => {
                 const div = document.createElement('div');
-                div.className = "dropdown-item px-8 py-4 cursor-pointer font-bold text-sm text-slate-600 transition-all";
+                div.className = "dropdown-item px-8 py-4 cursor-pointer font-black text-xs uppercase tracking-tighter text-slate-500 transition-all";
                 div.innerText = cat;
                 div.onclick = function() { filterItems(cat); };
                 menu.appendChild(div);
@@ -195,7 +213,7 @@
 
         function filterItems(cat) {
             currentCategory = cat;
-            document.getElementById('current-category-text').innerText = cat === '전체' ? '카테고리 전체' : cat;
+            document.getElementById('current-category-text').innerText = cat === '전체' ? 'Category All' : cat;
             document.getElementById('dropdown-menu').classList.remove('show');
             document.getElementById('dropdown-arrow').style.transform = 'rotate(0)';
             handleSearch();
@@ -205,23 +223,23 @@
             const grid = document.getElementById('product-grid');
             grid.innerHTML = data.map(p => {
                 const platform = getPlatform(p.link);
-                const imgTag = p.img ? `<img src="${p.img}" class="w-full h-full object-cover transition-all" onerror="handleImageError(this)">` : '';
+                const imgTag = p.img ? `<img src="${p.img}" class="w-full h-full object-cover" onerror="handleImageError(this)">` : '';
                 const displayNoImage = !p.img ? 'flex' : 'none';
 
                 return `
                     <div class="product-card flex flex-col relative group">
                         <span class="platform-badge ${platform.class}">${platform.name}</span>
-                        <div class="thumbnail-container overflow-hidden aspect-square flex items-center justify-center bg-slate-50 relative">
+                        <div class="thumbnail-container overflow-hidden aspect-[4/5] flex items-center justify-center bg-[#f1f5f9] relative">
                             ${imgTag}
                             <div class="no-image-box" style="display: ${displayNoImage}">
-                                <span class="text-[9px] mb-2 font-black opacity-30 uppercase tracking-[0.2em]">Pick & Share</span>
+                                <span class="text-[9px] mb-4 font-black opacity-20 uppercase tracking-[0.4em]">Pick & Share</span>
                                 <span class="no-image-title">${p.name}</span>
                             </div>
                         </div>
-                        <div class="p-8 flex-1 flex flex-col items-center">
-                            <span class="text-[10px] font-black text-slate-300 mb-2 tracking-[0.15em] uppercase">${p.category}</span>
-                            <h2 class="text-[15px] md:text-[16px] font-bold text-slate-800 mb-8 line-clamp-2 leading-relaxed h-[48px]">${p.name}</h2>
-                            <a href="${p.link}" target="_blank" class="check-btn mt-auto block w-full bg-slate-900 text-white text-center py-4 rounded-2xl text-[11px] font-black tracking-[0.2em] hover:bg-indigo-600 shadow-lg shadow-indigo-100 uppercase">Check Item</a>
+                        <div class="p-8 flex-1 flex flex-col items-start text-left">
+                            <span class="text-[9px] font-black text-slate-300 mb-2 tracking-[0.2em] uppercase">${p.category}</span>
+                            <h2 class="text-[16px] font-bold text-black mb-10 line-clamp-2 leading-tight h-[44px] tracking-tight">${p.name}</h2>
+                            <a href="${p.link}" target="_blank" class="check-btn mt-auto block w-full py-5 rounded-full text-center text-[11px] font-[900] tracking-[0.3em] uppercase">Check Item</a>
                         </div>
                     </div>
                 `;
