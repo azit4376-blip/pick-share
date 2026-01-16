@@ -8,6 +8,7 @@
     <style>
         @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-33.33%); } }
         .animate-marquee { display: flex; width: max-content; animation: marquee 35s linear infinite; }
+        .animate-marquee:hover { animation-play-state: paused; }
         .product-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 1.5rem; overflow: hidden; background: white; }
         .product-card:hover { transform: translateY(-8px); box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.15); }
         .platform-badge { position: absolute; top: 12px; right: 12px; z-index: 20; padding: 4px 10px; border-radius: 8px; font-weight: 800; font-size: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.15); }
@@ -15,24 +16,22 @@
         .bg-naver { background-color: #22c55e; color: white; }   
         .bg-etc { background-color: #64748b; color: white; }
 
-        /* 이미지가 없을 때 보여줄 상품명 로고 박스 스타일 */
         .no-image-box {
             display: none;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 24px;
             text-align: center;
         }
-        /* 이미지 영역 안의 상품명 스타일 (두 줄 제한) */
         .no-image-title {
-            color: #1e293b;
+            color: #475569;
             font-weight: 800;
-            font-size: 16px;
-            line-height: 1.4;
+            font-size: 15px;
+            line-height: 1.5;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
@@ -50,9 +49,8 @@
 <body class="bg-[#f8fafc] text-slate-900 overflow-x-hidden font-sans">
     <div class="fixed top-0 left-0 w-full z-[100] bg-zinc-900 border-b border-zinc-800 py-3.5 overflow-hidden shadow-2xl">
         <div class="animate-marquee flex items-center">
-            <span class="text-[11px] md:text-xs text-zinc-100 font-bold px-10">📢 이 포스팅은 쿠팡 파트너스 및 네이버 쇼핑 커넥트 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다. &nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <span class="text-[11px] md:text-xs text-zinc-100 font-bold px-10">📢 이 포스팅은 쿠팡 파트너스 및 네이버 쇼핑 커넥트 활동의 일환으로 수수료를 제공받습니다. &nbsp;&nbsp;&nbsp;&nbsp;</span>
             <span class="text-[11px] md:text-xs text-zinc-100 font-bold px-10">📢 하단 링크를 통해 구매하시면 쿠팡, 네이버로부터 일정액의 수수료를 제공받습니다. &nbsp;&nbsp;&nbsp;&nbsp;</span>
-            <span class="text-[11px] md:text-xs text-zinc-100 font-bold px-10">📢 이 포스팅은 쿠팡 파트너스 및 네이버 쇼핑 커넥트 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다. &nbsp;&nbsp;&nbsp;&nbsp;</span>
         </div>
     </div>
     
@@ -96,7 +94,6 @@
     </footer>
 
     <script>
-        // 시트 연동 로직 유지
         function _0x2c0d(){const _0xf3d8ac=['352809eEqxfl','3717350Djoyuz','597TiifWw','2726ulDhfx','4404150bUVgvd','10YCgTlv','21681531ABBgdM','1lLggHBBBSncQ6aY2X1NVCgRVEvTM9xidhR1Cni8MPew','16EbLmoB','1328943VumOoF','2539632GWaYMi'];_0x2c0d=function(){return _0xf3d8ac;};return _0x2c0d();}const _0x33718e=_0x4d7b;function _0x4d7b(_0x4019fd,_0x25b4e7){_0x4019fd=_0x4019fd-0x165;const _0x2c0d2b=_0x2c0d();let _0x4d7be7=_0x2c0d2b[_0x4019fd];return _0x4d7be7;}(function(_0x4b7caf,_0x45a940){const _0x2eb1a1=_0x4d7b,_0x143e07=_0x4b7caf();while(!![]){try{const _0x1ae0d1=parseInt(_0x2eb1a1(0x169))/0x1*(parseInt(_0x2eb1a1(0x16a))/0x2)+-parseInt(_0x2eb1a1(0x167))/0x3*(-parseInt(_0x2eb1a1(0x16f))/0x4)+parseInt(_0x2eb1a1(0x168))/0x5+parseInt(_0x2eb1a1(0x16b))/0x6+-parseInt(_0x2eb1a1(0x165))/0x7+parseInt(_0x2eb1a1(0x166))/0x8+parseInt(_0x2eb1a1(0x16d))/0x9*(-parseInt(_0x2eb1a1(0x16c))/0xa);if(_0x1ae0d1===_0x45a940)break;else _0x143e07['push'](_0x143e07['shift']());}catch(_0x404aca){_0x143e07['push'](_0x143e07['shift']());}}}(_0x2c0d,0x753a4));
         const SHEET_ID=_0x33718e(0x16e);
         const SHEET_NAME = '시트1'; 
@@ -115,7 +112,6 @@
             return { name: 'ITEM', class: 'bg-etc' };
         }
 
-        // 이미지 오류 시 실행될 함수
         function handleImageError(imgElement) {
             imgElement.style.display = 'none';
             const box = imgElement.parentElement.querySelector('.no-image-box');
@@ -173,7 +169,7 @@
                         <div class="overflow-hidden aspect-square flex items-center justify-center bg-slate-50 relative">
                             ${imgTag}
                             <div class="no-image-box" style="display: ${displayNoImage}">
-                                <span class="text-[10px] mb-2 font-bold opacity-30 italic">Pick & Share</span>
+                                <span class="text-[10px] mb-2 font-black opacity-20 uppercase tracking-widest">Pick & Share</span>
                                 <span class="no-image-title">${p.name}</span>
                             </div>
                         </div>
