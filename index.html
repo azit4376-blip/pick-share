@@ -9,34 +9,39 @@
         /* 기존 디자인 유지 */
         @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-33.33%); } }
         .animate-marquee { display: flex; width: max-content; animation: marquee 35s linear infinite; }
+        .animate-marquee:hover { animation-play-state: paused; }
         .product-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 1.5rem; overflow: hidden; background: white; }
         .product-card:hover { transform: translateY(-8px); box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.15); }
         .platform-badge { position: absolute; top: 12px; right: 12px; z-index: 20; padding: 4px 10px; border-radius: 8px; font-weight: 800; font-size: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.15); }
         .bg-coupang { background-color: #ef4444; color: white; } 
         .bg-naver { background-color: #22c55e; color: white; }   
+        .bg-etc { background-color: #64748b; color: white; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
         
-        /* 드롭다운 애니메이션 및 스타일 */
-        #dropdown-menu { 
-            display: none; 
-            max-height: 300px; 
-            overflow-y: auto; 
-            z-index: 200;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        }
+        /* 드롭다운 스타일 */
+        #dropdown-menu { display: none; max-height: 300px; overflow-y: auto; z-index: 200; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
         #dropdown-menu.show { display: block; animation: fadeIn 0.2s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-        
         .dropdown-item:hover { background-color: #f1f5f9; }
-        .active-category { background-color: #000; color: #fff; }
     </style>
 </head>
 <body class="bg-[#f8fafc] text-slate-900 overflow-x-hidden font-sans">
     <div class="fixed top-0 left-0 w-full z-[100] bg-zinc-900 border-b border-zinc-800 py-3.5 overflow-hidden shadow-2xl">
         <div class="animate-marquee flex items-center">
-            <span class="text-[11px] md:text-xs text-zinc-100 font-bold px-10">📢 이 포스팅은 쿠팡 파트너스 및 네이버 쇼핑 커넥트 활동의 일환으로 수수료를 제공받습니다. &nbsp;&nbsp;</span>
+            <span class="text-[11px] md:text-xs text-zinc-100 font-bold px-10">📢 이 포스팅은 쿠팡 파트너스 및 네이버 쇼핑 커넥트 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다. &nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <span class="text-[11px] md:text-xs text-zinc-100 font-bold px-10">📢 하단 링크를 통해 구매하시면 쿠팡, 네이버로부터 일정액의 수수료를 제공받습니다. &nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <span class="text-[11px] md:text-xs text-zinc-100 font-bold px-10">📢 이 포스팅은 쿠팡 파트너스 및 네이버 쇼핑 커넥트 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다. &nbsp;&nbsp;&nbsp;&nbsp;</span>
         </div>
     </div>
+    
     <div class="h-[46px]"></div>
+
+    <header class="bg-white py-16 border-b border-slate-100 shadow-sm">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-5xl font-black text-slate-900 tracking-tighter mb-4 uppercase">Pick & Share</h1>
+            <p class="text-slate-500 text-sm md:text-base font-medium max-w-lg mx-auto leading-relaxed px-4">선별하여 공유하는 추천 리스트입니다.</p>
+        </div>
+    </header>
 
     <main class="container mx-auto px-4 py-12 max-w-6xl">
         <div class="flex flex-col md:flex-row gap-3 mb-12">
@@ -52,33 +57,49 @@
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7"></path></svg>
                 </button>
                 
-                <div id="dropdown-menu" class="absolute top-full left-0 w-full mt-2 bg-white rounded-2xl border border-slate-100 py-2 origin-top">
+                <div id="dropdown-menu" class="absolute top-full left-0 w-full mt-2 bg-white rounded-2xl border border-slate-100 py-2 origin-top no-scrollbar">
                     <div onclick="filterItems('전체')" class="dropdown-item px-6 py-3 cursor-pointer font-bold text-sm text-slate-600">전체보기</div>
-                    </div>
+                </div>
             </div>
         </div>
 
         <div id="product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-10 text-center"></div>
     </main>
 
+    <footer class="bg-white py-14 border-t border-slate-100 mt-20 text-center">
+        <div class="max-w-2xl mx-auto px-6 mb-6 text-slate-500 text-[11px] md:text-xs leading-relaxed font-medium">
+            ※ 이 포스팅은 쿠팡 파트너스 및 네이버 쇼핑 커넥트 활동의 일환으로 일정액의 수수료를 제공받습니다.<br>
+            하단 링크로 구매 시 쿠팡, 네이버로부터 수수료를 제공받습니다.
+        </div>
+        <p class="text-slate-300 text-[10px] font-black tracking-widest uppercase">© 2026 Pick & Share. All rights reserved.</p>
+    </footer>
+
     <script>
-        const SHEET_ID = '1lLggHBBBSncQ6aY2X1NVCgRVEvTM9xidhR1Cni8MPew'; // 기존 ID 유지
-        const SHEET_NAME = '시트1';
+        // 난독화된 시트 ID 원래대로 복구
+        function _0x2c0d(){const _0xf3d8ac=['352809eEqxfl','3717350Djoyuz','597TiifWw','2726ulDhfx','4404150bUVgvd','10YCgTlv','21681531ABBgdM','1lLggHBBBSncQ6aY2X1NVCgRVEvTM9xidhR1Cni8MPew','16EbLmoB','1328943VumOoF','2539632GWaYMi'];_0x2c0d=function(){return _0xf3d8ac;};return _0x2c0d();}const _0x33718e=_0x4d7b;function _0x4d7b(_0x4019fd,_0x25b4e7){_0x4019fd=_0x4019fd-0x165;const _0x2c0d2b=_0x2c0d();let _0x4d7be7=_0x2c0d2b[_0x4019fd];return _0x4d7be7;}(function(_0x4b7caf,_0x45a940){const _0x2eb1a1=_0x4d7b,_0x143e07=_0x4b7caf();while(!![]){try{const _0x1ae0d1=parseInt(_0x2eb1a1(0x169))/0x1*(parseInt(_0x2eb1a1(0x16a))/0x2)+-parseInt(_0x2eb1a1(0x167))/0x3*(-parseInt(_0x2eb1a1(0x16f))/0x4)+parseInt(_0x2eb1a1(0x168))/0x5+parseInt(_0x2eb1a1(0x16b))/0x6+-parseInt(_0x2eb1a1(0x165))/0x7+parseInt(_0x2eb1a1(0x166))/0x8+parseInt(_0x2eb1a1(0x16d))/0x9*(-parseInt(_0x2eb1a1(0x16c))/0xa);if(_0x1ae0d1===_0x45a940)break;else _0x143e07['push'](_0x143e07['shift']());}catch(_0x404aca){_0x143e07['push'](_0x143e07['shift']());}}}(_0x2c0d,0x753a4));
+        const SHEET_ID=_0x33718e(0x16e);
+
+        const SHEET_NAME = '시트1'; 
         const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${SHEET_NAME}`;
 
         let allProducts = [];
         let currentCategory = '전체';
 
-        // 드롭다운 토글 기능
         function toggleDropdown() {
             document.getElementById('dropdown-menu').classList.toggle('show');
         }
 
-        // 외부 클릭 시 드롭다운 닫기
         window.onclick = function(event) {
             if (!event.target.closest('#category-btn')) {
                 document.getElementById('dropdown-menu').classList.remove('show');
             }
+        }
+
+        function getPlatform(link) {
+            const l = link.toLowerCase();
+            if (l.includes('coupang.com')) return { name: 'COUPANG', class: 'bg-coupang' };
+            if (l.includes('naver.com') || l.includes('smartstore') || l.includes('naver.me')) return { name: 'NAVER', class: 'bg-naver' };
+            return { name: 'ITEM', class: 'bg-etc' };
         }
 
         async function fetchSheetData() {
@@ -86,7 +107,6 @@
                 const response = await fetch(url);
                 const data = await response.text();
                 const rows = data.split('\n').slice(1);
-                
                 allProducts = rows.map(row => {
                     const cols = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
                     return {
@@ -96,18 +116,14 @@
                         img: cols[3]?.replace(/"/g, '').trim()
                     };
                 }).filter(p => p.name);
-
-                generateCategoryMenu(); // 드롭다운 메뉴 생성
+                generateCategoryMenu(); 
                 displayProducts(allProducts);
-            } catch (e) {
-                console.error(e);
-            }
+            } catch (e) { console.error(e); }
         }
 
         function generateCategoryMenu() {
             const menu = document.getElementById('dropdown-menu');
-            const categories = [...new Set(allProducts.map(p => p.category))].filter(c => c);
-            
+            const categories = [...new Set(allProducts.map(p => p.category))].filter(c => c && c !== "");
             categories.forEach(cat => {
                 const div = document.createElement('div');
                 div.className = "dropdown-item px-6 py-3 cursor-pointer font-bold text-sm text-slate-600 transition-all";
@@ -121,22 +137,7 @@
             currentCategory = cat;
             document.getElementById('current-category-text').innerText = cat === '전체' ? '전체보기' : cat;
             document.getElementById('dropdown-menu').classList.remove('show');
-            
-            // 드롭다운 아이튼 중 선택된 것 강조 (선택 사항)
-            document.querySelectorAll('.dropdown-item').forEach(item => {
-                item.style.color = item.innerText === cat ? '#000' : '';
-                item.style.backgroundColor = item.innerText === cat ? '#f8fafc' : '';
-            });
-
             handleSearch();
-        }
-
-        // 기존 getPlatform, displayProducts, handleSearch 함수 로직은 동일
-        function getPlatform(link) {
-            const l = link.toLowerCase();
-            if (l.includes('coupang.com')) return { name: 'COUPANG', class: 'bg-coupang' };
-            if (l.includes('naver.me') || l.includes('smartstore')) return { name: 'NAVER', class: 'bg-naver' };
-            return { name: 'ITEM', class: 'bg-etc' };
         }
 
         function displayProducts(data) {
@@ -147,7 +148,7 @@
                     <div class="product-card border border-slate-50 flex flex-col relative group">
                         <span class="platform-badge ${platform.class}">${platform.name}</span>
                         <div class="overflow-hidden aspect-square">
-                            <img src="${p.img}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                            <img src="${p.img}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" onerror="this.src='https://via.placeholder.com/400?text=Pick+&Share'">
                         </div>
                         <div class="p-6 flex-1 flex flex-col items-center">
                             <span class="text-[10px] font-black text-slate-300 mb-2 tracking-widest uppercase">${p.category}</span>
@@ -169,4 +170,3 @@
     </script>
 </body>
 </html>
-
