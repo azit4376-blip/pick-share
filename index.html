@@ -14,33 +14,31 @@
 
         body { background-color: #f3f6f7; color: var(--rider-dark); font-family: 'Do Hyeon', sans-serif; }
 
-        /* 1. 상단 고정 공정위 배너 */
+        /* 상단 공정위 배너 고정 */
         @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-33.33%); } }
         .animate-marquee { display: flex; width: max-content; animation: marquee 35s linear infinite; }
         .rider-banner { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; background: var(--rider-dark); border-bottom: 3px solid var(--rider-mint); }
         .rider-text { font-family: 'Noto Sans KR', sans-serif; font-size: 11px; color: #fff; font-weight: 700; }
 
-        /* 2. 카드 상호작용 디자인 */
+        /* 카드 디자인 */
         .product-card { 
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
             background: #fff; border-radius: 1.5rem; border: 2px solid #e2e8f0; overflow: hidden;
-            cursor: pointer;
+            cursor: pointer; display: flex; flex-direction: column;
         }
         .product-card:hover { 
             border-color: var(--rider-mint); transform: translateY(-8px);
             box-shadow: 0 20px 25px -5px rgba(42, 193, 188, 0.15);
         }
 
-        /* 3. 썸네일 애니메이션 (이미지 미적용 박스 포함) */
+        /* 썸네일 영역 */
         .thumbnail-container { position: relative; overflow: hidden; background: #f8fafc; width: 100%; aspect-ratio: 1/1; }
         .thumbnail-container img, .no-image-box { 
             transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); 
             width: 100%; height: 100%;
         }
         .product-card:hover .thumbnail-container img, 
-        .product-card:hover .no-image-box { 
-            transform: scale(1.1); 
-        }
+        .product-card:hover .no-image-box { transform: scale(1.1); }
 
         .no-image-box {
             display: none; flex-direction: column; justify-content: center; align-items: center; 
@@ -51,14 +49,22 @@
             text-align: center; line-clamp: 2; display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden;
         }
 
-        /* 4. 필터 및 입력창 */
+        /* [핵심 수정] 상품명 영역 높이 고정 및 여백 확보 */
+        .product-title {
+            font-size: 15px; font-weight: bold; color: #1a1c1d;
+            text-align: center; tracking: -0.02em; line-height: 1.4;
+            /* 두 줄 높이를 강제로 확보 (겹침 방지) */
+            height: 2.8em; 
+            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; 
+            overflow: hidden; margin-bottom: 1.5rem; /* 버튼과의 여백 */
+        }
+
         .rider-input { background: #fff; border: 2px solid var(--rider-mint); border-radius: 12px; padding: 12px 20px; outline: none; }
         #dropdown-menu { display: none; max-height: 300px; overflow-y: auto; z-index: 200; background: #fff; border: 2px solid var(--rider-mint); border-radius: 12px; margin-top: 5px; }
         #dropdown-menu.show { display: block; animation: slideDown 0.2s ease; }
         .dropdown-item:hover { background-color: #f0fdfa; color: var(--rider-mint); }
         
-        /* 5. 버튼 디자인 */
-        .check-btn { background: var(--rider-mint); color: #fff; font-weight: 900; transition: 0.2s; border-radius: 12px; }
+        .check-btn { background: var(--rider-mint); color: #fff; font-weight: 900; transition: 0.2s; border-radius: 12px; width: 100%; text-align: center; py-4; text-xs; }
         .check-btn:hover { background: #24a7a3; }
 
         .platform-badge { position: absolute; top: 12px; left: 12px; z-index: 20; padding: 4px 10px; border-radius: 8px; font-weight: 900; font-size: 11px; color: #fff; }
@@ -187,10 +193,10 @@
                                 <span class="no-image-title">${p.name}</span>
                             </div>
                         </div>
-                        <div class="p-6 flex-1 flex flex-col items-center">
-                            <span class="text-[11px] font-bold text-teal-600 mb-2 tracking-widest uppercase italic">${p.category}</span>
-                            <h2 class="text-[15px] font-bold text-slate-800 mb-6 line-clamp-2 h-[34px] text-center tracking-tight">${p.name}</h2>
-                            <a href="${p.link}" target="_blank" class="check-btn mt-auto block w-full text-center py-4 text-xs">상세 정보 확인</a>
+                        <div class="p-6 flex-1 flex flex-col">
+                            <span class="text-[11px] font-bold text-teal-600 mb-2 tracking-widest uppercase italic text-center">${p.category}</span>
+                            <h2 class="product-title">${p.name}</h2>
+                            <a href="${p.link}" target="_blank" class="check-btn mt-auto block py-4 text-xs font-black uppercase tracking-widest">상세 정보 확인</a>
                         </div>
                     </div>
                 `;
