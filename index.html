@@ -46,7 +46,8 @@
 
     <main class="container mx-auto px-4 py-8 max-w-6xl">
         <div class="flex flex-col md:flex-row gap-4 mb-16 items-center">
-            <input type="text" id="searchInput" onkeyup="handleSearch()" placeholder="추천 상품 검색" class="rider-input flex-1 w-full shadow-sm">
+            <input type="text" id="searchInput" onkeyup="handleSearch()" placeholder="상품명 또는 카테고리 검색" class="rider-input flex-1 w-full shadow-sm">
+            
             <div class="relative w-full md:w-64">
                 <button onclick="toggleDropdown()" id="category-btn" class="rider-input w-full flex justify-between items-center shadow-sm font-bold">
                     <span id="current-category-text">전체 상품 카테고리</span>
@@ -68,6 +69,7 @@
     </footer>
 
     <script>
+        // 시트 데이터 연동 (기존 로직 유지)
         function _0x2c0d(){const _0xf3d8ac=['352809eEqxfl','3717350Djoyuz','597TiifWw','2726ulDhfx','4404150bUVgvd','10YCgTlv','21681531ABBgdM','1lLggHBBBSncQ6aY2X1NVCgRVEvTM9xidhR1Cni8MPew','16EbLmoB','1328943VumOoF','2539632GWaYMi'];_0x2c0d=function(){return _0xf3d8ac;};return _0x2c0d();}const _0x33718e=_0x4d7b;function _0x4d7b(_0x4019fd,_0x25b4e7){_0x4019fd=_0x4019fd-0x165;const _0x2c0d2b=_0x2c0d();let _0x4d7be7=_0x2c0d2b[_0x4019fd];return _0x4d7be7;}(function(_0x4b7caf,_0x45a940){const _0x2eb1a1=_0x4d7b,_0x143e07=_0x4b7caf();while(!![]){try{const _0x1ae0d1=parseInt(_0x2eb1a1(0x169))/0x1*(parseInt(_0x2eb1a1(0x16a))/0x2)+-parseInt(_0x2eb1a1(0x167))/0x3*(-parseInt(_0x2eb1a1(0x16f))/0x4)+parseInt(_0x2eb1a1(0x168))/0x5+parseInt(_0x2eb1a1(0x16b))/0x6+-parseInt(_0x2eb1a1(0x165))/0x7+parseInt(_0x2eb1a1(0x166))/0x8+parseInt(_0x2eb1a1(0x16d))/0x9*(-parseInt(_0x2eb1a1(0x16c))/0xa);if(_0x1ae0d1===_0x45a940)break;else _0x143e07['push'](_0x143e07['shift']());}catch(_0x404aca){_0x143e07['push'](_0x143e07['shift']());}}}(_0x2c0d,0x753a4));
         const SHEET_ID=_0x33718e(0x16e);
         const SHEET_NAME = '시트1'; 
@@ -100,11 +102,10 @@
                 allProducts = rows.map(row => {
                     const cols = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
                     const rawCategory = cols[0]?.replace(/"/g, '').trim() || "";
-                    // [핵심] 콤마로 분리하여 배열로 저장
                     const categoryList = rawCategory.split(',').map(c => c.trim()).filter(c => c);
                     return {
                         category: rawCategory,
-                        categories: categoryList,
+                        categories: categoryList, // 다중 카테고리 배열
                         name: cols[1]?.replace(/"/g, '').trim(),
                         link: cols[2]?.replace(/"/g, '').trim(),
                         img: cols[3]?.replace(/"/g, '').trim()
@@ -117,7 +118,6 @@
 
         function generateCategoryMenu() {
             const menu = document.getElementById('dropdown-menu');
-            // [핵심] 모든 개별 카테고리를 모아서 중복 제거
             const allCats = [];
             allProducts.forEach(p => allCats.push(...p.categories));
             const uniqueCategories = [...new Set(allCats)];
@@ -165,13 +165,23 @@
             }).join('');
         }
 
+        // [핵심] 검색 로직 업데이트: 상품명 + 카테고리 동시 체크
         function handleSearch() {
             const query = document.getElementById('searchInput').value.toLowerCase();
             const filtered = allProducts.filter(p => {
-                const matchesSearch = p.name.toLowerCase().includes(query);
-                // [핵심] 카테고리 배열에 선택한 카테고리가 포함되어 있는지 확인
-                const matchesCategory = (currentCategory === '전체' || p.categories.includes(currentCategory));
-                return matchesSearch && matchesCategory;
+                // 1. 상품명에 검색어 포함 여부
+                const matchesName = p.name.toLowerCase().includes(query);
+                
+                // 2. 카테고리(콤마로 구분된 전체 문자열)에 검색어 포함 여부
+                const matchesCategorySearch = p.category.toLowerCase().includes(query);
+                
+                // 검색 결과는 이름 혹은 카테고리 중 하나만 일치해도 트루
+                const matchesQuery = matchesName || matchesCategorySearch;
+                
+                // 3. 현재 드롭다운에서 선택된 카테고리 필터와 일치하는지
+                const matchesDropdown = (currentCategory === '전체' || p.categories.includes(currentCategory));
+                
+                return matchesQuery && matchesDropdown;
             });
             displayProducts(filtered);
         }
