@@ -9,10 +9,10 @@
     <style>
         :root { --rider-mint: #2ac1bc; --rider-dark: #1a1c1d; }
         body { background-color: #f3f6f7; color: var(--rider-dark); font-family: 'Do Hyeon', sans-serif; padding-top: 48px; }
-        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-33.33%); } }
-        .animate-marquee { display: flex; width: max-content; animation: marquee 40s linear infinite; }
-        .rider-banner { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; background: var(--rider-dark); border-bottom: 3px solid var(--rider-mint); height: 40px; display: flex; align-items: center; }
-        .rider-text { font-family: 'Noto Sans KR', sans-serif; font-size: 11px; color: #fff; font-weight: 700; white-space: nowrap; }
+        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        .animate-marquee { display: flex; width: max-content; animation: marquee 35s linear infinite; }
+        .rider-banner { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; background: var(--rider-dark); border-bottom: 3px solid var(--rider-mint); height: 40px; display: flex; align-items: center; overflow: hidden; }
+        .rider-text { font-family: 'Noto Sans KR', sans-serif; font-size: 11px; color: #fff; font-weight: 700; white-space: nowrap; padding-right: 50px; }
         .product-card { transition: all 0.3s ease; background: #fff; border-radius: 1.5rem; border: 2px solid #e2e8f0; overflow: hidden; display: flex; flex-direction: column; height: 100%; }
         .product-card:hover { border-color: var(--rider-mint); transform: translateY(-8px); box-shadow: 0 20px 25px -5px rgba(42, 193, 188, 0.15); }
         .thumbnail-container { position: relative; overflow: hidden; background: #f8fafc; width: 100%; aspect-ratio: 1/1; }
@@ -27,17 +27,27 @@
 </head>
 <body>
 
-    <div class="rider-banner shadow-lg overflow-hidden">
+    <div class="rider-banner shadow-lg">
         <div class="animate-marquee">
-            <span class="rider-text px-10">📢 이 포스팅은 쿠팡 파트너스 및 네이버 쇼핑 커넥트 활동의 일환으로 일정액의 수수료를 제공받습니다.</span>
-            <span class="rider-text px-10">📢 이 포스팅은 쿠팡 파트너스 및 네이버 쇼핑 커넥트 활동의 일환으로 일정액의 수수료를 제공받습니다.</span>
-            <span class="rider-text px-10">📢 이 포스팅은 쿠팡 파트너스 및 네이버 쇼핑 커넥트 활동의 일환으로 일정액의 수수료를 제공받습니다.</span>
+            <div class="flex">
+                <span class="rider-text">📢 이 포스팅은 쿠팡 파트너스 및 네이버 쇼핑 커넥트 활동의 일환으로 일정액의 수수료를 제공받습니다.</span>
+                <span class="rider-text">📢 이 포스팅은 쿠팡 파트너스 및 네이버 쇼핑 커넥트 활동의 일환으로 일정액의 수수료를 제공받습니다.</span>
+                <span class="rider-text">📢 이 포스팅은 쿠팡 파트너스 및 네이버 쇼핑 커넥트 활동의 일환으로 일정액의 수수료를 제공받습니다.</span>
+            </div>
+            <div class="flex">
+                <span class="rider-text">📢 이 포스팅은 쿠팡 파트너스 및 네이버 쇼핑 커넥트 활동의 일환으로 일정액의 수수료를 제공받습니다.</span>
+                <span class="rider-text">📢 이 포스팅은 쿠팡 파트너스 및 네이버 쇼핑 커넥트 활동의 일환으로 일정액의 수수료를 제공받습니다.</span>
+                <span class="rider-text">📢 이 포스팅은 쿠팡 파트너스 및 네이버 쇼핑 커넥트 활동의 일환으로 일정액의 수수료를 제공받습니다.</span>
+            </div>
         </div>
     </div>
 
-    <header class="py-20 text-center">
+    <header class="pt-20 pb-10 text-center">
         <div class="container mx-auto px-4">
             <h1 class="text-7xl md:text-9xl font-black text-[#2ac1bc] italic uppercase mb-2" style="-webkit-text-stroke: 1.5px #fff; filter: drop-shadow(4px 4px 0px rgba(42,193,188,0.2));">PICK & SHARE</h1>
+            <div class="mt-4">
+                <span id="real-time-clock" class="text-slate-400 text-[13px] font-bold tracking-widest uppercase italic">LOADING...</span>
+            </div>
         </div>
     </header>
 
@@ -58,9 +68,6 @@
     </main>
 
     <footer class="bg-white py-16 border-t-4 border-teal-500 text-center mt-20">
-        <div class="mb-6 text-center">
-            <span id="real-time-clock" class="text-slate-400 text-[11px] font-bold tracking-widest uppercase italic">LOADING...</span>
-        </div>
         <p class="text-slate-400 text-[11px] font-bold uppercase tracking-widest leading-loose">
             © 2026 PICK & SHARE. ALL RIGHTS RESERVED.
         </p>
@@ -148,7 +155,8 @@
         function updateClock() {
             const n = new Date();
             const days = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
-            document.getElementById('real-time-clock').innerText = `${n.getFullYear()}. ${n.getMonth()+1}. ${n.getDate()}. ${days[n.getDay()]} | ${String(n.getHours()).padStart(2,'0')}:${String(n.getMinutes()).padStart(2,'0')}:${String(n.getSeconds()).padStart(2,'0')}`;
+            const clockStr = `${n.getFullYear()}. ${n.getMonth()+1}. ${n.getDate()}. ${days[n.getDay()]} | ${String(n.getHours()).padStart(2,'0')}:${String(n.getMinutes()).padStart(2,'0')}:${String(n.getSeconds()).padStart(2,'0')}`;
+            document.getElementById('real-time-clock').innerText = clockStr;
         }
 
         setInterval(updateClock, 1000);
