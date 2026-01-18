@@ -8,33 +8,36 @@
     <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Do+Hyeon&family=Noto+Sans+KR:wght@900&display=swap" rel="stylesheet">
     <style>
         :root { --rider-mint: #2ac1bc; --rider-dark: #1a1c1d; }
-        body { background-color: #f3f6f7; color: var(--rider-dark); font-family: 'Do Hyeon', sans-serif; }
+        body { background-color: #f3f6f7; color: var(--rider-dark); font-family: 'Do Hyeon', sans-serif; padding-top: 48px; }
         @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-33.33%); } }
-        .animate-marquee { display: flex; width: max-content; animation: marquee 35s linear infinite; }
-        .rider-banner { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; background: var(--rider-dark); border-bottom: 3px solid var(--rider-mint); }
-        .rider-text { font-family: 'Noto Sans KR', sans-serif; font-size: 11px; color: #fff; font-weight: 700; }
-        .product-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); background: #fff; border-radius: 1.5rem; border: 2px solid #e2e8f0; overflow: hidden; cursor: pointer; display: flex; flex-direction: column; }
+        .animate-marquee { display: flex; width: max-content; animation: marquee 40s linear infinite; }
+        .rider-banner { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; background: var(--rider-dark); border-bottom: 3px solid var(--rider-mint); height: 40px; display: flex; align-items: center; }
+        .rider-text { font-family: 'Noto Sans KR', sans-serif; font-size: 11px; color: #fff; font-weight: 700; white-space: nowrap; }
+        .product-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); background: #fff; border-radius: 1.5rem; border: 2px solid #e2e8f0; overflow: hidden; display: flex; flex-direction: column; height: 100%; }
         .product-card:hover { border-color: var(--rider-mint); transform: translateY(-8px); box-shadow: 0 20px 25px -5px rgba(42, 193, 188, 0.15); }
         .thumbnail-container { position: relative; overflow: hidden; background: #f8fafc; width: 100%; aspect-ratio: 1/1; }
         .thumbnail-container img, .no-image-box { transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); width: 100%; height: 100%; }
-        .product-card:hover .thumbnail-container img, .product-card:hover .no-image-box { transform: scale(1.1); }
-        .no-image-box { display: none; flex-direction: column; justify-content: center; align-items: center; padding: 20px; text-align: center; pointer-events: none; }
-        .no-image-title { color: var(--rider-mint); font-weight: 700; font-size: 16px; text-align: center; line-clamp: 2; display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; }
-        .product-title { font-size: 15px; font-weight: bold; color: #1a1c1d; text-align: center; tracking: -0.02em; line-height: 1.4; height: 2.8em; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 1.5rem; }
+        .product-card:hover .thumbnail-container img { transform: scale(1.1); }
+        .no-image-box { display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; text-align: center; }
+        .no-image-title { color: var(--rider-mint); font-weight: 700; font-size: 16px; line-clamp: 2; display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; }
+        .product-title { font-size: 15px; font-weight: bold; color: #1a1c1d; text-align: center; line-height: 1.4; height: 2.8em; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 1.5rem; padding: 0 10px; }
         .rider-input { background: #fff; border: 2px solid var(--rider-mint); border-radius: 12px; padding: 12px 20px; outline: none; }
         #dropdown-menu { display: none; max-height: 300px; overflow-y: auto; z-index: 200; background: #fff; border: 2px solid var(--rider-mint); border-radius: 12px; margin-top: 5px; }
-        #dropdown-menu.show { display: block; animation: slideDown 0.2s ease; }
+        #dropdown-menu.show { display: block; }
         .dropdown-item:hover { background-color: #f0fdfa; color: var(--rider-mint); }
-        .check-btn { background: var(--rider-mint); color: #fff; font-weight: 900; transition: 0.2s; border-radius: 12px; width: 100%; text-align: center; py-4; text-xs; }
+        .check-btn { background: var(--rider-mint); color: #fff; font-weight: 900; border-radius: 12px; width: calc(100% - 32px); margin: 0 auto 20px; text-align: center; padding: 12px 0; text-xs; position: relative; overflow: hidden; cursor: pointer; }
+        .check-btn::after { content: ''; position: absolute; top: -50%; left: -60%; width: 20%; height: 200%; background: rgba(255, 255, 255, 0.3); transform: rotate(30deg); transition: 0.5s; }
+        .product-card:hover .check-btn::after { left: 120%; }
         .platform-badge { position: absolute; top: 12px; left: 12px; z-index: 20; padding: 4px 10px; border-radius: 8px; font-weight: 900; font-size: 11px; color: #fff; }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
     </style>
 </head>
-<body class="pt-[48px]">
+<body>
 
-    <div class="rider-banner py-3 shadow-lg overflow-hidden">
-        <div class="animate-marquee flex items-center">
-            <span class="rider-text px-10">📢 이 포스팅은 쿠팡 파트너스 및 네이버 쇼핑 커넥트 활동의 일환으로 일정액의 수수료를 제공받습니다. &nbsp;&nbsp;&nbsp;&nbsp;</span>
+    <div class="rider-banner shadow-lg overflow-hidden">
+        <div class="animate-marquee">
+            <span class="rider-text px-10">📢 이 포스팅은 쿠팡 파트너스 및 네이버 쇼핑 커넥트 활동의 일환으로 일정액의 수수료를 제공받습니다.</span>
+            <span class="rider-text px-10">📢 이 포스팅은 쿠팡 파트너스 및 네이버 쇼핑 커넥트 활동의 일환으로 일정액의 수수료를 제공받습니다.</span>
+            <span class="rider-text px-10">📢 이 포스팅은 쿠팡 파트너스 및 네이버 쇼핑 커넥트 활동의 일환으로 일정액의 수수료를 제공받습니다.</span>
         </div>
     </div>
 
@@ -47,14 +50,13 @@
     <main class="container mx-auto px-4 py-8 max-w-6xl">
         <div class="flex flex-col md:flex-row gap-4 mb-16 items-center">
             <input type="text" id="searchInput" onkeyup="handleSearch()" placeholder="상품명 또는 카테고리 검색" class="rider-input flex-1 w-full shadow-sm">
-            
             <div class="relative w-full md:w-64">
                 <button onclick="toggleDropdown()" id="category-btn" class="rider-input w-full flex justify-between items-center shadow-sm font-bold">
                     <span id="current-category-text">전체 상품 카테고리</span>
                     <svg class="w-5 h-5 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7"></path></svg>
                 </button>
-                <div id="dropdown-menu" class="absolute top-full left-0 w-full no-scrollbar shadow-2xl">
-                    <div onclick="filterItems('전체')" class="dropdown-item px-8 py-4 cursor-pointer font-bold text-sm border-b border-slate-50 last:border-0">전체 상품 카테고리</div>
+                <div id="dropdown-menu" class="absolute top-full left-0 w-full shadow-2xl overflow-hidden">
+                    <div onclick="filterItems('전체')" class="dropdown-item px-8 py-4 cursor-pointer font-bold text-sm border-b border-slate-50">전체 상품 카테고리</div>
                 </div>
             </div>
         </div>
@@ -62,24 +64,24 @@
     </main>
 
     <footer class="bg-white py-16 border-t-4 border-teal-500 text-center mt-20">
+        <div class="mb-6 flex flex-col items-center gap-2">
+            <span class="bg-slate-100 text-slate-500 px-4 py-2 rounded-full text-[12px] font-bold">
+                TOTAL VISITORS: <span id="visitor-display" class="text-teal-600">0</span>
+            </span>
+            <span id="real-time-clock" class="text-slate-400 text-[11px] font-bold tracking-widest uppercase italic">LOADING...</span>
+        </div>
         <p class="text-slate-400 text-[11px] font-bold uppercase tracking-widest leading-loose">
-            ※ 이 포스팅은 쿠팡 파트너스 및 네이버 쇼핑 커넥트 활동의 일환으로 일정액의 수수료를 제공받습니다.<br>
             © 2026 PICK & SHARE. ALL RIGHTS RESERVED.
         </p>
     </footer>
 
     <script>
-        // 시트 데이터 연동 (기존 로직 유지)
-        function _0x2c0d(){const _0xf3d8ac=['352809eEqxfl','3717350Djoyuz','597TiifWw','2726ulDhfx','4404150bUVgvd','10YCgTlv','21681531ABBgdM','1lLggHBBBSncQ6aY2X1NVCgRVEvTM9xidhR1Cni8MPew','16EbLmoB','1328943VumOoF','2539632GWaYMi'];_0x2c0d=function(){return _0xf3d8ac;};return _0x2c0d();}const _0x33718e=_0x4d7b;function _0x4d7b(_0x4019fd,_0x25b4e7){_0x4019fd=_0x4019fd-0x165;const _0x2c0d2b=_0x2c0d();let _0x4d7be7=_0x2c0d2b[_0x4019fd];return _0x4d7be7;}(function(_0x4b7caf,_0x45a940){const _0x2eb1a1=_0x4d7b,_0x143e07=_0x4b7caf();while(!![]){try{const _0x1ae0d1=parseInt(_0x2eb1a1(0x169))/0x1*(parseInt(_0x2eb1a1(0x16a))/0x2)+-parseInt(_0x2eb1a1(0x167))/0x3*(-parseInt(_0x2eb1a1(0x16f))/0x4)+parseInt(_0x2eb1a1(0x168))/0x5+parseInt(_0x2eb1a1(0x16b))/0x6+-parseInt(_0x2eb1a1(0x165))/0x7+parseInt(_0x2eb1a1(0x166))/0x8+parseInt(_0x2eb1a1(0x16d))/0x9*(-parseInt(_0x2eb1a1(0x16c))/0xa);if(_0x1ae0d1===_0x45a940)break;else _0x143e07['push'](_0x143e07['shift']());}catch(_0x404aca){_0x143e07['push'](_0x143e07['shift']());}}}(_0x2c0d,0x753a4));
-        const SHEET_ID=_0x33718e(0x16e);
-        const SHEET_NAME = '시트1'; 
-        const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${SHEET_NAME}`;
-
+        const APP_SCRIPT_URL = "배포된_웹_앱_URL_입력";
         let allProducts = [];
         let currentCategory = '전체';
 
         function toggleDropdown() { document.getElementById('dropdown-menu').classList.toggle('show'); }
-        window.onclick = function(event) { if (!event.target.closest('#category-btn')) { document.getElementById('dropdown-menu').classList.remove('show'); } }
+        window.onclick = (e) => { if (!e.target.closest('#category-btn')) document.getElementById('dropdown-menu').classList.remove('show'); }
 
         function getPlatform(link) {
             const l = link.toLowerCase();
@@ -88,31 +90,23 @@
             return { name: 'CHECK-ITEM', class: 'bg-teal-500' };
         }
 
-        function handleImageError(imgElement) {
-            imgElement.style.display = 'none';
-            const box = imgElement.parentElement.querySelector('.no-image-box');
-            if (box) box.style.display = 'flex';
-        }
-
         async function fetchSheetData() {
             try {
-                const response = await fetch(url);
-                const data = await response.text();
-                const rows = data.split('\n').slice(1);
-                allProducts = rows.map(row => {
-                    const cols = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
-                    const rawCategory = cols[0]?.replace(/"/g, '').trim() || "";
-                    const categoryList = rawCategory.split(',').map(c => c.trim()).filter(c => c);
-                    return {
-                        category: rawCategory,
-                        categories: categoryList, // 다중 카테고리 배열
-                        name: cols[1]?.replace(/"/g, '').trim(),
-                        link: cols[2]?.replace(/"/g, '').trim(),
-                        img: cols[3]?.replace(/"/g, '').trim()
-                    };
-                }).filter(p => p.name);
+                const response = await fetch(APP_SCRIPT_URL);
+                const resData = await response.json();
+                document.getElementById('visitor-display').innerText = resData.visitorCount.toLocaleString();
+
+                allProducts = resData.products.map(row => ({
+                    category: row[0] || "",
+                    categories: String(row[0] || "").split(',').map(c => c.trim()).filter(c => c),
+                    name: row[1] || "",
+                    link: row[2] || "",
+                    img: row[3] || ""
+                }));
+
                 generateCategoryMenu(); 
                 displayProducts(allProducts);
+                recordVisitor();
             } catch (e) { console.error(e); }
         }
 
@@ -120,13 +114,11 @@
             const menu = document.getElementById('dropdown-menu');
             const allCats = [];
             allProducts.forEach(p => allCats.push(...p.categories));
-            const uniqueCategories = [...new Set(allCats)];
-            
-            uniqueCategories.forEach(cat => {
+            [...new Set(allCats)].sort((a,b) => a.localeCompare(b,'ko')).forEach(cat => {
                 const div = document.createElement('div');
-                div.className = "dropdown-item px-8 py-4 cursor-pointer font-bold text-sm transition-all border-b border-slate-50 last:border-0";
+                div.className = "dropdown-item px-8 py-4 cursor-pointer font-bold text-sm border-b border-slate-50";
                 div.innerText = cat;
-                div.onclick = function() { filterItems(cat); };
+                div.onclick = () => filterItems(cat);
                 menu.appendChild(div);
             });
         }
@@ -142,50 +134,55 @@
             const grid = document.getElementById('product-grid');
             grid.innerHTML = data.map(p => {
                 const platform = getPlatform(p.link);
-                const imgTag = p.img ? `<img src="${p.img}" class="w-full h-full object-cover" onerror="handleImageError(this)">` : '';
-                const displayNoImage = !p.img ? 'flex' : 'none';
-
                 return `
-                    <div class="product-card flex flex-col relative group">
+                    <div class="product-card relative group">
                         <span class="platform-badge ${platform.class}">${platform.name}</span>
                         <div class="thumbnail-container flex items-center justify-center bg-slate-50 relative">
-                            ${imgTag}
-                            <div class="no-image-box" style="display: ${displayNoImage}">
-                                <span class="text-[9px] mb-2 font-black opacity-30 italic">PICK & SHARE</span>
-                                <span class="no-image-title">${p.name}</span>
-                            </div>
+                            ${p.img ? `<img src="${p.img}" class="w-full h-full object-cover">` : `<div class="no-image-box"><span class="no-image-title">${p.name}</span></div>`}
                         </div>
                         <div class="p-6 flex-1 flex flex-col">
                             <span class="text-[11px] font-bold text-teal-600 mb-2 tracking-widest uppercase italic text-center">${p.category}</span>
                             <h2 class="product-title">${p.name}</h2>
-                            <a href="${p.link}" target="_blank" class="check-btn mt-auto block py-4 text-xs font-black uppercase tracking-widest">상세 정보 확인</a>
+                            <a href="${p.link}" target="_blank" class="check-btn uppercase tracking-widest">상세 정보 확인</a>
                         </div>
                     </div>
                 `;
             }).join('');
         }
 
-        // [핵심] 검색 로직 업데이트: 상품명 + 카테고리 동시 체크
         function handleSearch() {
             const query = document.getElementById('searchInput').value.toLowerCase();
             const filtered = allProducts.filter(p => {
-                // 1. 상품명에 검색어 포함 여부
-                const matchesName = p.name.toLowerCase().includes(query);
-                
-                // 2. 카테고리(콤마로 구분된 전체 문자열)에 검색어 포함 여부
-                const matchesCategorySearch = p.category.toLowerCase().includes(query);
-                
-                // 검색 결과는 이름 혹은 카테고리 중 하나만 일치해도 트루
-                const matchesQuery = matchesName || matchesCategorySearch;
-                
-                // 3. 현재 드롭다운에서 선택된 카테고리 필터와 일치하는지
+                const matchesQuery = p.name.toLowerCase().includes(query) || p.category.toLowerCase().includes(query);
                 const matchesDropdown = (currentCategory === '전체' || p.categories.includes(currentCategory));
-                
                 return matchesQuery && matchesDropdown;
             });
             displayProducts(filtered);
         }
 
+        async function recordVisitor() {
+            const today = new Date().toISOString().split('T')[0];
+            if (localStorage.getItem('last_visit_date') === today) return;
+            try {
+                await fetch(`${APP_SCRIPT_URL}?action=visit`);
+                localStorage.setItem('last_visit_date', today);
+            } catch (e) {}
+        }
+
+        function updateClock() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const date = String(now.getDate()).padStart(2, '0');
+            const dayNames = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById('real-time-clock').innerText = `${year}. ${month}. ${date}. ${dayNames[now.getDay()]} | ${hours}:${minutes}:${seconds}`;
+        }
+
+        setInterval(updateClock, 1000);
+        updateClock();
         fetchSheetData();
     </script>
 </body>
