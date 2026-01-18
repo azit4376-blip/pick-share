@@ -58,10 +58,7 @@
     </main>
 
     <footer class="bg-white py-16 border-t-4 border-teal-500 text-center mt-20">
-        <div class="mb-6 flex flex-col items-center gap-2">
-            <span class="bg-slate-100 text-slate-500 px-4 py-2 rounded-full text-[12px] font-bold">
-                TOTAL VISITORS: <span id="visitor-display" class="text-teal-600">0</span>
-            </span>
+        <div class="mb-6 text-center">
             <span id="real-time-clock" class="text-slate-400 text-[11px] font-bold tracking-widest uppercase italic">LOADING...</span>
         </div>
         <p class="text-slate-400 text-[11px] font-bold uppercase tracking-widest leading-loose">
@@ -70,46 +67,34 @@
     </footer>
 
     <script>
-        const APP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwDUtVBjo1xntPaVWD18j8B7KHMeeJhy5kbhFu3tpZyUfQneLLq_Wl7kg8d2vgsPtK0/exec";
+        function _0x2c0d(){const _0xf3d8ac=['352809eEqxfl','3717350Djoyuz','597TiifWw','2726ulDhfx','4404150bUVgvd','10YCgTlv','21681531ABBgdM','1lLggHBBBSncQ6aY2X1NVCgRVEvTM9xidhR1Cni8MPew','16EbLmoB','1328943VumOoF','2539632GWaYMi'];_0x2c0d=function(){return _0xf3d8ac;};return _0x2c0d();}const _0x33718e=_0x4d7b;function _0x4d7b(_0x4019fd,_0x25b4e7){_0x4019fd=_0x4019fd-0x165;const _0x2c0d2b=_0x2c0d();let _0x4d7be7=_0x2c0d2b[_0x4019fd];return _0x4d7be7;}(function(_0x4b7caf,_0x45a940){const _0x2eb1a1=_0x4d7b,_0x143e07=_0x4b7caf();while(!![]){try{const _0x1ae0d1=parseInt(_0x2eb1a1(0x169))/0x1*(parseInt(_0x2eb1a1(0x16a))/0x2)+-parseInt(_0x2eb1a1(0x167))/0x3*(-parseInt(_0x2eb1a1(0x16f))/0x4)+parseInt(_0x2eb1a1(0x168))/0x5+parseInt(_0x2eb1a1(0x16b))/0x6+-parseInt(_0x2eb1a1(0x165))/0x7+parseInt(_0x2eb1a1(0x166))/0x8+parseInt(_0x2eb1a1(0x16d))/0x9*(-parseInt(_0x2eb1a1(0x16c))/0xa);if(_0x1ae0d1===_0x45a940)break;else _0x143e07['push'](_0x143e07['shift']());}catch(_0x404aca){_0x143e07['push'](_0x143e07['shift']());}}}(_0x2c0d,0x753a4));
+        const SHEET_ID=_0x33718e(0x16e);
+        const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=시트1`;
+
         let allProducts = [];
         let currentCategory = '전체';
-
-        // [Skeleton UI] 데이터 로딩 전 가짜 카드 생성
-        function showSkeleton() {
-            const grid = document.getElementById('product-grid');
-            grid.innerHTML = Array(8).fill(0).map(() => `
-                <div class="animate-pulse bg-white rounded-[1.5rem] border-2 border-slate-100 overflow-hidden shadow-sm">
-                    <div class="aspect-square bg-slate-100"></div>
-                    <div class="p-6">
-                        <div class="h-3 bg-slate-100 rounded w-1/2 mx-auto mb-4"></div>
-                        <div class="h-5 bg-slate-100 rounded w-3/4 mx-auto mb-2"></div>
-                        <div class="h-10 bg-slate-100 rounded-xl w-full mt-4"></div>
-                    </div>
-                </div>
-            `).join('');
-        }
 
         function toggleDropdown() { document.getElementById('dropdown-menu').classList.toggle('show'); }
         window.onclick = (e) => { if (!e.target.closest('#category-btn')) document.getElementById('dropdown-menu').classList.remove('show'); }
 
         async function fetchSheetData() {
-            showSkeleton(); // 로딩 시작
             try {
-                const response = await fetch(APP_SCRIPT_URL);
-                const resData = await response.json();
-                document.getElementById('visitor-display').innerText = resData.visitorCount.toLocaleString();
-
-                allProducts = resData.products.map(row => ({
-                    category: row[0] || "",
-                    categories: String(row[0] || "").split(',').map(c => c.trim()).filter(c => c),
-                    name: row[1] || "",
-                    link: row[2] || "",
-                    img: row[3] || ""
-                }));
-
+                const response = await fetch(url);
+                const data = await response.text();
+                const rows = data.split('\n').slice(1);
+                allProducts = rows.map(row => {
+                    const cols = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+                    const clean = (s) => s ? s.replace(/^"|"$/g, "").trim() : "";
+                    return {
+                        category: clean(cols[0]),
+                        categories: clean(cols[0]).split(',').map(c => c.trim()).filter(c => c),
+                        name: clean(cols[1]),
+                        link: clean(cols[2]),
+                        img: clean(cols[3])
+                    };
+                }).filter(p => p.name);
                 generateCategoryMenu(); 
                 displayProducts(allProducts);
-                recordVisitor();
             } catch (e) { console.error(e); }
         }
 
@@ -128,7 +113,6 @@
 
         function displayProducts(data) {
             const grid = document.getElementById('product-grid');
-            if (data.length === 0) { grid.innerHTML = '<p class="col-span-full text-center py-20 text-slate-400">검색 결과가 없습니다.</p>'; return; }
             grid.innerHTML = data.map(p => {
                 const l = p.link.toLowerCase();
                 const platform = l.includes('coupang.com') ? {n:'COUPANG', c:'bg-red-500'} : (l.includes('naver') ? {n:'NAVER', c:'bg-green-500'} : {n:'CHECK', c:'bg-teal-500'});
@@ -136,12 +120,12 @@
                     <div class="product-card relative group">
                         <span class="platform-badge ${platform.c}">${platform.n}</span>
                         <div class="thumbnail-container flex items-center justify-center">
-                            ${p.img ? `<img src="${p.img}" class="w-full h-full object-cover">` : `<div class="p-6 text-center text-teal-500 font-bold">${p.name}</div>`}
+                            ${p.img ? `<img src="${p.img}" class="w-full h-full object-cover">` : `<div class="p-6 text-teal-500 font-bold text-center">${p.name}</div>`}
                         </div>
                         <div class="p-6 flex-1 flex flex-col">
-                            <span class="text-[11px] font-bold text-teal-600 mb-2 tracking-widest text-center uppercase">${p.category}</span>
-                            <h2 class="product-title">${p.name}</h2>
-                            <a href="${p.link}" target="_blank" class="check-btn uppercase">상세 정보 확인</a>
+                            <span class="text-[11px] font-bold text-teal-600 mb-2 tracking-widest text-center uppercase italic">${p.category}</span>
+                            <h2 class="product-title text-center">${p.name}</h2>
+                            <a href="${p.link}" target="_blank" class="check-btn uppercase tracking-widest">상세 정보 확인</a>
                         </div>
                     </div>
                 `;
@@ -159,12 +143,6 @@
             document.getElementById('current-category-text').innerText = cat === '전체' ? '전체 상품 카테고리' : cat;
             document.getElementById('dropdown-menu').classList.remove('show');
             handleSearch();
-        }
-
-        async function recordVisitor() {
-            const today = new Date().toISOString().split('T')[0];
-            if (localStorage.getItem('last_visit_date') === today) return;
-            try { await fetch(`${APP_SCRIPT_URL}?action=visit`); localStorage.setItem('last_visit_date', today); } catch (e) {}
         }
 
         function updateClock() {
