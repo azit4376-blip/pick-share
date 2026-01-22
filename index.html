@@ -14,34 +14,29 @@
         body.dark-mode { background-color: #121212; color: #e5e7eb; }
         body { background-color: #f3f6f7; color: var(--rider-dark); font-family: 'Do Hyeon', sans-serif; padding-top: 48px; scroll-behavior: smooth; transition: background-color 0.3s, color 0.3s; }
         
-        /* 공정위 문구 무한 루프 배너 */
+        /* 공정위 문구 무한 루프 */
         @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         .animate-marquee { display: flex; width: max-content; animation: marquee 40s linear infinite; }
         .rider-banner { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; background: var(--rider-dark); border-bottom: 3px solid var(--rider-mint); height: 40px; display: flex; align-items: center; overflow: hidden; }
         .rider-text { font-family: 'Noto Sans KR', sans-serif; font-size: 11px; color: #fff; font-weight: 700; white-space: nowrap; padding-right: 50px; }
         
-        /* 타이틀 스타일 및 반응형 크기 */
+        /* 반응형 타이틀 */
         .main-title-link { text-decoration: none; display: inline-block; cursor: pointer; }
         .main-title { font-family: 'Do Hyeon', sans-serif; font-weight: 900; font-style: italic; text-transform: uppercase; color: var(--rider-mint); -webkit-text-stroke: 1px #fff; filter: drop-shadow(3px 3px 0px rgba(42,193,188,0.2)); line-height: 1.1; white-space: nowrap; margin: 0 auto; font-size: clamp(3rem, 10vw, 6rem); }
         body.dark-mode .main-title { -webkit-text-stroke: 1px var(--rider-dark); }
 
-        /* 쿠팡 가로형 로고 버튼 */
         .coupang-btn { background: #fff; color: #111; padding: 6px 16px; border-radius: 12px; font-size: 13px; font-weight: bold; border: 2px solid #eee; display: inline-flex; align-items: center; gap: 10px; transition: all 0.2s; margin-bottom: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-decoration: none; }
         .coupang-logo-img { height: 18px; width: auto; object-fit: contain; }
         body.dark-mode .coupang-btn { background: #1f2937; border-color: #374151; color: #fff; }
 
-        /* 카테고리 레이아웃 (PC/모바일 공용 flex 구조) */
+        /* PC 가로 정렬 고정 레이아웃 */
         .quick-menu-container { display: flex; gap: 8px; align-items: center; width: 100%; }
-        
         @media (max-width: 768px) {
             .quick-menu-container { overflow-x: auto; padding: 4px 10px 15px; -webkit-overflow-scrolling: touch; justify-content: flex-start; }
             .quick-menu-container::-webkit-scrollbar { height: 4px; }
             .quick-menu-container::-webkit-scrollbar-thumb { background: var(--rider-mint); border-radius: 10px; }
         }
-
-        @media (min-width: 769px) { 
-            .quick-menu-container { flex-wrap: wrap; justify-content: center; padding: 10px; gap: 12px; } 
-        }
+        @media (min-width: 769px) { .quick-menu-container { flex-wrap: wrap; justify-content: center; padding: 10px; gap: 12px; } }
 
         .quick-btn { white-space: nowrap; padding: 10px 20px; border-radius: 14px; background: #fff; border: 2px solid #e2e8f0; font-size: 15px; font-weight: bold; color: #64748b; transition: all 0.2s; cursor: pointer; display: flex; align-items: center; gap: 6px; }
         body.dark-mode .quick-btn { background: #1f2937; border-color: #374151; color: #9ca3af; }
@@ -49,9 +44,15 @@
         body.dark-mode .quick-btn.active { background: var(--active-mint) !important; border-color: var(--active-mint) !important; color: #000 !important; font-weight: 900; }
         
         .cat-count { font-size: 11px; opacity: 0.8; background: rgba(0,0,0,0.05); padding: 2px 8px; border-radius: 10px; }
-        .quick-btn.active .cat-count { background: rgba(255,255,255,0.2); }
+        
+        /* [Confirmed] 추천 검색어 태그 스타일 */
+        .recommend-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 12px; padding: 0 10px; }
+        .tag-pill { background: transparent; border: 1.5px solid var(--rider-mint); color: var(--rider-mint); padding: 4px 12px; border-radius: 50px; font-size: 12px; font-weight: bold; cursor: pointer; transition: all 0.2s; }
+        .tag-pill:hover, .tag-pill:active { background: var(--rider-mint); color: #fff; }
+        body.dark-mode .tag-pill { border-color: var(--active-mint); color: var(--active-mint); }
+        body.dark-mode .tag-pill:hover { background: var(--active-mint); color: #000; }
 
-        /* 카드 확대 효과 및 이미지 공유 버튼 */
+        /* 카드 확대 및 공유 버튼 */
         .product-card { transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); background: #fff; border-radius: 1.5rem; border: 2px solid #e2e8f0; overflow: hidden; display: flex; flex-direction: column; height: 100%; position: relative; -webkit-tap-highlight-color: transparent; }
         body.dark-mode .product-card { background: #1f2937; border-color: #374151; }
         .product-card:hover, .product-card:active { border-color: var(--rider-mint); transform: scale(1.05); z-index: 50; box-shadow: 0 25px 50px -12px rgba(42, 193, 188, 0.25); }
@@ -92,10 +93,6 @@
                 <span class="rider-text">📢 이 포스팅은 쿠팡 파트너스 및 네이버 쇼핑 커넥트 활동의 일환으로 일정액의 수수료를 제공받습니다.</span>
                 <span class="rider-text">📢 이 포스팅은 쿠팡 파트너스 및 네이버 쇼핑 커넥트 활동의 일환으로 일정액의 수수료를 제공받습니다.</span>
             </div>
-            <div class="flex">
-                <span class="rider-text">📢 이 포스팅은 쿠팡 파트너스 및 네이버 쇼핑 커넥트 활동의 일환으로 일정액의 수수료를 제공받습니다.</span>
-                <span class="rider-text">📢 이 포스팅은 쿠팡 파트너스 및 네이버 쇼핑 커넥트 활동의 일환으로 일정액의 수수료를 제공받습니다.</span>
-            </div>
         </div>
     </div>
 
@@ -116,8 +113,16 @@
             </a>
         </div>
         <div id="quick-menu" class="quick-menu-container mb-6"></div>
-        <div class="search-section flex items-center max-w-2xl mx-auto px-4">
+        <div class="search-section max-w-2xl mx-auto px-4 mb-4">
             <input type="text" id="searchInput" onkeyup="handleSearch()" placeholder="상품명 또는 카테고리 검색..." class="w-full bg-white border-2 border-[#2ac1bc] rounded-xl p-3 outline-none text-sm shadow-sm focus:ring-2 focus:ring-[#2ac1bc]">
+            <div class="recommend-tags">
+                <button onclick="applyTag('배달가방')" class="tag-pill">#배달가방</button>
+                <button onclick="applyTag('블랙박스')" class="tag-pill">#블랙박스</button>
+                <button onclick="applyTag('거치대')" class="tag-pill">#거치대</button>
+                <button onclick="applyTag('방한')" class="tag-pill">#방한용품</button>
+                <button onclick="applyTag('충전')" class="tag-pill">#충전기</button>
+                <button onclick="applyTag('자석')" class="tag-pill">#자석</button>
+            </div>
         </div>
         <div id="product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8 mt-12 text-left"></div>
     </main>
@@ -125,7 +130,6 @@
     <button id="topBtn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="floating-btn float-top" title="최상단으로"><svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg></button>
     <button onclick="toggleDarkMode()" class="floating-btn float-theme" id="themeBtn"><svg id="themeIcon" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"></svg></button>
     <button id="shareBtn" onclick="copySiteUrl()" class="floating-btn float-share"><svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92z"/></svg></button>
-    
     <div id="toast"></div>
 
     <footer class="bg-white dark:bg-gray-800 py-12 border-t-4 border-teal-500 text-center mt-20 transition-colors">
@@ -198,8 +202,7 @@
 
         function generateQuickMenu() { 
             const menu = document.getElementById('quick-menu'); 
-            const total = allProducts.length;
-            menu.innerHTML = `<button onclick="filterItems('전체')" class="quick-btn active" data-cat="전체">전체보기 <span class="cat-count" id="count-전체">${total}</span></button>`; 
+            menu.innerHTML = `<button onclick="filterItems('전체')" class="quick-btn active" data-cat="전체">전체보기 <span class="cat-count" id="count-전체">${allProducts.length}</span></button>`; 
             const catMap = {}; 
             allProducts.forEach(p => p.categories.forEach(cat => catMap[cat] = (catMap[cat] || 0) + 1)); 
             Object.keys(catMap).sort((a,b) => a.localeCompare(b,'ko')).forEach(cat => { 
@@ -213,7 +216,24 @@
         }
 
         function filterItems(cat) { currentCategory = cat; document.querySelectorAll('.quick-btn').forEach(btn => btn.classList.toggle('active', btn.getAttribute('data-cat') === cat)); handleSearch(); }
-        function handleSearch() { const q = document.getElementById('searchInput').value.toLowerCase(); const filtered = allProducts.filter(p => { const matchesSearch = p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q); const matchesCategory = currentCategory === '전체' || p.categories.includes(currentCategory); return matchesSearch && matchesCategory; }); displayProducts(filtered); }
+        
+        /* [Confirmed] 태그 클릭 시 검색창 자동 입력 및 필터링 로직 */
+        function applyTag(tagName) {
+            const input = document.getElementById('searchInput');
+            input.value = tagName;
+            handleSearch();
+            input.focus();
+        }
+
+        function handleSearch() { 
+            const q = document.getElementById('searchInput').value.toLowerCase(); 
+            const filtered = allProducts.filter(p => { 
+                const matchesSearch = p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q); 
+                const matchesCategory = currentCategory === '전체' || p.categories.includes(currentCategory); 
+                return matchesSearch && matchesCategory; 
+            }); 
+            displayProducts(filtered); 
+        }
         function updateClock() { const n = new Date(); const days = ['SUN','MON','TUE','WED','THU','FRI','SAT']; document.getElementById('real-time-clock').innerText = `${n.getFullYear()}. ${n.getMonth()+1}. ${n.getDate()}. ${days[n.getDay()]} | ${String(n.getHours()).padStart(2,'0')}:${String(n.getMinutes()).padStart(2,'0')}:${String(n.getSeconds()).padStart(2,'0')}`; }
         setInterval(updateClock, 1000); updateClock();
     </script>
