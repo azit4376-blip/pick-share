@@ -14,9 +14,9 @@
         body.dark-mode { background-color: #121212; color: #e5e7eb; }
         body { background-color: #f3f6f7; color: var(--rider-dark); font-family: 'Do Hyeon', sans-serif; padding-top: 48px; scroll-behavior: smooth; transition: background-color 0.3s, color 0.3s; }
         
-        /* [Confirmed] 공정위 문구: 4회 반복 및 무한 롤링 최적화 */
+        /* 공정위 문구 무한 루프 (4회 반복 최적화) */
         @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-        .animate-marquee { display: flex; width: max-content; animation: marquee 60s linear infinite; }
+        .animate-marquee { display: flex; width: max-content; animation: marquee 40s linear infinite; }
         .rider-banner { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; background: var(--rider-dark); border-bottom: 3px solid var(--rider-mint); height: 40px; display: flex; align-items: center; overflow: hidden; }
         .rider-text { font-family: 'Noto Sans KR', sans-serif; font-size: 11px; color: #fff; font-weight: 700; white-space: nowrap; padding-right: 80px; }
         
@@ -30,7 +30,7 @@
         .coupang-logo-img { height: 18px; width: auto; object-fit: contain; }
         body.dark-mode .coupang-btn { background: #1f2937; border-color: #374151; color: #fff; }
 
-        /* 카테고리 레이아웃 (PC 가로 정렬 고정) */
+        /* PC 가로 정렬 고정 레이아웃 */
         .quick-menu-container { display: flex; gap: 8px; align-items: center; width: 100%; }
         @media (max-width: 768px) {
             .quick-menu-container { overflow-x: auto; padding: 4px 10px 15px; -webkit-overflow-scrolling: touch; justify-content: flex-start; }
@@ -46,7 +46,7 @@
         
         .cat-count { font-size: 11px; opacity: 0.8; background: rgba(0,0,0,0.05); padding: 2px 8px; border-radius: 10px; }
 
-        /* 카드 확대 효과 및 이미지 공유 버튼 */
+        /* 카드 확대 및 공유 버튼 */
         .product-card { transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); background: #fff; border-radius: 1.5rem; border: 2px solid #e2e8f0; overflow: hidden; display: flex; flex-direction: column; height: 100%; position: relative; -webkit-tap-highlight-color: transparent; }
         body.dark-mode .product-card { background: #1f2937; border-color: #374151; }
         .product-card:hover, .product-card:active { border-color: var(--rider-mint); transform: scale(1.05); z-index: 50; box-shadow: 0 25px 50px -12px rgba(42, 193, 188, 0.25); }
@@ -56,6 +56,10 @@
         .thumbnail-container img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
         .product-card:hover .thumbnail-container img, .product-card:active .thumbnail-container img { transform: scale(1.1); }
         
+        /* [Confirmed] E열 subBadge 이미지 우측 상단 배치 복구 */
+        .sub-badge { position: absolute; top: 12px; right: 12px; z-index: 20; padding: 4px 8px; border-radius: 8px; font-weight: 900; font-size: 10px; color: var(--rider-dark); background: rgba(255,255,255,0.95); border: 1.5px solid var(--rider-mint); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .platform-badge { position: absolute; top: 12px; left: 12px; z-index: 20; padding: 4px 10px; border-radius: 8px; font-weight: 900; font-size: 11px; color: #fff; }
+
         .no-image-text { padding: 1.5rem; color: var(--rider-mint); font-weight: bold; text-align: center; display: flex; align-items: center; justify-content: center; height: 100%; width: 100%; background-color: #f1f5f9; font-size: 14px; }
         body.dark-mode .no-image-text { background-color: #1e293b; color: var(--active-mint); }
 
@@ -76,7 +80,6 @@
 
         #toast { visibility: hidden; min-width: 200px; background-color: var(--rider-dark); color: #fff; text-align: center; border-radius: 50px; padding: 12px 24px; position: fixed; z-index: 2000; left: 50%; bottom: 100px; transform: translateX(-50%); font-size: 14px; border: 2px solid var(--rider-mint); }
         #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
-        .platform-badge { position: absolute; top: 12px; left: 12px; z-index: 20; padding: 4px 10px; border-radius: 8px; font-weight: 900; font-size: 11px; color: #fff; }
         body.dark-mode input#searchInput { background-color: #1f2937; border-color: #374151; color: #fff; }
     </style>
 </head>
@@ -161,6 +164,7 @@
             grid.innerHTML = data.map((p, index) => { 
                 const l = p.link.toLowerCase(); 
                 const platform = l.includes('coupang.com') ? {n:'COUPANG', c:'bg-red-500'} : (l.includes('naver') ? {n:'NAVER', c:'bg-green-500'} : {n:'CHECK', c:'bg-teal-500'}); 
+                /* [Confirmed] E열 subBadge 데이터가 있을 경우에만 HTML 생성 */
                 const subBadgeHtml = p.subBadge ? `<span class="sub-badge">${p.subBadge}</span>` : ''; 
                 return `
                 <div class="product-card relative" ontouchstart="">
