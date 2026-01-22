@@ -20,16 +20,17 @@
         .rider-banner { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; background: var(--rider-dark); border-bottom: 3px solid var(--rider-mint); height: 40px; display: flex; align-items: center; overflow: hidden; }
         .rider-text { font-family: 'Noto Sans KR', sans-serif; font-size: 11px; color: #fff; font-weight: 700; white-space: nowrap; padding-right: 50px; }
         
-        /* [Confirmed] 타이틀 스타일: 클릭 가능하도록 설정 및 링크 데코레이션 제거 */
+        /* 타이틀 스타일 및 반응형 크기 */
         .main-title-link { text-decoration: none; display: inline-block; cursor: pointer; }
         .main-title { font-family: 'Do Hyeon', sans-serif; font-weight: 900; font-style: italic; text-transform: uppercase; color: var(--rider-mint); -webkit-text-stroke: 1px #fff; filter: drop-shadow(3px 3px 0px rgba(42,193,188,0.2)); line-height: 1.1; white-space: nowrap; margin: 0 auto; font-size: clamp(3rem, 10vw, 6rem); }
         body.dark-mode .main-title { -webkit-text-stroke: 1px var(--rider-dark); }
 
+        /* 쿠팡 가로형 로고 버튼 */
         .coupang-btn { background: #fff; color: #111; padding: 6px 16px; border-radius: 12px; font-size: 13px; font-weight: bold; border: 2px solid #eee; display: inline-flex; align-items: center; gap: 10px; transition: all 0.2s; margin-bottom: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-decoration: none; }
         .coupang-logo-img { height: 18px; width: auto; object-fit: contain; }
         body.dark-mode .coupang-btn { background: #1f2937; border-color: #374151; color: #fff; }
 
-        /* 카테고리 레이아웃 (PC 가로 정렬 고정) */
+        /* 카테고리 레이아웃 (PC/모바일 공용 flex 구조) */
         .quick-menu-container { display: flex; gap: 8px; align-items: center; width: 100%; }
         
         @media (max-width: 768px) {
@@ -100,7 +101,7 @@
 
     <header class="pt-16 pb-8 text-center">
         <div class="container mx-auto px-4">
-            <a href="/" class="main-title-link">
+            <a href="https://azit4376-blip.github.io/pick-share/" class="main-title-link">
                 <h1 class="main-title">PICK & SHARE</h1>
             </a>
             <div class="mt-3"><span id="real-time-clock" class="text-slate-500 dark:text-slate-400 text-[12px] font-bold tracking-widest uppercase italic">LOADING...</span></div>
