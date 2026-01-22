@@ -38,34 +38,32 @@
 
         .quick-btn { white-space: nowrap; padding: 8px 16px; border-radius: 12px; background: #fff; border: 2px solid #e2e8f0; font-size: 14px; font-weight: bold; color: #64748b; transition: all 0.2s; cursor: pointer; }
         body.dark-mode .quick-btn { background: #1f2937; border-color: #374151; color: #9ca3af; }
-        
-        /* [Confirmed] 다크모드 선택 버튼 가독성 강화 */
         .quick-btn.active { background: var(--rider-mint); border-color: var(--rider-mint); color: #fff; box-shadow: 0 4px 12px rgba(42, 193, 188, 0.3); }
         body.dark-mode .quick-btn.active { background: var(--active-mint); border-color: var(--active-mint); color: #000; font-weight: 900; box-shadow: 0 0 15px rgba(42, 193, 188, 0.5); }
 
         .product-card { transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); background: #fff; border-radius: 1.5rem; border: 2px solid #e2e8f0; overflow: hidden; display: flex; flex-direction: column; height: 100%; position: relative; -webkit-tap-highlight-color: transparent; }
         body.dark-mode .product-card { background: #1f2937; border-color: #374151; }
         .product-card:hover, .product-card:active { border-color: var(--rider-mint); transform: scale(1.05) !important; z-index: 50; box-shadow: 0 25px 50px -12px rgba(42, 193, 188, 0.25); }
-        
         .thumbnail-container { position: relative; overflow: hidden; background: #f8fafc; width: 100%; aspect-ratio: 1/1; }
         body.dark-mode .thumbnail-container { background: #111827; }
         .thumbnail-container img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
-        .product-card:hover .thumbnail-container img, .product-card:active .thumbnail-container img { transform: scale(1.1); }
-        
         .card-share-btn { position: absolute; bottom: 10px; right: 10px; z-index: 100; background: rgba(255,255,255,0.9); border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; }
         body.dark-mode .card-share-btn { background: rgba(31, 41, 55, 0.9); }
         body.dark-mode .card-share-btn svg { fill: #fff; }
 
         .product-title { font-size: 15px; font-weight: bold; color: #1a1c1d; text-align: center; margin-bottom: 1.5rem; padding: 0 10px; height: 2.8em; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
         body.dark-mode .product-title { color: #f3f4f6; }
-        
         .check-btn { background: var(--rider-mint); color: #fff; font-weight: 900; border-radius: 12px; width: calc(100% - 32px); margin: 0 auto 20px; text-align: center; display: block; padding: 16px 0; font-size: 12px; }
         
+        /* 플로팅 버튼 공용 스타일 */
         .floating-btn { position: fixed; right: 20px; z-index: 1000; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.3); transition: all 0.3s ease; }
+        
+        /* [Confirmed] 버튼 위치 재배치 (아래에서 위로: 공유-TOP-테마) */
         .float-share { bottom: 20px; background: var(--rider-dark); color: #fff; width: 50px; height: 50px; border: 2px solid var(--rider-mint); }
         .float-top { bottom: 80px; background: #fff; color: var(--rider-mint); width: 50px; height: 50px; border: 2px solid var(--rider-mint); opacity: 0; visibility: hidden; transform: translateY(20px); }
         body.dark-mode .float-top { background: #1f2937; }
         .float-top.show { opacity: 1; visibility: visible; transform: translateY(0); }
+        
         .float-theme { bottom: 140px; background: #fff; color: #facc15; width: 50px; height: 50px; border: 2px solid #facc15; }
         body.dark-mode .float-theme { background: #1f2937; color: #818cf8; border-color: #818cf8; }
 
@@ -99,6 +97,7 @@
     <button onclick="toggleDarkMode()" class="floating-btn float-theme" id="themeBtn"><svg id="themeIcon" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"></svg></button>
     <button id="topBtn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="floating-btn float-top"><svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg></button>
     <button onclick="copySiteUrl()" class="floating-btn float-share"><svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92z"/></svg></button>
+    
     <div id="toast"></div>
 
     <script>
