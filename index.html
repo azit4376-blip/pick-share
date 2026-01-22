@@ -14,22 +14,23 @@
         body.dark-mode { background-color: #121212; color: #e5e7eb; }
         body { background-color: #f3f6f7; color: var(--rider-dark); font-family: 'Do Hyeon', sans-serif; padding-top: 48px; scroll-behavior: smooth; transition: background-color 0.3s, color 0.3s; }
         
-        /* 공정위 문구 무한 루프 */
+        /* [Confirmed] 공정위 문구: 4회 반복 및 무한 롤링 최적화 */
         @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-        .animate-marquee { display: flex; width: max-content; animation: marquee 40s linear infinite; }
+        .animate-marquee { display: flex; width: max-content; animation: marquee 60s linear infinite; }
         .rider-banner { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; background: var(--rider-dark); border-bottom: 3px solid var(--rider-mint); height: 40px; display: flex; align-items: center; overflow: hidden; }
-        .rider-text { font-family: 'Noto Sans KR', sans-serif; font-size: 11px; color: #fff; font-weight: 700; white-space: nowrap; padding-right: 50px; }
+        .rider-text { font-family: 'Noto Sans KR', sans-serif; font-size: 11px; color: #fff; font-weight: 700; white-space: nowrap; padding-right: 80px; }
         
-        /* 반응형 타이틀 */
+        /* 타이틀 스타일 및 반응형 크기 */
         .main-title-link { text-decoration: none; display: inline-block; cursor: pointer; }
         .main-title { font-family: 'Do Hyeon', sans-serif; font-weight: 900; font-style: italic; text-transform: uppercase; color: var(--rider-mint); -webkit-text-stroke: 1px #fff; filter: drop-shadow(3px 3px 0px rgba(42,193,188,0.2)); line-height: 1.1; white-space: nowrap; margin: 0 auto; font-size: clamp(3rem, 10vw, 6rem); }
         body.dark-mode .main-title { -webkit-text-stroke: 1px var(--rider-dark); }
 
+        /* 쿠팡 가로형 로고 버튼 */
         .coupang-btn { background: #fff; color: #111; padding: 6px 16px; border-radius: 12px; font-size: 13px; font-weight: bold; border: 2px solid #eee; display: inline-flex; align-items: center; gap: 10px; transition: all 0.2s; margin-bottom: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-decoration: none; }
         .coupang-logo-img { height: 18px; width: auto; object-fit: contain; }
         body.dark-mode .coupang-btn { background: #1f2937; border-color: #374151; color: #fff; }
 
-        /* PC 가로 정렬 고정 레이아웃 */
+        /* 카테고리 레이아웃 (PC 가로 정렬 고정) */
         .quick-menu-container { display: flex; gap: 8px; align-items: center; width: 100%; }
         @media (max-width: 768px) {
             .quick-menu-container { overflow-x: auto; padding: 4px 10px 15px; -webkit-overflow-scrolling: touch; justify-content: flex-start; }
@@ -45,7 +46,7 @@
         
         .cat-count { font-size: 11px; opacity: 0.8; background: rgba(0,0,0,0.05); padding: 2px 8px; border-radius: 10px; }
 
-        /* 카드 확대 및 공유 버튼 */
+        /* 카드 확대 효과 및 이미지 공유 버튼 */
         .product-card { transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); background: #fff; border-radius: 1.5rem; border: 2px solid #e2e8f0; overflow: hidden; display: flex; flex-direction: column; height: 100%; position: relative; -webkit-tap-highlight-color: transparent; }
         body.dark-mode .product-card { background: #1f2937; border-color: #374151; }
         .product-card:hover, .product-card:active { border-color: var(--rider-mint); transform: scale(1.05); z-index: 50; box-shadow: 0 25px 50px -12px rgba(42, 193, 188, 0.25); }
@@ -82,10 +83,10 @@
 <body id="main-body">
     <div class="rider-banner shadow-lg">
         <div class="animate-marquee">
-            <div class="flex">
-                <span class="rider-text">📢 이 포스팅은 쿠팡 파트너스 및 네이버 쇼핑 커넥트 활동의 일환으로 일정액의 수수료를 제공받습니다.</span>
-                <span class="rider-text">📢 이 포스팅은 쿠팡 파트너스 및 네이버 쇼핑 커넥트 활동의 일환으로 일정액의 수수료를 제공받습니다.</span>
-            </div>
+            <span class="rider-text">📢 이 포스팅은 쿠팡 파트너스 및 네이버 쇼핑 커넥트 활동의 일환으로 일정액의 수수료를 제공받습니다.</span>
+            <span class="rider-text">📢 이 포스팅은 쿠팡 파트너스 및 네이버 쇼핑 커넥트 활동의 일환으로 일정액의 수수료를 제공받습니다.</span>
+            <span class="rider-text">📢 이 포스팅은 쿠팡 파트너스 및 네이버 쇼핑 커넥트 활동의 일환으로 일정액의 수수료를 제공받습니다.</span>
+            <span class="rider-text">📢 이 포스팅은 쿠팡 파트너스 및 네이버 쇼핑 커넥트 활동의 일환으로 일정액의 수수료를 제공받습니다.</span>
         </div>
     </div>
 
