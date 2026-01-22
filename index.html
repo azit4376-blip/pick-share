@@ -10,7 +10,7 @@
         :root { --rider-mint: #2ac1bc; --rider-dark: #1a1c1d; }
         body { background-color: #f3f6f7; color: var(--rider-dark); font-family: 'Do Hyeon', sans-serif; padding-top: 48px; }
         @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-        .animate-marquee { display: flex; width: max-content; animation: marquee 35s linear infinite; }
+        .animate-marquee { display: flex; width: max-content; animation: marquee 40s linear infinite; }
         .rider-banner { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; background: var(--rider-dark); border-bottom: 3px solid var(--rider-mint); height: 40px; display: flex; align-items: center; overflow: hidden; }
         .rider-text { font-family: 'Noto Sans KR', sans-serif; font-size: 11px; color: #fff; font-weight: 700; white-space: nowrap; padding-right: 50px; }
         .product-card { transition: all 0.3s ease; background: #fff; border-radius: 1.5rem; border: 2px solid #e2e8f0; overflow: hidden; display: flex; flex-direction: column; height: 100%; position: relative; }
@@ -19,18 +19,15 @@
         .product-card:hover .thumbnail-container img { transform: scale(1.1); transition: 0.6s; }
         .product-title { font-size: 15px; font-weight: bold; color: #1a1c1d; text-align: center; line-height: 1.4; height: 2.8em; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 1.5rem; padding: 0 10px; }
         .rider-input { background: #fff; border: 2px solid var(--rider-mint); border-radius: 12px; padding: 12px 20px; outline: none; }
-        #dropdown-menu { display: none; max-height: 300px; overflow-y: auto; z-index: 200; background: #fff; border: 2px solid var(--rider-mint); border-radius: 12px; margin-top: 5px; }
-        #dropdown-menu.show { display: block; }
-        .check-btn { background: var(--rider-mint); color: #fff; font-weight: 900; border-radius: 12px; width: calc(100% - 32px); margin: 0 auto 20px; text-align: center; padding: 12px 0; text-xs; position: relative; overflow: hidden; }
-        .platform-badge { position: absolute; top: 12px; left: 12px; z-index: 20; padding: 4px 10px; border-radius: 8px; font-weight: 900; font-size: 11px; color: #fff; }
         
-        /* [Confirmed] 서브 배지 줄바꿈 최적화 */
-        .sub-badge { 
-            position: absolute; top: 12px; right: 12px; z-index: 20; 
-            padding: 4px 8px; border-radius: 8px; font-weight: 900; font-size: 10px; 
-            color: var(--rider-dark); background: rgba(255,255,255,0.95); border: 1.5px solid var(--rider-mint);
-            max-width: 80px; word-break: keep-all; overflow-wrap: break-word; line-height: 1.2; text-align: center;
-        }
+        /* 퀵 메뉴 스타일 */
+        .quick-menu-container { display: flex; gap: 8px; overflow-x: auto; padding: 4px 0 16px; scrollbar-width: none; -ms-overflow-style: none; }
+        .quick-menu-container::-webkit-scrollbar { display: none; }
+        .quick-btn { white-space: nowrap; padding: 8px 16px; border-radius: 20px; background: #fff; border: 1px solid #e2e8f0; font-size: 13px; font-weight: bold; color: #64748b; transition: all 0.2s; }
+        .quick-btn.active { background: var(--rider-mint); border-color: var(--rider-mint); color: #fff; box-shadow: 0 4px 6px -1px rgba(42, 193, 188, 0.2); }
+
+        .sub-badge { position: absolute; top: 12px; right: 12px; z-index: 20; padding: 4px 8px; border-radius: 8px; font-weight: 900; font-size: 10px; color: var(--rider-dark); background: rgba(255,255,255,0.95); border: 1.5px solid var(--rider-mint); max-width: 80px; word-break: keep-all; overflow-wrap: break-word; line-height: 1.2; text-align: center; }
+        .platform-badge { position: absolute; top: 12px; left: 12px; z-index: 20; padding: 4px 10px; border-radius: 8px; font-weight: 900; font-size: 11px; color: #fff; }
     </style>
 </head>
 <body>
@@ -60,18 +57,14 @@
     </header>
 
     <main class="container mx-auto px-4 py-8 max-w-6xl">
+        <div id="quick-menu" class="quick-menu-container mb-4">
+            <button onclick="filterItems('전체')" class="quick-btn active" data-cat="전체">전체보기</button>
+        </div>
+
         <div class="flex flex-col md:flex-row gap-4 mb-16 items-center">
             <input type="text" id="searchInput" onkeyup="handleSearch()" placeholder="상품명 또는 카테고리 검색" class="rider-input flex-1 w-full shadow-sm">
-            <div class="relative w-full md:w-64">
-                <button onclick="toggleDropdown()" id="category-btn" class="rider-input w-full flex justify-between items-center shadow-sm font-bold">
-                    <span id="current-category-text">전체 상품 카테고리</span>
-                    <svg class="w-5 h-5 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7"></path></svg>
-                </button>
-                <div id="dropdown-menu" class="absolute top-full left-0 w-full shadow-2xl overflow-hidden">
-                    <div onclick="filterItems('전체')" class="dropdown-item px-8 py-4 cursor-pointer font-bold text-sm border-b border-slate-50 bg-white hover:bg-teal-50">전체 상품 카테고리</div>
-                </div>
-            </div>
         </div>
+        
         <div id="product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-10"></div>
     </main>
 
@@ -88,9 +81,6 @@
 
         let allProducts = [];
         let currentCategory = '전체';
-
-        function toggleDropdown() { document.getElementById('dropdown-menu').classList.toggle('show'); }
-        window.onclick = (e) => { if (!e.target.closest('#category-btn')) document.getElementById('dropdown-menu').classList.remove('show'); }
 
         async function fetchSheetData() {
             try {
@@ -109,22 +99,34 @@
                         subBadge: clean(cols[4])
                     };
                 }).filter(p => p.name);
-                generateCategoryMenu(); 
+                generateQuickMenu(); 
                 displayProducts(allProducts);
             } catch (e) { console.error(e); }
         }
 
-        function generateCategoryMenu() {
-            const menu = document.getElementById('dropdown-menu');
+        function generateQuickMenu() {
+            const menu = document.getElementById('quick-menu');
             const allCats = [];
             allProducts.forEach(p => allCats.push(...p.categories));
             [...new Set(allCats)].sort((a,b) => a.localeCompare(b,'ko')).forEach(cat => {
-                const div = document.createElement('div');
-                div.className = "dropdown-item px-8 py-4 cursor-pointer font-bold text-sm border-b border-slate-50 bg-white hover:bg-teal-50";
-                div.innerText = cat;
-                div.onclick = () => filterItems(cat);
-                menu.appendChild(div);
+                const btn = document.createElement('button');
+                btn.className = "quick-btn";
+                btn.innerText = cat;
+                btn.setAttribute('data-cat', cat);
+                btn.onclick = () => filterItems(cat);
+                menu.appendChild(btn);
             });
+        }
+
+        function filterItems(cat) {
+            currentCategory = cat;
+            
+            // 버튼 활성화 상태 변경
+            document.querySelectorAll('.quick-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.getAttribute('data-cat') === cat);
+            });
+
+            handleSearch();
         }
 
         function displayProducts(data) {
@@ -133,7 +135,6 @@
                 const l = p.link.toLowerCase();
                 const platform = l.includes('coupang.com') ? {n:'COUPANG', c:'bg-red-500'} : (l.includes('naver') ? {n:'NAVER', c:'bg-green-500'} : {n:'CHECK', c:'bg-teal-500'});
                 const subBadgeHtml = p.subBadge ? `<span class="sub-badge">${p.subBadge}</span>` : '';
-
                 return `
                     <div class="product-card relative group">
                         <span class="platform-badge ${platform.c}">${platform.n}</span>
@@ -155,13 +156,6 @@
             const q = document.getElementById('searchInput').value.toLowerCase();
             const filtered = allProducts.filter(p => (p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q)) && (currentCategory === '전체' || p.categories.includes(currentCategory)));
             displayProducts(filtered);
-        }
-
-        function filterItems(cat) {
-            currentCategory = cat;
-            document.getElementById('current-category-text').innerText = cat === '전체' ? '전체 상품 카테고리' : cat;
-            document.getElementById('dropdown-menu').classList.remove('show');
-            handleSearch();
         }
 
         function updateClock() {
