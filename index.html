@@ -44,13 +44,6 @@
         body.dark-mode .quick-btn.active { background: var(--active-mint) !important; border-color: var(--active-mint) !important; color: #000 !important; font-weight: 900; }
         
         .cat-count { font-size: 11px; opacity: 0.8; background: rgba(0,0,0,0.05); padding: 2px 8px; border-radius: 10px; }
-        
-        /* [Confirmed] 추천 검색어 태그 스타일 */
-        .recommend-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 12px; padding: 0 10px; }
-        .tag-pill { background: transparent; border: 1.5px solid var(--rider-mint); color: var(--rider-mint); padding: 4px 12px; border-radius: 50px; font-size: 12px; font-weight: bold; cursor: pointer; transition: all 0.2s; }
-        .tag-pill:hover, .tag-pill:active { background: var(--rider-mint); color: #fff; }
-        body.dark-mode .tag-pill { border-color: var(--active-mint); color: var(--active-mint); }
-        body.dark-mode .tag-pill:hover { background: var(--active-mint); color: #000; }
 
         /* 카드 확대 및 공유 버튼 */
         .product-card { transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); background: #fff; border-radius: 1.5rem; border: 2px solid #e2e8f0; overflow: hidden; display: flex; flex-direction: column; height: 100%; position: relative; -webkit-tap-highlight-color: transparent; }
@@ -113,16 +106,8 @@
             </a>
         </div>
         <div id="quick-menu" class="quick-menu-container mb-6"></div>
-        <div class="search-section max-w-2xl mx-auto px-4 mb-4">
+        <div class="search-section max-w-2xl mx-auto px-4">
             <input type="text" id="searchInput" onkeyup="handleSearch()" placeholder="상품명 또는 카테고리 검색..." class="w-full bg-white border-2 border-[#2ac1bc] rounded-xl p-3 outline-none text-sm shadow-sm focus:ring-2 focus:ring-[#2ac1bc]">
-            <div class="recommend-tags">
-                <button onclick="applyTag('배달가방')" class="tag-pill">#배달가방</button>
-                <button onclick="applyTag('블랙박스')" class="tag-pill">#블랙박스</button>
-                <button onclick="applyTag('거치대')" class="tag-pill">#거치대</button>
-                <button onclick="applyTag('방한')" class="tag-pill">#방한용품</button>
-                <button onclick="applyTag('충전')" class="tag-pill">#충전기</button>
-                <button onclick="applyTag('자석')" class="tag-pill">#자석</button>
-            </div>
         </div>
         <div id="product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8 mt-12 text-left"></div>
     </main>
@@ -202,7 +187,8 @@
 
         function generateQuickMenu() { 
             const menu = document.getElementById('quick-menu'); 
-            menu.innerHTML = `<button onclick="filterItems('전체')" class="quick-btn active" data-cat="전체">전체보기 <span class="cat-count" id="count-전체">${allProducts.length}</span></button>`; 
+            const total = allProducts.length;
+            menu.innerHTML = `<button onclick="filterItems('전체')" class="quick-btn active" data-cat="전체">전체보기 <span class="cat-count" id="count-전체">${total}</span></button>`; 
             const catMap = {}; 
             allProducts.forEach(p => p.categories.forEach(cat => catMap[cat] = (catMap[cat] || 0) + 1)); 
             Object.keys(catMap).sort((a,b) => a.localeCompare(b,'ko')).forEach(cat => { 
@@ -216,24 +202,7 @@
         }
 
         function filterItems(cat) { currentCategory = cat; document.querySelectorAll('.quick-btn').forEach(btn => btn.classList.toggle('active', btn.getAttribute('data-cat') === cat)); handleSearch(); }
-        
-        /* [Confirmed] 태그 클릭 시 검색창 자동 입력 및 필터링 로직 */
-        function applyTag(tagName) {
-            const input = document.getElementById('searchInput');
-            input.value = tagName;
-            handleSearch();
-            input.focus();
-        }
-
-        function handleSearch() { 
-            const q = document.getElementById('searchInput').value.toLowerCase(); 
-            const filtered = allProducts.filter(p => { 
-                const matchesSearch = p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q); 
-                const matchesCategory = currentCategory === '전체' || p.categories.includes(currentCategory); 
-                return matchesSearch && matchesCategory; 
-            }); 
-            displayProducts(filtered); 
-        }
+        function handleSearch() { const q = document.getElementById('searchInput').value.toLowerCase(); const filtered = allProducts.filter(p => { const matchesSearch = p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q); const matchesCategory = currentCategory === '전체' || p.categories.includes(currentCategory); return matchesSearch && matchesCategory; }); displayProducts(filtered); }
         function updateClock() { const n = new Date(); const days = ['SUN','MON','TUE','WED','THU','FRI','SAT']; document.getElementById('real-time-clock').innerText = `${n.getFullYear()}. ${n.getMonth()+1}. ${n.getDate()}. ${days[n.getDay()]} | ${String(n.getHours()).padStart(2,'0')}:${String(n.getMinutes()).padStart(2,'0')}:${String(n.getSeconds()).padStart(2,'0')}`; }
         setInterval(updateClock, 1000); updateClock();
     </script>
