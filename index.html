@@ -15,33 +15,22 @@
         .rider-text { font-family: 'Noto Sans KR', sans-serif; font-size: 11px; color: #fff; font-weight: 700; white-space: nowrap; padding-right: 50px; }
         
         .main-title {
-            font-family: 'Do Hyeon', sans-serif;
-            font-weight: 900;
-            font-style: italic;
-            text-transform: uppercase;
-            color: var(--rider-mint);
-            -webkit-text-stroke: 1px #fff;
-            filter: drop-shadow(3px 3px 0px rgba(42,193,188,0.2));
-            line-height: 1.1;
-            white-space: nowrap;
-            margin: 0 auto;
+            font-family: 'Do Hyeon', sans-serif; font-weight: 900; font-style: italic;
+            text-transform: uppercase; color: var(--rider-mint); -webkit-text-stroke: 1px #fff;
+            filter: drop-shadow(3px 3px 0px rgba(42,193,188,0.2)); line-height: 1.1; white-space: nowrap; margin: 0 auto;
         }
 
         @media (max-width: 768px) {
-            .main-title { font-size: 13vw; -webkit-text-stroke: 1px #fff; } 
-            .quick-menu-wrapper::after {
-                content: ''; position: absolute; top: 0; right: 0; width: 40px; height: 100%;
-                background: linear-gradient(to left, #f3f6f7, transparent); pointer-events: none; z-index: 5;
-            }
+            .main-title { font-size: 13vw; }
+            .quick-menu-wrapper::after { content: ''; position: absolute; top: 0; right: 0; width: 40px; height: 100%; background: linear-gradient(to left, #f3f6f7, transparent); pointer-events: none; z-index: 5; }
             .quick-menu-container { overflow-x: auto; padding-bottom: 12px; -webkit-overflow-scrolling: touch; }
             .quick-menu-container::-webkit-scrollbar { display: block; height: 3px; }
             .quick-menu-container::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         }
 
         @media (min-width: 769px) {
-            .main-title { font-size: clamp(4rem, 8vw, 6rem); -webkit-text-stroke: 1.5px #fff; } 
+            .main-title { font-size: clamp(4rem, 8vw, 6rem); }
             .quick-menu-container { flex-wrap: wrap; justify-content: center; }
-            .quick-menu-container::-webkit-scrollbar { display: none; }
         }
 
         .quick-menu-wrapper { position: relative; width: 100%; margin-bottom: 24px; }
@@ -50,21 +39,28 @@
         .quick-btn.active { background: var(--rider-mint); border-color: var(--rider-mint); color: #fff; box-shadow: 0 4px 12px rgba(42, 193, 188, 0.2); }
 
         .product-card { transition: all 0.3s ease; background: #fff; border-radius: 1.5rem; border: 2px solid #e2e8f0; overflow: hidden; display: flex; flex-direction: column; height: 100%; position: relative; }
-        .product-card:hover { border-color: var(--rider-mint); transform: translateY(-8px); box-shadow: 0 20px 25px -5px rgba(42, 193, 188, 0.15); }
         .thumbnail-container { position: relative; overflow: hidden; background: #f8fafc; width: 100%; aspect-ratio: 1/1; }
-        .product-title { font-size: 15px; font-weight: bold; color: #1a1c1d; text-align: center; line-height: 1.4; height: 2.8em; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 1.5rem; padding: 0 10px; }
-        .rider-input { background: #fff; border: 2px solid var(--rider-mint); border-radius: 12px; padding: 12px 20px; outline: none; }
-
-        /* [Confirmed] 버튼 모양 복구 및 최적화 */
-        .check-btn { 
-            background: var(--rider-mint); color: #fff; font-weight: 900; 
-            border-radius: 12px; width: calc(100% - 32px); margin: 0 auto 20px; 
-            text-align: center; display: block; padding: 16px 0; 
-            font-size: 12px; letter-spacing: 0.1em; transition: all 0.2s;
+        
+        /* [Confirmed] 카드별 개별 공유 버튼 */
+        .card-share-btn { 
+            position: absolute; bottom: 10px; right: 10px; z-index: 30;
+            background: rgba(255,255,255,0.9); border-radius: 50%; width: 36px; height: 36px;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.2s;
         }
-        .check-btn:hover { background: var(--rider-dark); transform: scale(1.02); }
+        .card-share-btn:hover { background: var(--rider-mint); transform: scale(1.1); }
+        .card-share-btn svg { width: 18px; height: 18px; fill: var(--rider-dark); transition: fill 0.2s; }
+        .card-share-btn:hover svg { fill: #fff; }
 
-        .sub-badge { position: absolute; top: 12px; right: 12px; z-index: 20; padding: 4px 8px; border-radius: 8px; font-weight: 900; font-size: 10px; color: var(--rider-dark); background: rgba(255,255,255,0.95); border: 1.5px solid var(--rider-mint); max-width: 80px; word-break: keep-all; overflow-wrap: break-word; line-height: 1.2; text-align: center; }
+        .product-title { font-size: 15px; font-weight: bold; color: #1a1c1d; text-align: center; line-height: 1.4; height: 2.8em; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 1.5rem; padding: 0 10px; }
+        .check-btn { background: var(--rider-mint); color: #fff; font-weight: 900; border-radius: 12px; width: calc(100% - 32px); margin: 0 auto 20px; text-align: center; display: block; padding: 16px 0; font-size: 12px; letter-spacing: 0.1em; transition: all 0.2s; }
+        .check-btn:hover { background: var(--rider-dark); }
+
+        /* [Confirmed] 전체 사이트 공유 플로팅 버튼 */
+        .float-share { position: fixed; bottom: 30px; right: 20px; z-index: 1000; background: var(--rider-dark); color: #fff; padding: 15px 25px; border-radius: 50px; border: 2px solid var(--rider-mint); font-weight: bold; box-shadow: 0 10px 20px rgba(0,0,0,0.2); cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.3s; }
+        .float-share:hover { transform: translateY(-5px); background: var(--rider-mint); }
+
+        .sub-badge { position: absolute; top: 12px; right: 12px; z-index: 20; padding: 4px 8px; border-radius: 8px; font-weight: 900; font-size: 10px; color: var(--rider-dark); background: rgba(255,255,255,0.95); border: 1.5px solid var(--rider-mint); }
         .platform-badge { position: absolute; top: 12px; left: 12px; z-index: 20; padding: 4px 10px; border-radius: 8px; font-weight: 900; font-size: 11px; color: #fff; }
     </style>
 </head>
@@ -75,10 +71,8 @@
             <div class="flex">
                 <span class="rider-text">📢 이 포스팅은 쿠팡 파트너스 및 네이버 쇼핑 커넥트 활동의 일환으로 일정액의 수수료를 제공받습니다.</span>
                 <span class="rider-text">📢 이 포스팅은 쿠팡 파트너스 및 네이버 쇼핑 커넥트 활동의 일환으로 일정액의 수수료를 제공받습니다.</span>
-                <span class="rider-text">📢 이 포스팅은 쿠팡 파트너스 및 네이버 쇼핑 커넥트 활동의 일환으로 일정액의 수수료를 제공받습니다.</span>
             </div>
             <div class="flex">
-                <span class="rider-text">📢 이 포스팅은 쿠팡 파트너스 및 네이버 쇼핑 커넥트 활동의 일환으로 일정액의 수수료를 제공받습니다.</span>
                 <span class="rider-text">📢 이 포스팅은 쿠팡 파트너스 및 네이버 쇼핑 커넥트 활동의 일환으로 일정액의 수수료를 제공받습니다.</span>
                 <span class="rider-text">📢 이 포스팅은 쿠팡 파트너스 및 네이버 쇼핑 커넥트 활동의 일환으로 일정액의 수수료를 제공받습니다.</span>
             </div>
@@ -100,18 +94,19 @@
                 <button onclick="filterItems('전체')" class="quick-btn active" data-cat="전체">전체보기</button>
             </div>
         </div>
-
-        <div class="flex mb-12 items-center max-w-2xl mx-auto">
-            <input type="text" id="searchInput" onkeyup="handleSearch()" placeholder="상품명 또는 카테고리 검색" class="rider-input w-full shadow-sm text-sm">
+        <div class="flex mb-12 items-center max-w-2xl mx-auto px-4">
+            <input type="text" id="searchInput" onkeyup="handleSearch()" placeholder="상품 검색..." class="w-full bg-white border-2 border-[#2ac1bc] rounded-xl p-3 outline-none shadow-sm text-sm">
         </div>
-        
         <div id="product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8"></div>
     </main>
 
+    <button onclick="copySiteUrl()" class="float-share">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92z"/></svg>
+        사이트 공유
+    </button>
+
     <footer class="bg-white py-12 border-t-4 border-teal-500 text-center mt-20">
-        <p class="text-slate-400 text-[11px] font-bold uppercase tracking-widest leading-loose">
-            © 2026 PICK & SHARE. ALL RIGHTS RESERVED.
-        </p>
+        <p class="text-slate-400 text-[11px] font-bold uppercase tracking-widest leading-loose">© 2026 PICK & SHARE. ALL RIGHTS RESERVED.</p>
     </footer>
 
     <script>
@@ -133,15 +128,58 @@
                     return {
                         category: clean(cols[0]),
                         categories: clean(cols[0]).split(',').map(c => c.trim()).filter(c => c),
-                        name: clean(cols[1]),
-                        link: clean(cols[2]),
-                        img: clean(cols[3]),
-                        subBadge: clean(cols[4])
+                        name: clean(cols[1]), link: clean(cols[2]), img: clean(cols[3]), subBadge: clean(cols[4])
                     };
                 }).filter(p => p.name);
                 generateQuickMenu(); 
                 displayProducts(allProducts);
             } catch (e) { console.error(e); }
+        }
+
+        function displayProducts(data) {
+            const grid = document.getElementById('product-grid');
+            grid.innerHTML = data.map(p => {
+                const l = p.link.toLowerCase();
+                const platform = l.includes('coupang.com') ? {n:'COUPANG', c:'bg-red-500'} : (l.includes('naver') ? {n:'NAVER', c:'bg-green-500'} : {n:'CHECK', c:'bg-teal-500'});
+                const subBadgeHtml = p.subBadge ? `<span class="sub-badge">${p.subBadge}</span>` : '';
+                return `
+                    <div class="product-card relative group">
+                        <span class="platform-badge ${platform.c}">${platform.n}</span>
+                        ${subBadgeHtml}
+                        <div class="thumbnail-container flex items-center justify-center">
+                            <div class="card-share-btn" onclick="copyProductLink(event, '${p.link}')" title="상품 링크 복사">
+                                <svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92z"/></svg>
+                            </div>
+                            ${p.img ? `<img src="${p.img}" class="w-full h-full object-cover">` : `<div class="p-6 text-teal-500 font-bold text-center">${p.name}</div>`}
+                        </div>
+                        <div class="p-6 flex-1 flex flex-col">
+                            <span class="text-[11px] font-bold text-teal-600 mb-2 tracking-widest text-center uppercase italic">${p.category}</span>
+                            <h2 class="product-title text-center">${p.name}</h2>
+                            <a href="${p.link}" target="_blank" class="check-btn">상세 정보 확인</a>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // [Confirmed] 링크 복사 공통 함수
+        function copyToClipboard(text, msg) {
+            const temp = document.createElement('textarea');
+            document.body.appendChild(temp);
+            temp.value = text;
+            temp.select();
+            document.execCommand('copy');
+            document.body.removeChild(temp);
+            alert(msg);
+        }
+
+        function copyProductLink(e, link) {
+            e.stopPropagation(); // 카드 클릭 이벤트 전파 방지
+            copyToClipboard(link, "✅ 상품 링크가 복사되었습니다!");
+        }
+
+        function copySiteUrl() {
+            copyToClipboard(window.location.href, "🚀 사이트 주소가 복사되었습니다! 지인들에게 추천해보세요.");
         }
 
         function generateQuickMenu() {
@@ -160,33 +198,8 @@
 
         function filterItems(cat) {
             currentCategory = cat;
-            document.querySelectorAll('.quick-btn').forEach(btn => {
-                btn.classList.toggle('active', btn.getAttribute('data-cat') === cat);
-            });
+            document.querySelectorAll('.quick-btn').forEach(btn => btn.classList.toggle('active', btn.getAttribute('data-cat') === cat));
             handleSearch();
-        }
-
-        function displayProducts(data) {
-            const grid = document.getElementById('product-grid');
-            grid.innerHTML = data.map(p => {
-                const l = p.link.toLowerCase();
-                const platform = l.includes('coupang.com') ? {n:'COUPANG', c:'bg-red-500'} : (l.includes('naver') ? {n:'NAVER', c:'bg-green-500'} : {n:'CHECK', c:'bg-teal-500'});
-                const subBadgeHtml = p.subBadge ? `<span class="sub-badge">${p.subBadge}</span>` : '';
-                return `
-                    <div class="product-card relative group">
-                        <span class="platform-badge ${platform.c}">${platform.n}</span>
-                        ${subBadgeHtml}
-                        <div class="thumbnail-container flex items-center justify-center">
-                            ${p.img ? `<img src="${p.img}" class="w-full h-full object-cover">` : `<div class="p-6 text-teal-500 font-bold text-center">${p.name}</div>`}
-                        </div>
-                        <div class="p-6 flex-1 flex flex-col">
-                            <span class="text-[11px] font-bold text-teal-600 mb-2 tracking-widest text-center uppercase italic">${p.category}</span>
-                            <h2 class="product-title text-center">${p.name}</h2>
-                            <a href="${p.link}" target="_blank" class="check-btn">상세 정보 확인</a>
-                        </div>
-                    </div>
-                `;
-            }).join('');
         }
 
         function handleSearch() {
