@@ -14,45 +14,40 @@
         .rider-banner { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; background: var(--rider-dark); border-bottom: 3px solid var(--rider-mint); height: 40px; display: flex; align-items: center; overflow: hidden; }
         .rider-text { font-family: 'Noto Sans KR', sans-serif; font-size: 11px; color: #fff; font-weight: 700; white-space: nowrap; padding-right: 50px; }
         
-        /* [Confirmed] 모바일 힌트가 포함된 퀵 메뉴 */
-        .quick-menu-wrapper { position: relative; width: 100%; margin-bottom: 24px; }
-        
-        .quick-menu-container { 
-            display: flex; 
-            gap: 10px; 
+        /* [Confirmed] 반응형 메인 타이틀: 모바일 한 줄 고정 */
+        .main-title {
+            font-family: 'Do Hyeon', sans-serif;
+            font-weight: 900;
+            font-style: italic;
+            text-transform: uppercase;
+            color: var(--rider-mint);
+            -webkit-text-stroke: 1.5px #fff;
+            filter: drop-shadow(4px 4px 0px rgba(42,193,188,0.2));
+            line-height: 1.1;
+            white-space: nowrap; /* 절대 줄바꿈 금지 */
         }
 
         @media (max-width: 768px) {
+            .main-title { font-size: 13vw; } /* 모바일 화면 너비의 13% 크기로 자동 조절 */
             .quick-menu-wrapper::after {
                 content: ''; position: absolute; top: 0; right: 0; width: 40px; height: 100%;
                 background: linear-gradient(to left, #f3f6f7, transparent); pointer-events: none; z-index: 5;
             }
-            .quick-menu-container { 
-                overflow-x: auto; 
-                padding-bottom: 12px;
-                -webkit-overflow-scrolling: touch;
-            }
-            /* 모바일에서만 얇은 스크롤바 노출 (힌트 역할) */
+            .quick-menu-container { overflow-x: auto; padding-bottom: 12px; -webkit-overflow-scrolling: touch; }
             .quick-menu-container::-webkit-scrollbar { display: block; height: 3px; }
             .quick-menu-container::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-            .quick-menu-container::-webkit-scrollbar-track { background: transparent; }
         }
 
         @media (min-width: 769px) {
+            .main-title { font-size: 8rem; } /* PC는 기존의 큼직한 사이즈 유지 */
             .quick-menu-container { flex-wrap: wrap; justify-content: center; }
             .quick-menu-container::-webkit-scrollbar { display: none; }
         }
 
-        .quick-btn { 
-            white-space: nowrap; padding: 10px 18px; border-radius: 12px; 
-            background: #fff; border: 2px solid #e2e8f0; font-size: 14px; 
-            font-weight: bold; color: #64748b; transition: all 0.2s; 
-        }
-        .quick-btn.active { 
-            background: var(--rider-mint); border-color: var(--rider-mint); 
-            color: #fff; box-shadow: 0 4px 12px rgba(42, 193, 188, 0.2); 
-        }
-
+        .quick-menu-wrapper { position: relative; width: 100%; margin-bottom: 24px; }
+        .quick-menu-container { display: flex; gap: 10px; }
+        .quick-btn { white-space: nowrap; padding: 10px 18px; border-radius: 12px; background: #fff; border: 2px solid #e2e8f0; font-size: 14px; font-weight: bold; color: #64748b; transition: all 0.2s; }
+        .quick-btn.active { background: var(--rider-mint); border-color: var(--rider-mint); color: #fff; box-shadow: 0 4px 12px rgba(42, 193, 188, 0.2); }
         .product-card { transition: all 0.3s ease; background: #fff; border-radius: 1.5rem; border: 2px solid #e2e8f0; overflow: hidden; display: flex; flex-direction: column; height: 100%; position: relative; }
         .product-card:hover { border-color: var(--rider-mint); transform: translateY(-8px); box-shadow: 0 20px 25px -5px rgba(42, 193, 188, 0.15); }
         .thumbnail-container { position: relative; overflow: hidden; background: #f8fafc; width: 100%; aspect-ratio: 1/1; }
@@ -81,7 +76,7 @@
 
     <header class="pt-20 pb-10 text-center">
         <div class="container mx-auto px-4">
-            <h1 class="text-7xl md:text-9xl font-black text-[#2ac1bc] italic uppercase mb-2" style="-webkit-text-stroke: 1.5px #fff; filter: drop-shadow(4px 4px 0px rgba(42,193,188,0.2));">PICK & SHARE</h1>
+            <h1 class="main-title">PICK & SHARE</h1>
             <div class="mt-4">
                 <span id="real-time-clock" class="text-slate-400 text-[13px] font-bold tracking-widest uppercase italic">LOADING...</span>
             </div>
