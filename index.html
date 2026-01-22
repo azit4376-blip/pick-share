@@ -14,7 +14,7 @@
         body.dark-mode { background-color: #121212; color: #e5e7eb; }
         body { background-color: #f3f6f7; color: var(--rider-dark); font-family: 'Do Hyeon', sans-serif; padding-top: 48px; scroll-behavior: smooth; transition: background-color 0.3s, color 0.3s; }
         
-        /* [Confirmed] 공정위 문구: 쿠팡 파트너스 + 네이버 쇼핑 커넥트 통합 복구 */
+        /* 공정위 문구 무한 루프 배너 */
         @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         .animate-marquee { display: flex; width: max-content; animation: marquee 40s linear infinite; }
         .rider-banner { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; background: var(--rider-dark); border-bottom: 3px solid var(--rider-mint); height: 40px; display: flex; align-items: center; overflow: hidden; }
@@ -23,8 +23,8 @@
         .main-title { font-family: 'Do Hyeon', sans-serif; font-weight: 900; font-style: italic; text-transform: uppercase; color: var(--rider-mint); -webkit-text-stroke: 1px #fff; filter: drop-shadow(3px 3px 0px rgba(42,193,188,0.2)); line-height: 1.1; white-space: nowrap; margin: 0 auto; }
         body.dark-mode .main-title { -webkit-text-stroke: 1px var(--rider-dark); }
 
-        /* 쿠팡 가로형 로고 최적화 버튼 */
-        .coupang-btn { background: #fff; color: #111; padding: 4px 16px; border-radius: 12px; font-size: 13px; font-weight: bold; border: 2px solid #eee; display: inline-flex; align-items: center; gap: 10px; transition: all 0.2s; margin-bottom: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-decoration: none; }
+        /* 쿠팡 가로형 로고 버튼 */
+        .coupang-btn { background: #fff; color: #111; padding: 6px 16px; border-radius: 12px; font-size: 13px; font-weight: bold; border: 2px solid #eee; display: inline-flex; align-items: center; gap: 10px; transition: all 0.2s; margin-bottom: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-decoration: none; }
         .coupang-logo-img { height: 18px; width: auto; object-fit: contain; }
         body.dark-mode .coupang-btn { background: #1f2937; border-color: #374151; color: #fff; }
 
@@ -50,11 +50,15 @@
         .cat-count { font-size: 10px; opacity: 0.8; background: rgba(0,0,0,0.05); padding: 2px 6px; border-radius: 8px; }
         .quick-btn.active .cat-count { background: rgba(255,255,255,0.2); }
 
-        .product-card { transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); background: #fff; border-radius: 1.5rem; border: 2px solid #e2e8f0; overflow: hidden; display: flex; flex-direction: column; height: 100%; position: relative; }
+        /* [Confirmed] 카드 확대 및 이미지 확대 효과 복구 */
+        .product-card { transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); background: #fff; border-radius: 1.5rem; border: 2px solid #e2e8f0; overflow: hidden; display: flex; flex-direction: column; height: 100%; position: relative; -webkit-tap-highlight-color: transparent; }
         body.dark-mode .product-card { background: #1f2937; border-color: #374151; }
+        .product-card:hover, .product-card:active { border-color: var(--rider-mint); transform: scale(1.05); z-index: 50; box-shadow: 0 25px 50px -12px rgba(42, 193, 188, 0.25); }
+        
         .thumbnail-container { position: relative; overflow: hidden; background: #f8fafc; width: 100%; aspect-ratio: 1/1; }
         body.dark-mode .thumbnail-container { background: #111827; }
-        .thumbnail-container img { width: 100%; height: 100%; object-fit: cover; }
+        .thumbnail-container img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+        .product-card:hover .thumbnail-container img, .product-card:active .thumbnail-container img { transform: scale(1.1); }
         
         .card-share-btn { 
             position: absolute; bottom: 12px; right: 12px; z-index: 100; 
@@ -223,7 +227,15 @@
         }
 
         function filterItems(cat) { currentCategory = cat; document.querySelectorAll('.quick-btn').forEach(btn => btn.classList.toggle('active', btn.getAttribute('data-cat') === cat)); handleSearch(); }
-        function handleSearch() { const q = document.getElementById('searchInput').value.toLowerCase(); const filtered = allProducts.filter(p => { const matchesSearch = p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q); const matchesCategory = currentCategory === '전체' || p.categories.includes(currentCategory); return matchesSearch && matchesCategory; }); displayProducts(filtered); }
+        function handleSearch() { 
+            const q = document.getElementById('searchInput').value.toLowerCase(); 
+            const filtered = allProducts.filter(p => { 
+                const matchesSearch = p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q); 
+                const matchesCategory = currentCategory === '전체' || p.categories.includes(currentCategory); 
+                return matchesSearch && matchesCategory; 
+            }); 
+            displayProducts(filtered); 
+        }
         function updateClock() { const n = new Date(); const days = ['SUN','MON','TUE','WED','THU','FRI','SAT']; document.getElementById('real-time-clock').innerText = `${n.getFullYear()}. ${n.getMonth()+1}. ${n.getDate()}. ${days[n.getDay()]} | ${String(n.getHours()).padStart(2,'0')}:${String(n.getMinutes()).padStart(2,'0')}:${String(n.getSeconds()).padStart(2,'0')}`; }
         setInterval(updateClock, 1000); updateClock();
     </script>
