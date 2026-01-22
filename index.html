@@ -3,12 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <title>Pick & Share | 라이더 필수템 큐레이션</title>
     <meta name="description" content="배달 라이더를 위한 최적의 아이템 공유 플랫폼. 쿠팡 및 네이버 쇼핑 추천 상품 확인.">
-    <meta name="keywords" content="라이더, 배달, 쿠팡파트너스, 배민, 라이더용품">
-    <meta property="og:title" content="Pick & Share">
-    <meta property="og:description" content="라이더 필수템 큐레이션 서비스">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="keywords" content="라이더용품, 배달용품, 쿠팡파트너스, 라이더추천, 오토바이용품, 배민커넥트, 쿠팡이츠">
+    <link rel="canonical" href="https://azit4376-blip.github.io/pick-share/">
+    
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Pick & Share | 라이더 필수템 큐레이션">
+    <meta property="og:description" content="라이더가 직접 골라 공유하는 고퀄리티 배달 용품 리스트!">
+    <meta property="og:url" content="https://azit4376-blip.github.io/pick-share/">
+    <meta property="og:image" content="https://azit4376-blip.github.io/pick-share/og-image.jpg"> <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Noto+Sans+KR:wght@900&display=swap" rel="stylesheet">
     <style>
         :root { --rider-mint: #2ac1bc; --rider-dark: #1a1c1d; }
@@ -37,7 +42,7 @@
         .check-btn { background: var(--rider-mint); color: #fff; font-weight: 900; border-radius: 12px; width: calc(100% - 32px); margin: 0 auto 20px; text-align: center; display: block; padding: 16px 0; font-size: 12px; letter-spacing: 0.1em; transition: all 0.2s; }
         .float-share { position: fixed; bottom: 20px; right: 20px; z-index: 1000; background: var(--rider-dark); color: #fff; width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--rider-mint); box-shadow: 0 4px 15px rgba(0,0,0,0.3); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s; }
         .float-share:hover { transform: scale(1.1); background: var(--rider-mint); }
-        #toast { visibility: hidden; min-width: 250px; background-color: var(--rider-dark); color: #fff; text-align: center; border-radius: 50px; padding: 12px 24px; position: fixed; z-index: 2000; left: 50%; bottom: 100px; transform: translateX(-50%); font-size: 14px; font-weight: bold; border: 2px solid var(--rider-mint); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+        #toast { visibility: hidden; min-width: 200px; background-color: var(--rider-dark); color: #fff; text-align: center; border-radius: 50px; padding: 12px 24px; position: fixed; z-index: 2000; left: 50%; bottom: 100px; transform: translateX(-50%); font-size: 14px; font-weight: bold; border: 2px solid var(--rider-mint); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
         #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
         @keyframes fadein { from { bottom: 80px; opacity: 0; } to { bottom: 100px; opacity: 1; } }
         @keyframes fadeout { from { bottom: 100px; opacity: 1; } to { bottom: 80px; opacity: 0; } }
