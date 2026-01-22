@@ -17,20 +17,22 @@
         .rider-text { font-family: 'Noto Sans KR', sans-serif; font-size: 11px; color: #fff; font-weight: 700; white-space: nowrap; padding-right: 50px; }
         .main-title { font-family: 'Do Hyeon', sans-serif; font-weight: 900; font-style: italic; text-transform: uppercase; color: var(--rider-mint); -webkit-text-stroke: 1px #fff; filter: drop-shadow(3px 3px 0px rgba(42,193,188,0.2)); line-height: 1.1; white-space: nowrap; margin: 0 auto; }
         
-        /* 모바일 레이아웃: 이전의 안정적인 버전으로 복구 */
+        /* 모바일 레이아웃 최적화 */
         @media (max-width: 768px) {
             .main-title { font-size: 13vw; }
             .quick-menu-wrapper::after { content: ''; position: absolute; top: 0; right: 0; width: 40px; height: 100%; background: linear-gradient(to left, #f3f6f7, transparent); pointer-events: none; z-index: 5; }
             .quick-menu-container { overflow-x: auto; padding-bottom: 12px; -webkit-overflow-scrolling: touch; display: flex; gap: 10px; }
             .quick-menu-container::-webkit-scrollbar { display: block; height: 4px; }
             .quick-menu-container::-webkit-scrollbar-thumb { background: var(--rider-mint); border-radius: 10px; }
-            .search-section { margin-top: 1.5rem !important; } /* 모바일은 적당한 간격 유지 */
+            
+            /* [Confirmed] 모바일 검색바 상하 여백 보강 */
+            .search-section { margin-top: 1.5rem !important; margin-bottom: 2rem !important; }
         }
 
         @media (min-width: 769px) { 
             .main-title { font-size: clamp(4rem, 8vw, 6rem); } 
-            /* [Confirmed] PC 버튼들 사이의 간격(gap-y)과 검색창 상단 여백을 일치시킴 */
             .quick-menu-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 10px; } 
+            /* PC 버전 간격 유지 */
             .search-section { margin-top: 10px !important; margin-bottom: 3rem !important; }
         }
 
@@ -56,10 +58,6 @@
 <body>
     <div class="rider-banner shadow-lg">
         <div class="animate-marquee">
-            <div class="flex">
-                <span class="rider-text">📢 이 포스팅은 쿠팡 파트너스 및 네이버 쇼핑 커넥트 활동의 일환으로 일정액의 수수료를 제공받습니다.</span>
-                <span class="rider-text">📢 이 포스팅은 쿠팡 파트너스 및 네이버 쇼핑 커넥트 활동의 일환으로 일정액의 수수료를 제공받습니다.</span>
-            </div>
             <div class="flex">
                 <span class="rider-text">📢 이 포스팅은 쿠팡 파트너스 및 네이버 쇼핑 커넥트 활동의 일환으로 일정액의 수수료를 제공받습니다.</span>
                 <span class="rider-text">📢 이 포스팅은 쿠팡 파트너스 및 네이버 쇼핑 커넥트 활동의 일환으로 일정액의 수수료를 제공받습니다.</span>
