@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pick & Share | RIDER CURATION</title>
+    <title>Pick & Share | 라이더 필수템 큐레이션</title>
+    <meta name="description" content="배달 라이더를 위한 최적의 아이템 공유 플랫폼. 쿠팡 및 네이버 쇼핑 추천 상품 확인.">
+    <meta name="keywords" content="라이더, 배달, 쿠팡파트너스, 배민, 라이더용품">
+    <meta property="og:title" content="Pick & Share">
+    <meta property="og:description" content="라이더 필수템 큐레이션 서비스">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Noto+Sans+KR:wght@900&display=swap" rel="stylesheet">
     <style>
@@ -13,90 +17,35 @@
         .animate-marquee { display: flex; width: max-content; animation: marquee 40s linear infinite; }
         .rider-banner { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; background: var(--rider-dark); border-bottom: 3px solid var(--rider-mint); height: 40px; display: flex; align-items: center; overflow: hidden; }
         .rider-text { font-family: 'Noto Sans KR', sans-serif; font-size: 11px; color: #fff; font-weight: 700; white-space: nowrap; padding-right: 50px; }
-        
-        .main-title {
-            font-family: 'Do Hyeon', sans-serif; font-weight: 900; font-style: italic;
-            text-transform: uppercase; color: var(--rider-mint); -webkit-text-stroke: 1px #fff;
-            filter: drop-shadow(3px 3px 0px rgba(42,193,188,0.2)); line-height: 1.1; white-space: nowrap; margin: 0 auto;
-        }
-
-        @media (max-width: 768px) {
-            .main-title { font-size: 13vw; }
-            .quick-menu-wrapper::after { content: ''; position: absolute; top: 0; right: 0; width: 40px; height: 100%; background: linear-gradient(to left, #f3f6f7, transparent); pointer-events: none; z-index: 5; }
-            .quick-menu-container { overflow-x: auto; padding-bottom: 12px; -webkit-overflow-scrolling: touch; }
-            .quick-menu-container::-webkit-scrollbar { display: block; height: 3px; }
-            .quick-menu-container::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-        }
-
-        @media (min-width: 769px) {
-            .main-title { font-size: clamp(4rem, 8vw, 6rem); }
-            .quick-menu-container { flex-wrap: wrap; justify-content: center; }
-        }
-
+        .main-title { font-family: 'Do Hyeon', sans-serif; font-weight: 900; font-style: italic; text-transform: uppercase; color: var(--rider-mint); -webkit-text-stroke: 1px #fff; filter: drop-shadow(3px 3px 0px rgba(42,193,188,0.2)); line-height: 1.1; white-space: nowrap; margin: 0 auto; }
+        @media (max-width: 768px) { .main-title { font-size: 13vw; } .quick-menu-wrapper::after { content: ''; position: absolute; top: 0; right: 0; width: 40px; height: 100%; background: linear-gradient(to left, #f3f6f7, transparent); pointer-events: none; z-index: 5; } .quick-menu-container { overflow-x: auto; padding-bottom: 12px; -webkit-overflow-scrolling: touch; } .quick-menu-container::-webkit-scrollbar { display: block; height: 3px; } .quick-menu-container::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; } }
+        @media (min-width: 769px) { .main-title { font-size: clamp(4rem, 8vw, 6rem); } .quick-menu-container { flex-wrap: wrap; justify-content: center; } }
         .quick-menu-wrapper { position: relative; width: 100%; margin-bottom: 24px; }
         .quick-menu-container { display: flex; gap: 10px; }
         .quick-btn { white-space: nowrap; padding: 8px 16px; border-radius: 12px; background: #fff; border: 2px solid #e2e8f0; font-size: 14px; font-weight: bold; color: #64748b; transition: all 0.2s; cursor: pointer; }
         .quick-btn.active { background: var(--rider-mint); border-color: var(--rider-mint); color: #fff; box-shadow: 0 4px 12px rgba(42, 193, 188, 0.2); }
-
-        /* [Confirmed] 카드 전체 디자인 및 확대 효과 복구 */
-        .product-card { 
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-            background: #fff; border-radius: 1.5rem; border: 2px solid #e2e8f0; 
-            overflow: hidden; display: flex; flex-direction: column; height: 100%; position: relative; 
-        }
-        /* 마우스 오버 시 카드 전체 확대 */
-        .product-card:hover { 
-            border-color: var(--rider-mint); 
-            transform: scale(1.05); /* 카드 전체 확대 */
-            z-index: 50; 
-            box-shadow: 0 25px 50px -12px rgba(42, 193, 188, 0.25); 
-        }
-
+        .product-card { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); background: #fff; border-radius: 1.5rem; border: 2px solid #e2e8f0; overflow: hidden; display: flex; flex-direction: column; height: 100%; position: relative; }
+        .product-card:hover { border-color: var(--rider-mint); transform: scale(1.05); z-index: 50; box-shadow: 0 25px 50px -12px rgba(42, 193, 188, 0.25); }
         .thumbnail-container { position: relative; overflow: hidden; background: #f8fafc; width: 100%; aspect-ratio: 1/1; }
-        
-        /* 이미지 개별 확대 효과 */
         .thumbnail-container img { transition: transform 0.6s ease; }
         .product-card:hover .thumbnail-container img { transform: scale(1.1); }
-
-        .card-share-btn { 
-            position: absolute; bottom: 10px; right: 10px; z-index: 60;
-            background: rgba(255,255,255,0.9); border-radius: 50%; width: 36px; height: 36px;
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.2s;
-        }
+        .card-share-btn { position: absolute; bottom: 10px; right: 10px; z-index: 60; background: rgba(255,255,255,0.9); border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.2s; }
         .card-share-btn:hover { background: var(--rider-mint); transform: scale(1.2) !important; }
         .card-share-btn svg { width: 18px; height: 18px; fill: var(--rider-dark); }
         .card-share-btn:hover svg { fill: #fff; }
-
         .product-title { font-size: 15px; font-weight: bold; color: #1a1c1d; text-align: center; line-height: 1.4; height: 2.8em; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 1.5rem; padding: 0 10px; }
         .check-btn { background: var(--rider-mint); color: #fff; font-weight: 900; border-radius: 12px; width: calc(100% - 32px); margin: 0 auto 20px; text-align: center; display: block; padding: 16px 0; font-size: 12px; letter-spacing: 0.1em; transition: all 0.2s; }
-        
-        .float-share { 
-            position: fixed; bottom: 20px; right: 20px; z-index: 1000; 
-            background: var(--rider-dark); color: #fff; width: 50px; height: 50px; 
-            border-radius: 50%; border: 2px solid var(--rider-mint); 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3); cursor: pointer; 
-            display: flex; align-items: center; justify-content: center; transition: all 0.3s; 
-        }
+        .float-share { position: fixed; bottom: 20px; right: 20px; z-index: 1000; background: var(--rider-dark); color: #fff; width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--rider-mint); box-shadow: 0 4px 15px rgba(0,0,0,0.3); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s; }
         .float-share:hover { transform: scale(1.1); background: var(--rider-mint); }
-
-        #toast {
-            visibility: hidden; min-width: 250px; background-color: var(--rider-dark); color: #fff;
-            text-align: center; border-radius: 50px; padding: 12px 24px; position: fixed;
-            z-index: 2000; left: 50%; bottom: 100px; transform: translateX(-50%);
-            font-size: 14px; font-weight: bold; border: 2px solid var(--rider-mint);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
+        #toast { visibility: hidden; min-width: 250px; background-color: var(--rider-dark); color: #fff; text-align: center; border-radius: 50px; padding: 12px 24px; position: fixed; z-index: 2000; left: 50%; bottom: 100px; transform: translateX(-50%); font-size: 14px; font-weight: bold; border: 2px solid var(--rider-mint); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
         #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
         @keyframes fadein { from { bottom: 80px; opacity: 0; } to { bottom: 100px; opacity: 1; } }
         @keyframes fadeout { from { bottom: 100px; opacity: 1; } to { bottom: 80px; opacity: 0; } }
-
         .sub-badge { position: absolute; top: 12px; right: 12px; z-index: 20; padding: 4px 8px; border-radius: 8px; font-weight: 900; font-size: 10px; color: var(--rider-dark); background: rgba(255,255,255,0.95); border: 1.5px solid var(--rider-mint); max-width: 80px; word-break: keep-all; overflow-wrap: break-word; line-height: 1.2; text-align: center; }
         .platform-badge { position: absolute; top: 12px; left: 12px; z-index: 20; padding: 4px 10px; border-radius: 8px; font-weight: 900; font-size: 11px; color: #fff; }
     </style>
 </head>
 <body>
-
     <div class="rider-banner shadow-lg">
         <div class="animate-marquee">
             <div class="flex">
@@ -109,7 +58,6 @@
             </div>
         </div>
     </div>
-
     <header class="pt-16 pb-8 text-center">
         <div class="container mx-auto px-4 max-w-4xl">
             <h1 class="main-title">PICK & SHARE</h1>
@@ -118,7 +66,6 @@
             </div>
         </div>
     </header>
-
     <main class="container mx-auto px-4 py-8 max-w-5xl">
         <div class="quick-menu-wrapper">
             <div id="quick-menu" class="quick-menu-container">
@@ -130,131 +77,30 @@
         </div>
         <div id="product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8"></div>
     </main>
-
     <button onclick="copySiteUrl()" class="float-share" title="사이트 공유">
         <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92z"/></svg>
     </button>
-
     <div id="toast"></div>
-
     <footer class="bg-white py-12 border-t-4 border-teal-500 text-center mt-20">
         <p class="text-slate-400 text-[11px] font-bold uppercase tracking-widest leading-loose">© 2026 PICK & SHARE. ALL RIGHTS RESERVED.</p>
     </footer>
-
     <script>
         function _0x2c0d(){const _0xf3d8ac=['352809eEqxfl','3717350Djoyuz','597TiifWw','2726ulDhfx','4404150bUVgvd','10YCgTlv','21681531ABBgdM','1lLggHBBBSncQ6aY2X1NVCgRVEvTM9xidhR1Cni8MPew','16EbLmoB','1328943VumOoF','2539632GWaYMi'];_0x2c0d=function(){return _0xf3d8ac;};return _0x2c0d();}const _0x33718e=_0x4d7b;function _0x4d7b(_0x4019fd,_0x25b4e7){_0x4019fd=_0x4019fd-0x165;const _0x2c0d2b=_0x2c0d();let _0x4d7be7=_0x2c0d2b[_0x4019fd];return _0x4d7be7;}(function(_0x4b7caf,_0x45a940){const _0x2eb1a1=_0x4d7b,_0x143e07=_0x4b7caf();while(!![]){try{const _0x1ae0d1=parseInt(_0x2eb1a1(0x169))/0x1*(parseInt(_0x2eb1a1(0x16a))/0x2)+-parseInt(_0x2eb1a1(0x167))/0x3*(-parseInt(_0x2eb1a1(0x16f))/0x4)+parseInt(_0x2eb1a1(0x168))/0x5+parseInt(_0x2eb1a1(0x16b))/0x6+-parseInt(_0x2eb1a1(0x165))/0x7+parseInt(_0x2eb1a1(0x166))/0x8+parseInt(_0x2eb1a1(0x16d))/0x9*(-parseInt(_0x2eb1a1(0x16c))/0xa);if(_0x1ae0d1===_0x45a940)break;else _0x143e07['push'](_0x143e07['shift']());}catch(_0x404aca){_0x143e07['push'](_0x143e07['shift']());}}}(_0x2c0d,0x753a4));
         const SHEET_ID=_0x33718e(0x16e);
         const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=시트1`;
-
         let allProducts = [];
         let currentCategory = '전체';
-
-        async function fetchSheetData() {
-            try {
-                const response = await fetch(url);
-                const data = await response.text();
-                const rows = data.split('\n').slice(1);
-                allProducts = rows.map(row => {
-                    const cols = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
-                    const clean = (s) => s ? s.replace(/^"|"$/g, "").trim() : "";
-                    return {
-                        category: clean(cols[0]),
-                        categories: clean(cols[0]).split(',').map(c => c.trim()).filter(c => c),
-                        name: clean(cols[1]), link: clean(cols[2]), img: clean(cols[3]), subBadge: clean(cols[4])
-                    };
-                }).filter(p => p.name);
-                generateQuickMenu(); 
-                displayProducts(allProducts);
-            } catch (e) { console.error(e); }
-        }
-
-        function displayProducts(data) {
-            const grid = document.getElementById('product-grid');
-            grid.innerHTML = data.map(p => {
-                const l = p.link.toLowerCase();
-                const platform = l.includes('coupang.com') ? {n:'COUPANG', c:'bg-red-500'} : (l.includes('naver') ? {n:'NAVER', c:'bg-green-500'} : {n:'CHECK', c:'bg-teal-500'});
-                const subBadgeHtml = p.subBadge ? `<span class="sub-badge">${p.subBadge}</span>` : '';
-                return `
-                    <div class="product-card relative group">
-                        <span class="platform-badge ${platform.c}">${platform.n}</span>
-                        ${subBadgeHtml}
-                        <div class="thumbnail-container flex items-center justify-center">
-                            <div class="card-share-btn" onclick="copyProductLink(event, '${p.link}')" title="링크 복사">
-                                <svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92z"/></svg>
-                            </div>
-                            ${p.img ? `<img src="${p.img}" class="w-full h-full object-cover">` : `<div class="p-6 text-teal-500 font-bold text-center">${p.name}</div>`}
-                        </div>
-                        <div class="p-6 flex-1 flex flex-col">
-                            <span class="text-[11px] font-bold text-teal-600 mb-2 tracking-widest text-center uppercase italic">${p.category}</span>
-                            <h2 class="product-title text-center">${p.name}</h2>
-                            <a href="${p.link}" target="_blank" class="check-btn">상세 정보 확인</a>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function showToast(message) {
-            const toast = document.getElementById("toast");
-            toast.innerText = message;
-            toast.className = "show";
-            setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 3000);
-        }
-
-        function copyToClipboard(text, successMsg) {
-            const temp = document.createElement('textarea');
-            document.body.appendChild(temp);
-            temp.value = text;
-            temp.select();
-            document.execCommand('copy');
-            document.body.removeChild(temp);
-            showToast(successMsg);
-        }
-
-        function copyProductLink(e, link) {
-            e.stopPropagation();
-            copyToClipboard(link, "✅ 상품 링크 복사 완료!");
-        }
-
-        function copySiteUrl() {
-            copyToClipboard(window.location.href, "🚀 사이트 주소 복사 완료!");
-        }
-
-        function generateQuickMenu() {
-            const menu = document.getElementById('quick-menu');
-            const allCats = [];
-            allProducts.forEach(p => allCats.push(...p.categories));
-            [...new Set(allCats)].sort((a,b) => a.localeCompare(b,'ko')).forEach(cat => {
-                const btn = document.createElement('button');
-                btn.className = "quick-btn";
-                btn.innerText = cat;
-                btn.setAttribute('data-cat', cat);
-                btn.onclick = () => filterItems(cat);
-                menu.appendChild(btn);
-            });
-        }
-
-        function filterItems(cat) {
-            currentCategory = cat;
-            document.querySelectorAll('.quick-btn').forEach(btn => btn.classList.toggle('active', btn.getAttribute('data-cat') === cat));
-            handleSearch();
-        }
-
-        function handleSearch() {
-            const q = document.getElementById('searchInput').value.toLowerCase();
-            const filtered = allProducts.filter(p => (p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q)) && (currentCategory === '전체' || p.categories.includes(currentCategory)));
-            displayProducts(filtered);
-        }
-
-        function updateClock() {
-            const n = new Date();
-            const days = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
-            document.getElementById('real-time-clock').innerText = `${n.getFullYear()}. ${n.getMonth()+1}. ${n.getDate()}. ${days[n.getDay()]} | ${String(n.getHours()).padStart(2,'0')}:${String(n.getMinutes()).padStart(2,'0')}:${String(n.getSeconds()).padStart(2,'0')}`;
-        }
-
-        setInterval(updateClock, 1000);
-        updateClock();
-        fetchSheetData();
+        async function fetchSheetData() { try { const response = await fetch(url); const data = await response.text(); const rows = data.split('\n').slice(1); allProducts = rows.map(row => { const cols = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/); const clean = (s) => s ? s.replace(/^"|"$/g, "").trim() : ""; return { category: clean(cols[0]), categories: clean(cols[0]).split(',').map(c => c.trim()).filter(c => c), name: clean(cols[1]), link: clean(cols[2]), img: clean(cols[3]), subBadge: clean(cols[4]) }; }).filter(p => p.name); generateQuickMenu(); displayProducts(allProducts); } catch (e) { console.error(e); } }
+        function displayProducts(data) { const grid = document.getElementById('product-grid'); grid.innerHTML = data.map(p => { const l = p.link.toLowerCase(); const platform = l.includes('coupang.com') ? {n:'COUPANG', c:'bg-red-500'} : (l.includes('naver') ? {n:'NAVER', c:'bg-green-500'} : {n:'CHECK', c:'bg-teal-500'}); const subBadgeHtml = p.subBadge ? `<span class="sub-badge">${p.subBadge}</span>` : ''; return `<div class="product-card relative group"><span class="platform-badge ${platform.c}">${platform.n}</span>${subBadgeHtml}<div class="thumbnail-container flex items-center justify-center"><div class="card-share-btn" onclick="copyProductLink(event, '${p.link}')" title="링크 복사"><svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92z"/></svg></div>${p.img ? `<img src="${p.img}" class="w-full h-full object-cover">` : `<div class="p-6 text-teal-500 font-bold text-center">${p.name}</div>`}</div><div class="p-6 flex-1 flex flex-col"><span class="text-[11px] font-bold text-teal-600 mb-2 tracking-widest text-center uppercase italic">${p.category}</span><h2 class="product-title text-center">${p.name}</h2><a href="${p.link}" target="_blank" class="check-btn">상세 정보 확인</a></div></div>`; }).join(''); }
+        function showToast(message) { const toast = document.getElementById("toast"); toast.innerText = message; toast.className = "show"; setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 3000); }
+        function copyToClipboard(text, successMsg) { const temp = document.createElement('textarea'); document.body.appendChild(temp); temp.value = text; temp.select(); document.execCommand('copy'); document.body.removeChild(temp); showToast(successMsg); }
+        function copyProductLink(e, link) { e.stopPropagation(); copyToClipboard(link, "✅ 상품 링크 복사 완료!"); }
+        function copySiteUrl() { copyToClipboard(window.location.href, "🚀 사이트 주소 복사 완료!"); }
+        function generateQuickMenu() { const menu = document.getElementById('quick-menu'); const allCats = []; allProducts.forEach(p => allCats.push(...p.categories)); [...new Set(allCats)].sort((a,b) => a.localeCompare(b,'ko')).forEach(cat => { const btn = document.createElement('button'); btn.className = "quick-btn"; btn.innerText = cat; btn.setAttribute('data-cat', cat); btn.onclick = () => filterItems(cat); menu.appendChild(btn); }); }
+        function filterItems(cat) { currentCategory = cat; document.querySelectorAll('.quick-btn').forEach(btn => btn.classList.toggle('active', btn.getAttribute('data-cat') === cat)); handleSearch(); }
+        function handleSearch() { const q = document.getElementById('searchInput').value.toLowerCase(); const filtered = allProducts.filter(p => (p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q)) && (currentCategory === '전체' || p.categories.includes(currentCategory))); displayProducts(filtered); }
+        function updateClock() { const n = new Date(); const days = ['SUN','MON','TUE','WED','THU','FRI','SAT']; document.getElementById('real-time-clock').innerText = `${n.getFullYear()}. ${n.getMonth()+1}. ${n.getDate()}. ${days[n.getDay()]} | ${String(n.getHours()).padStart(2,'0')}:${String(n.getMinutes()).padStart(2,'0')}:${String(n.getSeconds()).padStart(2,'0')}`; }
+        setInterval(updateClock, 1000); updateClock(); fetchSheetData();
     </script>
 </body>
 </html>
