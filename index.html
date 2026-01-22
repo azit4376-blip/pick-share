@@ -14,13 +14,14 @@
         body.dark-mode { background-color: #121212; color: #e5e7eb; }
         body { background-color: #f3f6f7; color: var(--rider-dark); font-family: 'Do Hyeon', sans-serif; padding-top: 48px; scroll-behavior: smooth; transition: background-color 0.3s, color 0.3s; }
         
-        /* 공정위 문구 무한 루프 복구 및 검증 */
+        /* 공정위 문구 무한 루프 배너 */
         @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         .animate-marquee { display: flex; width: max-content; animation: marquee 40s linear infinite; }
         .rider-banner { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; background: var(--rider-dark); border-bottom: 3px solid var(--rider-mint); height: 40px; display: flex; align-items: center; overflow: hidden; }
         .rider-text { font-family: 'Noto Sans KR', sans-serif; font-size: 11px; color: #fff; font-weight: 700; white-space: nowrap; padding-right: 50px; }
         
-        /* [Confirmed] 타이틀 반응형 크기 조정 */
+        /* [Confirmed] 타이틀 스타일: 클릭 가능하도록 설정 및 링크 데코레이션 제거 */
+        .main-title-link { text-decoration: none; display: inline-block; cursor: pointer; }
         .main-title { font-family: 'Do Hyeon', sans-serif; font-weight: 900; font-style: italic; text-transform: uppercase; color: var(--rider-mint); -webkit-text-stroke: 1px #fff; filter: drop-shadow(3px 3px 0px rgba(42,193,188,0.2)); line-height: 1.1; white-space: nowrap; margin: 0 auto; font-size: clamp(3rem, 10vw, 6rem); }
         body.dark-mode .main-title { -webkit-text-stroke: 1px var(--rider-dark); }
 
@@ -28,7 +29,7 @@
         .coupang-logo-img { height: 18px; width: auto; object-fit: contain; }
         body.dark-mode .coupang-btn { background: #1f2937; border-color: #374151; color: #fff; }
 
-        /* 카테고리 레이아웃 유지 */
+        /* 카테고리 레이아웃 (PC 가로 정렬 고정) */
         .quick-menu-container { display: flex; gap: 8px; align-items: center; width: 100%; }
         
         @media (max-width: 768px) {
@@ -49,7 +50,7 @@
         .cat-count { font-size: 11px; opacity: 0.8; background: rgba(0,0,0,0.05); padding: 2px 8px; border-radius: 10px; }
         .quick-btn.active .cat-count { background: rgba(255,255,255,0.2); }
 
-        /* 카드 확대 효과 및 이미지 공유 버튼 유지 */
+        /* 카드 확대 효과 및 이미지 공유 버튼 */
         .product-card { transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); background: #fff; border-radius: 1.5rem; border: 2px solid #e2e8f0; overflow: hidden; display: flex; flex-direction: column; height: 100%; position: relative; -webkit-tap-highlight-color: transparent; }
         body.dark-mode .product-card { background: #1f2937; border-color: #374151; }
         .product-card:hover, .product-card:active { border-color: var(--rider-mint); transform: scale(1.05); z-index: 50; box-shadow: 0 25px 50px -12px rgba(42, 193, 188, 0.25); }
@@ -99,7 +100,9 @@
 
     <header class="pt-16 pb-8 text-center">
         <div class="container mx-auto px-4">
-            <h1 class="main-title">PICK & SHARE</h1>
+            <a href="/" class="main-title-link">
+                <h1 class="main-title">PICK & SHARE</h1>
+            </a>
             <div class="mt-3"><span id="real-time-clock" class="text-slate-500 dark:text-slate-400 text-[12px] font-bold tracking-widest uppercase italic">LOADING...</span></div>
         </div>
     </header>
