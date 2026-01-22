@@ -12,12 +12,6 @@
     <meta name="keywords" content="라이더용품, 배달용품, 쿠팡파트너스, 라이더추천, 오토바이용품, 배민커넥트, 쿠팡이츠">
     <link rel="canonical" href="https://azit4376-blip.github.io/pick-share/">
     
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Pick & Share | 라이더 필수템 큐레이션">
-    <meta property="og:description" content="라이더가 직접 골라 공유하는 고퀄리티 배달 용품 리스트!">
-    <meta property="og:url" content="https://azit4376-blip.github.io/pick-share/">
-    <meta property="og:image" content="https://azit4376-blip.github.io/pick-share/og-image.jpg">
-
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Noto+Sans+KR:wght@900&display=swap" rel="stylesheet">
     <style>
@@ -27,30 +21,73 @@
         .animate-marquee { display: flex; width: max-content; animation: marquee 40s linear infinite; }
         .rider-banner { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; background: var(--rider-dark); border-bottom: 3px solid var(--rider-mint); height: 40px; display: flex; align-items: center; overflow: hidden; }
         .rider-text { font-family: 'Noto Sans KR', sans-serif; font-size: 11px; color: #fff; font-weight: 700; white-space: nowrap; padding-right: 50px; }
+        
         .main-title { font-family: 'Do Hyeon', sans-serif; font-weight: 900; font-style: italic; text-transform: uppercase; color: var(--rider-mint); -webkit-text-stroke: 1px #fff; filter: drop-shadow(3px 3px 0px rgba(42,193,188,0.2)); line-height: 1.1; white-space: nowrap; margin: 0 auto; }
-        @media (max-width: 768px) { .main-title { font-size: 13vw; } .quick-menu-wrapper::after { content: ''; position: absolute; top: 0; right: 0; width: 40px; height: 100%; background: linear-gradient(to left, #f3f6f7, transparent); pointer-events: none; z-index: 5; } .quick-menu-container { overflow-x: auto; padding-bottom: 12px; -webkit-overflow-scrolling: touch; } .quick-menu-container::-webkit-scrollbar { display: block; height: 3px; } .quick-menu-container::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; } }
+        
+        @media (max-width: 768px) {
+            .main-title { font-size: 13vw; }
+            .quick-menu-wrapper::after { content: ''; position: absolute; top: 0; right: 0; width: 40px; height: 100%; background: linear-gradient(to left, #f3f6f7, transparent); pointer-events: none; z-index: 5; }
+            .quick-menu-container { overflow-x: auto; padding-bottom: 12px; -webkit-overflow-scrolling: touch; }
+            .quick-menu-container::-webkit-scrollbar { display: block; height: 3px; }
+            .quick-menu-container::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        }
+
         @media (min-width: 769px) { .main-title { font-size: clamp(4rem, 8vw, 6rem); } .quick-menu-container { flex-wrap: wrap; justify-content: center; } }
+        
         .quick-menu-wrapper { position: relative; width: 100%; margin-bottom: 24px; }
         .quick-menu-container { display: flex; gap: 10px; }
         .quick-btn { white-space: nowrap; padding: 8px 16px; border-radius: 12px; background: #fff; border: 2px solid #e2e8f0; font-size: 14px; font-weight: bold; color: #64748b; transition: all 0.2s; cursor: pointer; }
         .quick-btn.active { background: var(--rider-mint); border-color: var(--rider-mint); color: #fff; box-shadow: 0 4px 12px rgba(42, 193, 188, 0.2); }
-        .product-card { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); background: #fff; border-radius: 1.5rem; border: 2px solid #e2e8f0; overflow: hidden; display: flex; flex-direction: column; height: 100%; position: relative; }
-        .product-card:hover { border-color: var(--rider-mint); transform: scale(1.05); z-index: 50; box-shadow: 0 25px 50px -12px rgba(42, 193, 188, 0.25); }
+
+        /* [Confirmed] 카드 전체 확대 로직 (모바일 터치 대응) */
+        .product-card { 
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            background: #fff; border-radius: 1.5rem; border: 2px solid #e2e8f0; 
+            overflow: hidden; display: flex; flex-direction: column; height: 100%; position: relative; 
+            cursor: pointer; /* 카드 어디를 눌러도 반응하도록 설정 */
+            -webkit-tap-highlight-color: transparent; /* 모바일 터치 시 파란 박스 제거 */
+        }
+        
+        /* [Confirmed] 터치 또는 마우스 오버 시 카드 전체 확대 */
+        .product-card:hover, .product-card:active { 
+            border-color: var(--rider-mint); 
+            transform: scale(1.05); 
+            z-index: 50; 
+            box-shadow: 0 25px 50px -12px rgba(42, 193, 188, 0.25); 
+        }
+
         .thumbnail-container { position: relative; overflow: hidden; background: #f8fafc; width: 100%; aspect-ratio: 1/1; }
-        .thumbnail-container img { transition: transform 0.6s ease; }
-        .product-card:hover .thumbnail-container img { transform: scale(1.1); }
-        .card-share-btn { position: absolute; bottom: 10px; right: 10px; z-index: 60; background: rgba(255,255,255,0.9); border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.2s; }
+        .thumbnail-container img, .no-image-text { transition: transform 0.6s ease; }
+        
+        /* [Confirmed] 이미지 혹은 대체 텍스트 동시 확대 */
+        .product-card:hover .thumbnail-container img,
+        .product-card:active .thumbnail-container img,
+        .product-card:hover .no-image-text,
+        .product-card:active .no-image-text { 
+            transform: scale(1.1); 
+        }
+
+        .card-share-btn { 
+            position: absolute; bottom: 10px; right: 10px; z-index: 60;
+            background: rgba(255,255,255,0.9); border-radius: 50%; width: 36px; height: 36px;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.2s;
+        }
         .card-share-btn:hover { background: var(--rider-mint); transform: scale(1.2) !important; }
         .card-share-btn svg { width: 18px; height: 18px; fill: var(--rider-dark); }
         .card-share-btn:hover svg { fill: #fff; }
+
         .product-title { font-size: 15px; font-weight: bold; color: #1a1c1d; text-align: center; line-height: 1.4; height: 2.8em; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 1.5rem; padding: 0 10px; }
         .check-btn { background: var(--rider-mint); color: #fff; font-weight: 900; border-radius: 12px; width: calc(100% - 32px); margin: 0 auto 20px; text-align: center; display: block; padding: 16px 0; font-size: 12px; letter-spacing: 0.1em; transition: all 0.2s; }
+        
         .float-share { position: fixed; bottom: 20px; right: 20px; z-index: 1000; background: var(--rider-dark); color: #fff; width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--rider-mint); box-shadow: 0 4px 15px rgba(0,0,0,0.3); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s; }
         .float-share:hover { transform: scale(1.1); background: var(--rider-mint); }
+
         #toast { visibility: hidden; min-width: 200px; background-color: var(--rider-dark); color: #fff; text-align: center; border-radius: 50px; padding: 12px 24px; position: fixed; z-index: 2000; left: 50%; bottom: 100px; transform: translateX(-50%); font-size: 14px; font-weight: bold; border: 2px solid var(--rider-mint); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
         #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
         @keyframes fadein { from { bottom: 80px; opacity: 0; } to { bottom: 100px; opacity: 1; } }
         @keyframes fadeout { from { bottom: 100px; opacity: 1; } to { bottom: 80px; opacity: 0; } }
+        
         .sub-badge { position: absolute; top: 12px; right: 12px; z-index: 20; padding: 4px 8px; border-radius: 8px; font-weight: 900; font-size: 10px; color: var(--rider-dark); background: rgba(255,255,255,0.95); border: 1.5px solid var(--rider-mint); max-width: 80px; word-break: keep-all; overflow-wrap: break-word; line-height: 1.2; text-align: center; }
         .platform-badge { position: absolute; top: 12px; left: 12px; z-index: 20; padding: 4px 10px; border-radius: 8px; font-weight: 900; font-size: 11px; color: #fff; }
     </style>
@@ -101,7 +138,10 @@
         let allProducts = [];
         let currentCategory = '전체';
         async function fetchSheetData() { try { const response = await fetch(url); const data = await response.text(); const rows = data.split('\n').slice(1); allProducts = rows.map(row => { const cols = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/); const clean = (s) => s ? s.replace(/^"|"$/g, "").trim() : ""; return { category: clean(cols[0]), categories: clean(cols[0]).split(',').map(c => c.trim()).filter(c => c), name: clean(cols[1]), link: clean(cols[2]), img: clean(cols[3]), subBadge: clean(cols[4]) }; }).filter(p => p.name); generateQuickMenu(); displayProducts(allProducts); } catch (e) { console.error(e); } }
-        function displayProducts(data) { const grid = document.getElementById('product-grid'); grid.innerHTML = data.map(p => { const l = p.link.toLowerCase(); const platform = l.includes('coupang.com') ? {n:'COUPANG', c:'bg-red-500'} : (l.includes('naver') ? {n:'NAVER', c:'bg-green-500'} : {n:'CHECK', c:'bg-teal-500'}); const subBadgeHtml = p.subBadge ? `<span class="sub-badge">${p.subBadge}</span>` : ''; return `<div class="product-card relative group"><span class="platform-badge ${platform.c}">${platform.n}</span>${subBadgeHtml}<div class="thumbnail-container flex items-center justify-center"><div class="card-share-btn" onclick="copyProductLink(event, '${p.link}')" title="링크 복사"><svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92z"/></svg></div>${p.img ? `<img src="${p.img}" class="w-full h-full object-cover">` : `<div class="p-6 text-teal-500 font-bold text-center">${p.name}</div>`}</div><div class="p-6 flex-1 flex flex-col"><span class="text-[11px] font-bold text-teal-600 mb-2 tracking-widest text-center uppercase italic">${p.category}</span><h2 class="product-title text-center">${p.name}</h2><a href="${p.link}" target="_blank" class="check-btn">상세 정보 확인</a></div></div>`; }).join(''); }
+        
+        // [Confirmed] 이미지 유무에 따른 카드 렌더링 최적화
+        function displayProducts(data) { const grid = document.getElementById('product-grid'); grid.innerHTML = data.map(p => { const l = p.link.toLowerCase(); const platform = l.includes('coupang.com') ? {n:'COUPANG', c:'bg-red-500'} : (l.includes('naver') ? {n:'NAVER', c:'bg-green-500'} : {n:'CHECK', c:'bg-teal-500'}); const subBadgeHtml = p.subBadge ? `<span class="sub-badge">${p.subBadge}</span>` : ''; return `<div class="product-card relative group"><span class="platform-badge ${platform.c}">${platform.n}</span>${subBadgeHtml}<div class="thumbnail-container flex items-center justify-center"><div class="card-share-btn" onclick="copyProductLink(event, '${p.link}')" title="링크 복사"><svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92z"/></svg></div>${p.img ? `<img src="${p.img}" class="w-full h-full object-cover">` : `<div class="no-image-text p-6 text-teal-500 font-bold text-center leading-tight">${p.name}</div>`}</div><div class="p-6 flex-1 flex flex-col"><span class="text-[11px] font-bold text-teal-600 mb-2 tracking-widest text-center uppercase italic">${p.category}</span><h2 class="product-title text-center">${p.name}</h2><a href="${p.link}" target="_blank" class="check-btn">상세 정보 확인</a></div></div>`; }).join(''); }
+        
         function showToast(message) { const toast = document.getElementById("toast"); toast.innerText = message; toast.className = "show"; setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 3000); }
         function copyToClipboard(text, successMsg) { const temp = document.createElement('textarea'); document.body.appendChild(temp); temp.value = text; temp.select(); document.execCommand('copy'); document.body.removeChild(temp); showToast(successMsg); }
         function copyProductLink(e, link) { e.stopPropagation(); copyToClipboard(link, "✅ 상품 링크 복사 완료!"); }
@@ -114,4 +154,3 @@
     </script>
 </body>
 </html>
-
