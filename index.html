@@ -23,7 +23,6 @@
 
         @media (max-width: 768px) {
             .main-title { font-size: 13vw; }
-            .quick-menu-wrapper::after { content: ''; position: absolute; top: 0; right: 0; width: 40px; height: 100%; background: linear-gradient(to left, transparent, transparent); pointer-events: none; z-index: 5; }
             .quick-menu-container { overflow-x: auto; padding-bottom: 12px; -webkit-overflow-scrolling: touch; display: flex; gap: 10px; }
             .quick-menu-container::-webkit-scrollbar { display: block; height: 4px; }
             .quick-menu-container::-webkit-scrollbar-thumb { background: var(--rider-mint); border-radius: 10px; }
@@ -55,17 +54,17 @@
         body.dark-mode .product-title { color: #f3f4f6; }
         .check-btn { background: var(--rider-mint); color: #fff; font-weight: 900; border-radius: 12px; width: calc(100% - 32px); margin: 0 auto 20px; text-align: center; display: block; padding: 16px 0; font-size: 12px; }
         
-        /* 플로팅 버튼 공용 스타일 */
         .floating-btn { position: fixed; right: 20px; z-index: 1000; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.3); transition: all 0.3s ease; }
         
-        /* [Confirmed] 버튼 위치 재배치 (아래에서 위로: 공유-TOP-테마) */
-        .float-share { bottom: 20px; background: var(--rider-dark); color: #fff; width: 50px; height: 50px; border: 2px solid var(--rider-mint); }
-        .float-top { bottom: 80px; background: #fff; color: var(--rider-mint); width: 50px; height: 50px; border: 2px solid var(--rider-mint); opacity: 0; visibility: hidden; transform: translateY(20px); }
+        /* [Confirmed] 버튼 위치 재배치 (위에서부터: TOP-테마-공유) */
+        .float-top { bottom: 140px; background: #fff; color: var(--rider-mint); width: 50px; height: 50px; border: 2px solid var(--rider-mint); opacity: 0; visibility: hidden; transform: translateY(20px); }
         body.dark-mode .float-top { background: #1f2937; }
         .float-top.show { opacity: 1; visibility: visible; transform: translateY(0); }
-        
-        .float-theme { bottom: 140px; background: #fff; color: #facc15; width: 50px; height: 50px; border: 2px solid #facc15; }
+
+        .float-theme { bottom: 80px; background: #fff; color: #facc15; width: 50px; height: 50px; border: 2px solid #facc15; }
         body.dark-mode .float-theme { background: #1f2937; color: #818cf8; border-color: #818cf8; }
+
+        .float-share { bottom: 20px; background: var(--rider-dark); color: #fff; width: 50px; height: 50px; border: 2px solid var(--rider-mint); }
 
         #toast { visibility: hidden; min-width: 200px; background-color: var(--rider-dark); color: #fff; text-align: center; border-radius: 50px; padding: 12px 24px; position: fixed; z-index: 2000; left: 50%; bottom: 100px; transform: translateX(-50%); font-size: 14px; border: 2px solid var(--rider-mint); }
         #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
@@ -94,8 +93,8 @@
         <div id="product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8 mt-12"></div>
     </main>
 
+    <button id="topBtn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="floating-btn float-top" title="최상단으로"><svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg></button>
     <button onclick="toggleDarkMode()" class="floating-btn float-theme" id="themeBtn"><svg id="themeIcon" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"></svg></button>
-    <button id="topBtn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="floating-btn float-top"><svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg></button>
     <button onclick="copySiteUrl()" class="floating-btn float-share"><svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92z"/></svg></button>
     
     <div id="toast"></div>
