@@ -23,6 +23,8 @@
         #dropdown-menu.show { display: block; }
         .check-btn { background: var(--rider-mint); color: #fff; font-weight: 900; border-radius: 12px; width: calc(100% - 32px); margin: 0 auto 20px; text-align: center; padding: 12px 0; text-xs; position: relative; overflow: hidden; }
         .platform-badge { position: absolute; top: 12px; left: 12px; z-index: 20; padding: 4px 10px; border-radius: 8px; font-weight: 900; font-size: 11px; color: #fff; }
+        /* [Confirmed] 오른쪽 상단 서브 배지 스타일 */
+        .sub-badge { position: absolute; top: 12px; right: 12px; z-index: 20; padding: 4px 10px; border-radius: 8px; font-weight: 900; font-size: 11px; color: var(--rider-dark); background: rgba(255,255,255,0.9); border: 1.5px solid var(--rider-mint); }
     </style>
 </head>
 <body>
@@ -97,7 +99,8 @@
                         categories: clean(cols[0]).split(',').map(c => c.trim()).filter(c => c),
                         name: clean(cols[1]),
                         link: clean(cols[2]),
-                        img: clean(cols[3])
+                        img: clean(cols[3]),
+                        subBadge: clean(cols[4]) // [Confirmed] E열 데이터 추출
                     };
                 }).filter(p => p.name);
                 generateCategoryMenu(); 
@@ -123,9 +126,14 @@
             grid.innerHTML = data.map(p => {
                 const l = p.link.toLowerCase();
                 const platform = l.includes('coupang.com') ? {n:'COUPANG', c:'bg-red-500'} : (l.includes('naver') ? {n:'NAVER', c:'bg-green-500'} : {n:'CHECK', c:'bg-teal-500'});
+                
+                // [Confirmed] 서브 배지 HTML (데이터 있을 때만 출력)
+                const subBadgeHtml = p.subBadge ? `<span class="sub-badge">${p.subBadge}</span>` : '';
+
                 return `
                     <div class="product-card relative group">
                         <span class="platform-badge ${platform.c}">${platform.n}</span>
+                        ${subBadgeHtml}
                         <div class="thumbnail-container flex items-center justify-center">
                             ${p.img ? `<img src="${p.img}" class="w-full h-full object-cover">` : `<div class="p-6 text-teal-500 font-bold text-center">${p.name}</div>`}
                         </div>
@@ -155,8 +163,7 @@
         function updateClock() {
             const n = new Date();
             const days = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
-            const clockStr = `${n.getFullYear()}. ${n.getMonth()+1}. ${n.getDate()}. ${days[n.getDay()]} | ${String(n.getHours()).padStart(2,'0')}:${String(n.getMinutes()).padStart(2,'0')}:${String(n.getSeconds()).padStart(2,'0')}`;
-            document.getElementById('real-time-clock').innerText = clockStr;
+            document.getElementById('real-time-clock').innerText = `${n.getFullYear()}. ${n.getMonth()+1}. ${n.getDate()}. ${days[n.getDay()]} | ${String(n.getHours()).padStart(2,'0')}:${String(n.getMinutes()).padStart(2,'0')}:${String(n.getSeconds()).padStart(2,'0')}`;
         }
 
         setInterval(updateClock, 1000);
