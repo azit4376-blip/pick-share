@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Noto+Sans+KR:wght@900&display=swap" rel="stylesheet">
     <style>
         :root { --rider-mint: #2ac1bc; --rider-dark: #1a1c1d; --active-mint: #3ff2ec; }
+        
         body.dark-mode { background-color: #121212; color: #e5e7eb; }
         body { background-color: #f3f6f7; color: var(--rider-dark); font-family: 'Do Hyeon', sans-serif; padding-top: 48px; scroll-behavior: smooth; transition: background-color 0.3s, color 0.3s; }
         
@@ -29,11 +30,9 @@
         .quick-btn { white-space: nowrap; padding: 10px 20px; border-radius: 14px; background: #fff; border: 2px solid #e2e8f0; font-size: 15px; font-weight: bold; color: #64748b; cursor: pointer; transition: all 0.2s; }
         body.dark-mode .quick-btn { background: #1f2937; border-color: #374151; color: #9ca3af; }
         .quick-btn.active { background: var(--rider-mint) !important; border-color: var(--rider-mint) !important; color: #fff !important; }
-        body.dark-mode .quick-btn.active { background: var(--active-mint) !important; border-color: var(--active-mint) !important; color: #000 !important; font-weight: 900; }
 
         .search-container { position: relative; width: 100%; }
         #clearBtn { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: #cbd5e1; color: white; width: 22px; height: 22px; border-radius: 50%; display: none; align-items: center; justify-content: center; cursor: pointer; border: none; font-size: 12px; }
-        body.dark-mode #clearBtn { background: #4b5563; }
 
         .product-card { transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); background: #fff; border-radius: 1.5rem; border: 2px solid #e2e8f0; overflow: hidden; display: flex; flex-direction: column; height: 100%; position: relative; }
         body.dark-mode .product-card { background: #1f2937; border-color: #374151; }
@@ -43,6 +42,10 @@
         body.dark-mode .thumbnail-container { background: #111827; }
         .thumbnail-container img { width: 100%; height: 100%; object-fit: cover; }
         
+        /* [Confirmed] 이미지 없을 때 민트색 대체 텍스트 디자인 복구 */
+        .no-image-text { padding: 1.5rem; color: var(--rider-mint); font-weight: bold; text-align: center; display: flex; align-items: center; justify-content: center; height: 100%; width: 100%; background-color: #f1f5f9; font-size: 14px; line-height: 1.4; word-break: keep-all; }
+        body.dark-mode .no-image-text { background-color: #1e293b; color: var(--active-mint); }
+
         .platform-badge { position: absolute; top: 12px; left: 12px; z-index: 20; padding: 4px 10px; border-radius: 8px; font-weight: 900; font-size: 11px; color: #fff; }
         .sub-badge { position: absolute; top: 12px; right: 12px; z-index: 20; padding: 4px 8px; border-radius: 8px; font-weight: 900; font-size: 10px; color: var(--rider-dark); background: rgba(255,255,255,0.95); border: 1.5px solid var(--rider-mint); }
 
@@ -98,16 +101,10 @@
     <button id="topBtn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="floating-btn float-top" title="최상단으로"><svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg></button>
     <button onclick="toggleDarkMode()" class="floating-btn float-theme" id="themeBtn" title="테마 변경"><svg id="themeIcon" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"></svg></button>
     <button id="shareBtn" onclick="copySiteUrl()" class="floating-btn float-share" title="사이트 주소 복사"><svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92z"/></svg></button>
-    
     <div id="toast"></div>
 
-    <footer class="bg-white dark:bg-gray-800 py-12 border-t-4 border-teal-500 text-center mt-20 transition-colors">
-        <p class="text-slate-400 text-[11px] font-bold uppercase tracking-widest leading-loose">© 2026 PICK & SHARE. ALL RIGHTS RESERVED.</p>
-    </footer>
-
     <script>
-        function _0x2c0d(){const _0xf3d8ac=['352809eEqxfl','3717350Djoyuz','597TiifWw','2726ulDhfx','4404150bUVgvd','10YCgTlv','21681531ABBgdM','1lLggHBBBSncQ6aY2X1NVCgRVEvTM9xidhR1Cni8MPew','16EbLmoB','1328943VumOoF','2539632GWaYMi'];_0x2c0d=function(){return _0xf3d8ac;};return _0x2c0d();}const _0x33718e=_0x4d7b;function _0x4d7b(_0x4019fd,_0x25b4e7){_0x4019fd=_0x4019fd-0x165;const _0x2c0d2b=_0x2c0d();let _0x4d7be7=_0x2c0d2b[_0x4019fd];return _0x4d7be7;}(function(_0x4b7caf,_0x45a940){const _0x2eb1a1=_0x4d7b,_0x143e07=_0x4b7caf();while(!![]){try{const _0x1ae0d1=parseInt(_0x2eb1a1(0x169))/0x1*(parseInt(_0x2eb1a1(0x16a))/0x2)+-parseInt(_0x2eb1a1(0x167))/0x3*(-parseInt(_0x2eb1a1(0x16f))/0x4)+parseInt(_0x2eb1a1(0x168))/0x5+parseInt(_0x2eb1a1(0x16b))/0x6+-parseInt(_0x2eb1a1(0x165))/0x7+parseInt(_0x2eb1a1(0x166))/0x8+parseInt(_0x2eb1a1(0x16d))/0x9*(-parseInt(_0x2eb1a1(0x16c))/0xa);if(_0x1ae0d1===_0x45a940)break;else _0x143e07['push'](_0x143e07['shift']());}catch(_0x404aca){_0x143e07['push'](_0x143e07['shift']());}}}(_0x2c0d,0x753a4));
-        const SHEET_ID=_0x33718e(0x16e);
+        const SHEET_ID = '1lLggHBBBSncQ6aY2X1NVCgRVEvTM9xidhR1Cni8MPew';
         const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=시트1`;
         let allProducts = [];
         let currentCategory = '전체';
