@@ -20,7 +20,7 @@
         .rider-banner { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; background: var(--rider-dark); border-bottom: 3px solid var(--rider-mint); height: 40px; display: flex; align-items: center; overflow: hidden; }
         .rider-text { font-family: 'Noto Sans KR', sans-serif; font-size: 11px; color: #fff; font-weight: 700; white-space: nowrap; padding-right: 80px; }
         
-        /* 타이틀 스타일 및 반응형 크기 */
+        /* 반응형 타이틀 */
         .main-title-link { text-decoration: none; display: inline-block; cursor: pointer; }
         .main-title { font-family: 'Do Hyeon', sans-serif; font-weight: 900; font-style: italic; text-transform: uppercase; color: var(--rider-mint); -webkit-text-stroke: 1px #fff; filter: drop-shadow(3px 3px 0px rgba(42,193,188,0.2)); line-height: 1.1; white-space: nowrap; margin: 0 auto; font-size: clamp(3rem, 10vw, 6rem); }
         body.dark-mode .main-title { -webkit-text-stroke: 1px var(--rider-dark); }
@@ -29,7 +29,7 @@
         .coupang-logo-img { height: 18px; width: auto; object-fit: contain; }
         body.dark-mode .coupang-btn { background: #1f2937; border-color: #374151; color: #fff; }
 
-        /* 카테고리 레이아웃 (PC 가로 정렬 고정) */
+        /* PC 가로 정렬 레이아웃 */
         .quick-menu-container { display: flex; gap: 8px; align-items: center; width: 100%; }
         @media (max-width: 768px) {
             .quick-menu-container { overflow-x: auto; padding: 4px 10px 15px; -webkit-overflow-scrolling: touch; justify-content: flex-start; }
@@ -45,13 +45,13 @@
         
         .cat-count { font-size: 11px; opacity: 0.8; background: rgba(0,0,0,0.05); padding: 2px 8px; border-radius: 10px; }
 
-        /* [Confirmed] 검색창 및 삭제 버튼 디자인 */
+        /* 검색창 삭제 버튼 */
         .search-container { position: relative; width: 100%; }
         #clearBtn { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: #cbd5e1; color: white; width: 22px; height: 22px; border-radius: 50%; display: none; align-items: center; justify-content: center; cursor: pointer; border: none; font-size: 12px; font-weight: bold; line-height: 1; transition: background 0.2s; }
         #clearBtn:hover { background: #94a3b8; }
         body.dark-mode #clearBtn { background: #4b5563; }
 
-        /* 카드 및 배지 스타일 */
+        /* 카드 확대 및 공유 버튼 */
         .product-card { transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); background: #fff; border-radius: 1.5rem; border: 2px solid #e2e8f0; overflow: hidden; display: flex; flex-direction: column; height: 100%; position: relative; -webkit-tap-highlight-color: transparent; }
         body.dark-mode .product-card { background: #1f2937; border-color: #374151; }
         .product-card:hover, .product-card:active { border-color: var(--rider-mint); transform: scale(1.05); z-index: 50; box-shadow: 0 25px 50px -12px rgba(42, 193, 188, 0.25); }
@@ -114,18 +114,16 @@
             </a>
         </div>
         <div id="quick-menu" class="quick-menu-container mb-6"></div>
-        
         <div class="search-section max-w-2xl mx-auto px-4">
             <div class="search-container">
                 <input type="text" id="searchInput" onkeyup="handleSearch()" placeholder="상품명 또는 카테고리 검색..." class="w-full bg-white border-2 border-[#2ac1bc] rounded-xl p-3 pr-10 outline-none text-sm shadow-sm focus:ring-2 focus:ring-[#2ac1bc]">
                 <button id="clearBtn" onclick="clearSearch()">✕</button>
             </div>
         </div>
-
         <div id="product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8 mt-12 text-left"></div>
     </main>
 
-    <button id="topBtn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="floating-btn float-top"><svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg></button>
+    <button id="topBtn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="floating-btn float-top" title="최상단으로"><svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg></button>
     <button onclick="toggleDarkMode()" class="floating-btn float-theme" id="themeBtn"><svg id="themeIcon" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"></svg></button>
     <button id="shareBtn" onclick="copySiteUrl()" class="floating-btn float-share"><svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92z"/></svg></button>
     <div id="toast"></div>
@@ -168,24 +166,47 @@
 
         async function fetchSheetData() { try { const response = await fetch(url); const data = await response.text(); const rows = data.split('\n').slice(1); allProducts = rows.map(row => { const cols = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/); const clean = (s) => s ? s.replace(/^"|"$/g, "").trim() : ""; return { category: clean(cols[0]), categories: clean(cols[0]).split(',').map(c => c.trim()).filter(c => c), name: clean(cols[1]), link: clean(cols[2]), img: clean(cols[3]), subBadge: clean(cols[4]) }; }).filter(p => p.name); generateQuickMenu(); displayProducts(allProducts); } catch (e) { console.error(e); } }
         
+        /* [Confirmed] 이미지가 있는 제품을 최상단으로 올리는 정렬 함수 */
+        function sortProductsByImage(data) {
+            return [...data].sort((a, b) => {
+                const aHasImg = a.img && a.img.length > 0 ? 1 : 0;
+                const bHasImg = b.img && b.img.length > 0 ? 1 : 0;
+                return bHasImg - aHasImg;
+            });
+        }
+
         function displayProducts(data) { 
+            const sortedData = sortProductsByImage(data);
             const grid = document.getElementById('product-grid'); 
-            grid.innerHTML = data.map((p, index) => { 
+            grid.innerHTML = sortedData.map((p, index) => { 
                 const l = p.link.toLowerCase(); 
                 const platform = l.includes('coupang.com') ? {n:'COUPANG', c:'bg-red-500'} : (l.includes('naver') ? {n:'NAVER', c:'bg-green-500'} : {n:'CHECK', c:'bg-teal-500'}); 
                 const subBadgeHtml = p.subBadge ? `<span class="sub-badge">${p.subBadge}</span>` : ''; 
-                return `<div class="product-card relative" ontouchstart=""><span class="platform-badge ${platform.c}">${platform.n}</span>${subBadgeHtml}<div class="thumbnail-container flex items-center justify-center"><div id="share-card-${index}" class="card-share-btn" onclick="copyProductLink(event, '${p.link}', 'share-card-${index}')"><svg viewBox="0 0 24 24" width="20" height="20" fill="var(--rider-mint)"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92z"/></svg></div>${p.img ? `<img src="${p.img}" loading="lazy">` : `<div class="no-image-text">${p.name}</div>`}</div><div class="p-6 flex-1 flex flex-col items-center"><span class="text-[11px] font-bold text-teal-600 mb-2 uppercase italic">${p.category}</span><h2 class="product-title">${p.name}</h2><a href="${p.link}" target="_blank" class="check-btn">상세 정보 확인</a></div></div>`; 
+                return `
+                <div class="product-card relative" ontouchstart="">
+                    <span class="platform-badge ${platform.c}">${platform.n}</span>
+                    ${subBadgeHtml}
+                    <div class="thumbnail-container flex items-center justify-center">
+                        <div id="share-card-${index}" class="card-share-btn" onclick="copyProductLink(event, '${p.link}', 'share-card-${index}')">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="var(--rider-mint)"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92z"/></svg>
+                        </div>
+                        ${p.img ? `<img src="${p.img}" loading="lazy">` : `<div class="no-image-text">${p.name}</div>`}
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col items-center">
+                        <span class="text-[11px] font-bold text-teal-600 mb-2 uppercase italic">${p.category}</span>
+                        <h2 class="product-title">${p.name}</h2>
+                        <a href="${p.link}" target="_blank" class="check-btn">상세 정보 확인</a>
+                    </div>
+                </div>`; 
             }).join(''); 
         }
         
-        /* [Confirmed] 검색 초기화 로직 */
         function clearSearch() { const input = document.getElementById('searchInput'); input.value = ''; handleSearch(); input.focus(); }
 
         function handleSearch() { 
             const q = document.getElementById('searchInput').value.toLowerCase(); 
             const clearBtn = document.getElementById('clearBtn');
-            clearBtn.style.display = q.length > 0 ? 'flex' : 'none'; // 글자 있으면 보이고 없으면 숨김
-            
+            clearBtn.style.display = q.length > 0 ? 'flex' : 'none';
             const filtered = allProducts.filter(p => { 
                 const matchesSearch = p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q); 
                 const matchesCategory = currentCategory === '전체' || p.categories.includes(currentCategory); 
