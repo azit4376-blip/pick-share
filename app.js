@@ -9,15 +9,16 @@ const CATEGORIES = Object.freeze([
     { id: "all", label: "전체", description: "전체 등록 상품을 확인합니다.", tags: [] },
     { id: "delivery", label: "배송·수납", description: "배달가방, 파티션, 짐대와 탑박스 등 적재 장비", tags: ["가방", "네스터", "파티션", "짐대", "탑박스"] },
     { id: "mobile", label: "거치·모바일", description: "휴대전화 거치대, 케이스, 마운트와 충전 액세서리", tags: ["거치대", "케이스", "마운트", "케이블", "딱판", "컵홀더", "워치 스트랩"] },
-    { id: "communication", label: "통신·촬영", description: "블루투스 헤드셋, 액션캠, 블랙박스와 저장장치", tags: ["블루투스", "액션캠", "블랙박스", "메모리"] },
-    { id: "vehicle", label: "주행·정비", description: "배터리, 공기주입기, 점프스타터와 차량 편의 장비", tags: ["배터리", "공기주입기", "점프스타터", "백미러", "크로스바", "쿠션", "열선"] },
+    { id: "communication", label: "통신·촬영", description: "블루투스 헤드셋, 액션캠, 블랙박스와 저장장치", tags: ["블루투스", "액션캠", "블랙박스", "메모리", "마이크 액세서리"] },
+    { id: "vehicle", label: "주행·정비", description: "배터리, 공기주입기, 점프스타터와 차량 편의 장비", tags: ["배터리", "공기주입기", "점프스타터", "백미러", "크로스바", "쿠션", "열선", "관리용품"] },
     { id: "wear", label: "의류·계절", description: "방한·여름용품, 신발, 우의와 라이딩 의류", tags: ["의류", "신발", "장화", "비옷", "바라클라바", "토시", "겨울", "여름"] },
-    { id: "lifestyle", label: "라이더 생활", description: "건강, 음료, 전자기기와 일상 편의 상품", tags: ["영양제", "텀블러", "노트북", "세탁기", "기타"] }
+    { id: "lifestyle", label: "라이더 생활", description: "건강, 음료, 전자기기와 일상 편의 상품", tags: ["영양제", "텀블러", "노트북", "세탁기", "생활용품", "기타"] }
 ]);
 
 const state = {
     products: [],
     category: "all",
+    detail: "all",
     query: ""
 };
 
@@ -68,6 +69,31 @@ function categoryById(id) {
     return CATEGORIES.find((category) => category.id === id) || CATEGORIES[0];
 }
 
+function detailTagEntries(products, categoryId = "all") {
+    const masterLabels = new Set(CATEGORIES.slice(1).map((category) => category.label));
+    const scopedProducts = categoryId === "all"
+        ? products
+        : products.filter((product) => product.category === categoryId);
+    const counts = new Map();
+
+    scopedProducts.forEach((product) => {
+        product.tags.forEach((tag) => {
+            if (!masterLabels.has(tag)) counts.set(tag, (counts.get(tag) || 0) + 1);
+        });
+    });
+
+    const preferredTags = categoryId === "all"
+        ? CATEGORIES.slice(1).flatMap((category) => category.tags)
+        : categoryById(categoryId).tags;
+    const extraTags = [...counts.keys()]
+        .filter((tag) => !preferredTags.includes(tag))
+        .sort((left, right) => left.localeCompare(right, "ko-KR"));
+
+    return [...new Set([...preferredTags, ...extraTags])]
+        .filter((tag) => counts.has(tag))
+        .map((tag) => ({ tag, count: counts.get(tag) }));
+}
+
 function escapeHtml(value) {
     return String(value).replace(/[&<>'"]/g, (character) => ({
         "&": "&amp;",
@@ -94,6 +120,7 @@ function filteredProducts() {
     return state.products.filter((product) => {
         const matchesCategory = state.category === "all" || product.category === state.category;
         if (!matchesCategory) return false;
+        if (state.detail !== "all" && !product.tags.includes(state.detail)) return false;
         if (!state.query) return true;
         const category = categoryById(product.category);
         const haystack = [product.name, product.tags.join(" "), category.label, platformFor(product.link).label].join(" ").toLocaleLowerCase("ko-KR");
@@ -150,21 +177,44 @@ function renderCategoryList() {
         </button>`).join("");
 }
 
+function renderDetailCategoryList() {
+    const entries = detailTagEntries(state.products, state.category);
+    const scopedCount = state.category === "all"
+        ? state.products.length
+        : state.products.filter((product) => product.category === state.category).length;
+    const selectedExists = entries.some(({ tag }) => tag === state.detail);
+    if (!selectedExists) state.detail = "all";
+
+    dom.detailCategoryPanel.hidden = entries.length === 0;
+    dom.detailCategoryList.innerHTML = [
+        { tag: "all", label: "전체 세부", count: scopedCount },
+        ...entries.map(({ tag, count }) => ({ tag, label: tag, count }))
+    ].map(({ tag, label, count }) => `
+        <button class="detail-category-button" type="button" data-detail-category="${escapeHtml(tag)}" aria-pressed="${state.detail === tag}">
+            ${escapeHtml(label)}<span class="detail-category-count">${count}</span>
+        </button>`).join("");
+}
+
 function renderProducts() {
     const products = filteredProducts();
     const category = categoryById(state.category);
     const hasQuery = Boolean(state.query);
+    const hasDetail = state.detail !== "all";
 
     dom.productGrid.setAttribute("aria-busy", "false");
     dom.productGrid.innerHTML = products.map(productCardMarkup).join("");
     dom.productGrid.hidden = products.length === 0;
     dom.emptyState.hidden = products.length > 0;
     dom.errorState.hidden = true;
-    dom.resultsTitle.textContent = category.id === "all" ? "전체 상품" : category.label;
+    dom.resultsTitle.textContent = hasDetail
+        ? (category.id === "all" ? state.detail : `${category.label} · ${state.detail}`)
+        : (category.id === "all" ? "전체 상품" : category.label);
     dom.resultsSummary.textContent = hasQuery
         ? `검색 조건에 맞는 ${products.length.toLocaleString("ko-KR")}개 상품입니다.`
         : `${products.length.toLocaleString("ko-KR")}개 상품을 확인할 수 있습니다.`;
-    dom.categoryDescription.textContent = category.description;
+    dom.categoryDescription.textContent = hasDetail
+        ? `${category.id === "all" ? "전체 카테고리" : category.label}에서 ‘${state.detail}’ 항목을 확인합니다.`
+        : category.description;
 
     dom.productGrid.querySelectorAll(".product-image").forEach((image) => {
         image.addEventListener("error", () => {
@@ -193,6 +243,7 @@ async function fetchProducts() {
         dom.totalProducts.textContent = products.length.toLocaleString("ko-KR");
         dom.dataState.textContent = "최신 목록 자동 반영";
         renderCategoryList();
+        renderDetailCategoryList();
         renderProducts();
     } catch (error) {
         console.warn("Pick & Share catalog:", error.message);
@@ -253,12 +304,21 @@ function runCatalogSelfCheck() {
     if (resolveProductCategory(["가방", "네스터"]) !== "delivery") throw new Error("배송 카테고리 분류 실패");
     if (resolveProductCategory(["케이스", "겨울"]) !== "mobile") throw new Error("카테고리 우선순위 실패");
     if (resolveProductCategory(["의류·계절", "케이스"]) !== "wear") throw new Error("대표 카테고리 분류 실패");
+    const testProducts = [
+        { category: "vehicle", tags: ["주행·정비", "크로스바"] },
+        { category: "vehicle", tags: ["주행·정비", "배터리"] },
+        { category: "wear", tags: ["의류·계절", "겨울"] }
+    ];
+    const allDetails = detailTagEntries(testProducts);
+    if (!allDetails.some(({ tag, count }) => tag === "크로스바" && count === 1)) throw new Error("세부 카테고리 생성 실패");
+    if (allDetails.some(({ tag }) => tag === "주행·정비")) throw new Error("대표 카테고리 중복 노출 실패");
+    if (detailTagEntries(testProducts, "wear").some(({ tag }) => tag === "크로스바")) throw new Error("세부 카테고리 범위 실패");
     if (safeUrl("javascript:alert(1)")) throw new Error("URL 검증 실패");
     return true;
 }
 
 function cacheDom() {
-    ["share-site", "theme-toggle", "theme-icon", "total-products", "data-state", "search-input", "search-clear", "category-list", "category-description", "results-title", "results-summary", "product-grid", "empty-state", "error-state", "retry-button", "top-button", "toast"].forEach((id) => {
+    ["share-site", "theme-toggle", "theme-icon", "total-products", "data-state", "search-input", "search-clear", "category-list", "detail-category-panel", "detail-category-list", "category-description", "results-title", "results-summary", "product-grid", "empty-state", "error-state", "retry-button", "top-button", "toast"].forEach((id) => {
         dom[id.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase())] = document.getElementById(id);
     });
 }
@@ -268,7 +328,17 @@ function bindEvents() {
         const button = event.target.closest("[data-category]");
         if (!button) return;
         state.category = button.dataset.category;
-        dom.categoryList.querySelectorAll("[data-category]").forEach((item) => item.setAttribute("aria-pressed", String(item === button)));
+        state.detail = "all";
+        renderCategoryList();
+        renderDetailCategoryList();
+        renderProducts();
+    });
+
+    dom.detailCategoryList.addEventListener("click", (event) => {
+        const button = event.target.closest("[data-detail-category]");
+        if (!button) return;
+        state.detail = button.dataset.detailCategory;
+        renderDetailCategoryList();
         renderProducts();
     });
 
@@ -323,7 +393,7 @@ if (typeof window !== "undefined" && typeof document !== "undefined") {
 }
 
 if (typeof module !== "undefined" && module.exports) {
-    module.exports = { parseProductsCsv, resolveProductCategory, safeUrl, runCatalogSelfCheck };
+    module.exports = { parseProductsCsv, resolveProductCategory, detailTagEntries, safeUrl, runCatalogSelfCheck };
     if (require.main === module) {
         runCatalogSelfCheck();
         console.log("Pick & Share catalog self-check: PASS");

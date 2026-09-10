@@ -479,6 +479,72 @@ body.dark-mode .category-button[aria-pressed="true"] {
     color: var(--ink);
 }
 
+.detail-category-panel {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: start;
+    gap: 12px;
+    margin-top: 14px;
+    padding: 13px 14px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: color-mix(in srgb, var(--surface-soft), var(--surface) 42%);
+}
+
+.detail-category-label {
+    padding-top: 6px;
+    color: var(--ink-soft);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+}
+
+.detail-category-list {
+    display: flex;
+    min-width: 0;
+    flex-wrap: wrap;
+    gap: 7px;
+}
+
+.detail-category-button {
+    display: inline-flex;
+    min-height: 32px;
+    align-items: center;
+    gap: 6px;
+    padding: 0 10px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--ink-soft);
+    background: var(--surface);
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 700;
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+
+.detail-category-button:hover {
+    border-color: var(--mint);
+    color: var(--mint-dark);
+}
+
+.detail-category-button[aria-pressed="true"] {
+    border-color: var(--mint-dark);
+    color: var(--surface);
+    background: var(--mint-dark);
+}
+
+body.dark-mode .detail-category-button[aria-pressed="true"] {
+    border-color: var(--mint);
+    color: #0b2426;
+    background: var(--mint);
+}
+
+.detail-category-count {
+    opacity: 0.72;
+    font-size: 10px;
+}
+
 .category-description {
     margin: 13px 0 0;
     color: var(--ink-soft);
@@ -979,6 +1045,32 @@ body.dark-mode .product-link {
     }
 
     .category-button {
+        flex: 0 0 auto;
+    }
+
+    .detail-category-panel {
+        grid-template-columns: 1fr;
+        gap: 8px;
+        padding-right: 0;
+        padding-left: 14px;
+    }
+
+    .detail-category-label {
+        padding-top: 0;
+    }
+
+    .detail-category-list {
+        flex-wrap: nowrap;
+        padding: 0 14px 3px 0;
+        overflow-x: auto;
+        scrollbar-width: none;
+    }
+
+    .detail-category-list::-webkit-scrollbar {
+        display: none;
+    }
+
+    .detail-category-button {
         flex: 0 0 auto;
     }
 
